@@ -58,6 +58,14 @@ public class BrushView extends FrameLayout {
     public int mDrawMoveHistoryIndex = -1;
     private OnBrushViewListener mBrushViewListener;
     public boolean drawEnable = true;
+    private boolean isDrawing = false;
+
+    private Bitmap mResultMap;
+    private Canvas mResultCanvas;
+
+    private Bitmap mTmpMap;
+    private Canvas mTmpCanvas;
+
 
 
     private float lastTouchX;
@@ -130,6 +138,14 @@ public class BrushView extends FrameLayout {
         }
     }
 
+
+    public void prepareBrush(){
+        mResultMap = Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_8888);
+        mResultCanvas = new Canvas(mResultMap);
+        mTmpMap = Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_8888);
+        mTmpCanvas = new Canvas(mTmpMap);
+    }
+
     public void onTouch( MotionEvent motionEvent) {
         if (!drawEnable) return ;
         switch (motionEvent.getActionMasked()){
@@ -169,6 +185,8 @@ public class BrushView extends FrameLayout {
                 .setDrawPathList( new ArrayList<Path>());
         mDrawMoveHistory.get(mDrawMoveHistory.size() - 1)
                 .getDrawPathList().add(path);
+
+        isDrawing = true;
         if (mBrushViewListener != null ){
             mBrushViewListener.onStartDrawing(motionEvent.getX(),motionEvent.getY());
         }
@@ -205,6 +223,17 @@ public class BrushView extends FrameLayout {
         }
         lastTouchX = x;
         lastTouchY = y;
+
+
+        if (mBrushType == BrushType.ERASER){
+            mResultCanvas.drawPath(path,drawMove.getPaint());
+        }else {
+            drawMove.getPaint().setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            mTmpCanvas.drawPaint(drawMove.getPaint());
+            drawMove.getPaint().setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC));
+            mTmpCanvas.drawPath(path,drawMove.getPaint());
+        }
+
         invalidate();
     }
 
@@ -215,6 +244,10 @@ public class BrushView extends FrameLayout {
         }
         lastTouchX = motionEvent.getX();
         lastTouchY = motionEvent.getY();
+        if (mBrushType !=BrushType.ERASER && mTmpMap != null){
+            mResultCanvas.drawBitmap(mTmpMap,0,0,null);
+        }
+        isDrawing = false;
     }
     public Bitmap getBitmp(int backgroundColor){
         Bitmap bmp = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
@@ -237,10 +270,19 @@ public class BrushView extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (int i = 0; i < mDrawMoveHistoryIndex + 1; i ++){
-            DrawMove drawMove = mDrawMoveHistory.get(i);
-            drawPen(drawMove,canvas);
+        if (mResultMap != null){
+            canvas.drawBitmap(mResultMap,0,0,null);
         }
+        if (isDrawing && mBrushType != BrushType.ERASER && mTmpMap != null){
+            canvas.drawBitmap(mTmpMap,0,0,null);
+        }
+//        if (mTmpMap != null){
+//            canvas.drawBitmap(mTmpMap,0,0,null);
+//        }
+//        for (int i = 0; i < mDrawMoveHistoryIndex + 1; i ++){
+//            DrawMove drawMove = mDrawMoveHistory.get(i);
+//            drawPen(drawMove,canvas);
+//        }
     }
 
     private void drawRect(DrawMove drawMove,Canvas canvas){
@@ -263,10 +305,10 @@ public class BrushView extends FrameLayout {
         paint.setAlpha(mDrawAlpha);
         paint.setAntiAlias(mAntiAlias);
         paint.setStrokeCap(mLineCap);
-        paint.setMaskFilter(new BlurMaskFilter(mDrawWidth, BlurMaskFilter.Blur.NORMAL));
 
         if (mBrushType == BrushType.NORMAL){
             paint.setXfermode(null);
+            paint.setMaskFilter(new BlurMaskFilter(mDrawWidth, BlurMaskFilter.Blur.NORMAL));
         }else if (mBrushType == BrushType.ERASER){
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         }
@@ -298,10 +340,11 @@ public class BrushView extends FrameLayout {
         }
         return currentPaint;
     }
-    public boolean restartDrawing() {
+    public boolean restartBrush() {
         if (mDrawMoveHistory != null) {
             mDrawMoveHistory.clear();
             mDrawMoveHistoryIndex = -1;
+            prepareBrush();
             invalidate();
             return true;
         }

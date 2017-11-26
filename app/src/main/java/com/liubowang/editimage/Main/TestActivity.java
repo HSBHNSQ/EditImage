@@ -50,5 +50,12 @@ public class TestActivity extends AppCompatActivity {
 
             }
         });
+
+        brushView.post(new Runnable() {
+            @Override
+            public void run() {
+                brushView.prepareBrush();
+            }
+        });
     }
 }
