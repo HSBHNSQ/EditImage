@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.liubowang.editimage.Normal.ImageTextButton
+        android:id="@+id/itb_zheng_xuan_stv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:is_selected="true"
+        app:normal_background="@color/color_FFFFFF"
+        app:normal_image="@drawable/zhengxuan1"
+        app:normal_text="@string/ei_brush"
+        app:normal_text_color="@color/color_FFFFFF"
+        app:selected_background="@color/color_FFFFFF"
+        app:selected_image="@drawable/zhengxuan"
+        app:selected_text="@string/ei_brush"
+        app:selected_text_color="@color/color_000000"
+        app:show_image_view="true"
+        app:show_text_view="false"
+        app:text_size="10sp"/>
+    <com.liubowang.editimage.Normal.ImageTextButton
+        android:id="@+id/itb_fan_xuan_stv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:is_selected="false"
+        app:normal_background="@color/color_FFFFFF"
+        app:normal_image="@drawable/fanxuan"
+        app:normal_text="@string/ei_brush"
+        app:normal_text_color="@color/color_FFFFFF"
+        app:selected_background="@color/color_FFFFFF"
+        app:selected_image="@drawable/fanxuan2"
+        app:selected_text="@string/ei_brush"
+        app:selected_text_color="@color/color_000000"
+        app:show_image_view="true"
+        app:show_text_view="false"
+        app:text_size="10sp"/>
+
+</LinearLayout>

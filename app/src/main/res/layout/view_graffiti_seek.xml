@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageButton
+        android:id="@+id/ib_open_gsv"
+        android:layout_width="32dp"
+        android:layout_height="24dp"
+        android:background="@drawable/right_open_bg"
+        android:padding="3dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/go_left"
+        android:layout_gravity="bottom"/>
+    <LinearLayout
+        android:id="@+id/ll_container_gsv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/ib_top_gsv"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:background="@drawable/top_open_bg"
+            android:scaleType="fitCenter"
+            android:src="@drawable/go_top" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rl_recycle_view_gsv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:background="@color/color_88FFFFFF">
+        </android.support.v7.widget.RecyclerView>
+        <com.liubowang.editimage.Normal.TextSeekView
+            android:id="@+id/tsv_size_seek_gsv"
+            android:layout_width="match_parent"
+            app:tsv_text_size="10sp"
+            app:tsv_text="@string/ei_mosaic_size"
+            app:tsv_text_color="@color/color_3B5038"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/color_88FFFFFF"/>
+    </LinearLayout>
+</LinearLayout>

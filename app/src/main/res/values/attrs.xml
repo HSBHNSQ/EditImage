@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TopToolView" >
+
+    </declare-styleable>
+
+    <declare-styleable name="TextSeekView">
+        <attr name="tsv_text_color" format="color"/>
+        <attr name="tsv_seek_max" format="integer"/>
+        <attr name="tsv_text" format="string"/>
+        <attr name="tsv_progress" format="integer"/>
+        <attr name="tsv_text_size" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ImageTextButton">
+        <attr name="show_image_view" format="boolean"/>
+        <attr name="show_text_view" format="boolean"/>
+        <attr name="is_selected" format="boolean"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="selected_background" format="reference"/>
+        <attr name="selected_image" format="reference"/>
+        <attr name="selected_text" format="string"/>
+        <attr name="selected_text_color" format="color"/>
+        <attr name="normal_background" format="reference"/>
+        <attr name="normal_image" format="reference"/>
+        <attr name="normal_text" format="string"/>
+        <attr name="normal_text_color" format="color"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="BrushView">
+        <attr name="brush_color" format="color"/>
+        <attr name="brush_width" format="integer"/>
+        <attr name="brush_alpha" format="integer"/>
+        <attr name="brush_antialias" format="boolean"/>
+        <attr name="brush_dither" format="boolean"/>
+        <attr name="brush_type" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="eraser" value="1"/>
+        </attr>
+        <attr name="brush_paint_style" format="enum">
+            <enum name="fill" value="0"/>
+            <enum name="fill_stroke" value="1"/>
+            <enum name="stroke" value="2"/>
+        </attr>
+        <attr name="brush_line_cap" format="enum">
+            <enum name="butt" value="0"/>
+            <enum name="round" value="1"/>
+            <enum name="square" value="2"/>
+        </attr>
+        <attr name="brush_background_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="DrawView">
+        <attr name="draw_color" format="color"/>
+        <attr name="draw_stytle" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="rect" value="1"/>
+            <enum name="pen" value="2"/>
+            <enum name="erase" value="3"/>
+        </attr>
+        <attr name="draw_width" format="integer"/>
+        <attr name="draw_alpha" format="integer"/>
+        <attr name="draw_antialias" format="boolean"/>
+        <attr name="draw_dither" format="boolean"/>
+        <attr name="draw_paint_sytle" format="enum">
+            <enum name="fill" value="0"/>
+            <enum name="fill_stroke" value="1"/>
+            <enum name="stroke" value="2"/>
+        </attr>
+        <attr name="draw_line_cap" format="enum">
+            <enum name="butt" value="0"/>
+            <enum name="round" value="1"/>
+            <enum name="square" value="2"/>
+        </attr>
+        <attr name="draw_background_color" format="color"/>
+    </declare-styleable>
+
+
+</resources>

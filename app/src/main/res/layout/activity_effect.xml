@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root_effect"
+    tools:context="com.liubowang.editimage.Effect.EffectActivity">
+
+    <ImageView
+        android:id="@+id/iv_status_effect"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/color_12403D"/>
+    <com.liubowang.editimage.Normal.TopToolView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="0dp"
+        android:id="@+id/ttl_top_tool_effecr"
+        app:layout_constraintTop_toBottomOf="@+id/iv_status_effect"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:background="@drawable/navi_bg">
+
+    </com.liubowang.editimage.Normal.TopToolView>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_container_effect"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom_container_effect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_effecr"
+        app:layout_constraintVertical_bias="0.5">
+
+        <ImageView
+            android:id="@+id/iv_origin_image_effect"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_mask_image_effect"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_mask_image_effect"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.liubowang.editimage.Draw.DrawView
+            android:id="@+id/dv_draw_effect"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_mask_image_effect"
+            app:draw_width="6"
+            app:draw_color="#FFFFFF"
+            app:draw_line_cap="round"
+            app:draw_antialias="true"
+            app:draw_dither="true"
+            app:draw_background_color="#00000000"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0">
+        </com.liubowang.editimage.Draw.DrawView>
+    </android.support.constraint.ConstraintLayout>
+
+    <com.liubowang.editimage.Effect.SmartToolView
+        android:id="@+id/stv_smart_tool_effect"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom_container_effect"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+    </com.liubowang.editimage.Effect.SmartToolView>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_container_effect"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/id_banner_container_effect">
+        <com.liubowang.editimage.Normal.ImageTextButton
+            android:id="@+id/itb_smart_effect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="true"
+            app:normal_background="@color/color_3B5038"
+            app:normal_image="@drawable/smart"
+            app:normal_text="@string/ei_smart_select"
+            app:normal_text_color="@color/color_FFFFFF"
+            app:selected_background="@color/color_12403D"
+            app:selected_image="@drawable/smart"
+            app:selected_text="@string/ei_smart_select"
+            app:selected_text_color="@color/color_C4E791"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="320dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <com.liubowang.editimage.Normal.ImageTextButton
+            android:id="@+id/itb_brush_effect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="false"
+            app:normal_background="@color/color_3B5038"
+            app:normal_image="@drawable/graffiti"
+            app:normal_text="@string/ei_brush"
+            app:normal_text_color="@color/color_FFFFFF"
+            app:selected_background="@color/color_12403D"
+            app:selected_image="@drawable/graffiti"
+            app:selected_text="@string/ei_brush"
+            app:selected_text_color="@color/color_C4E791"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="-28dp"
+            tools:layout_editor_absoluteY="33dp" />
+
+        <com.liubowang.editimage.Normal.ImageTextButton
+            android:id="@+id/itb_eraser_effect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="false"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:normal_background="@color/color_3B5038"
+            app:normal_image="@drawable/graffiti"
+            app:normal_text="@string/ei_eraser"
+            app:normal_text_color="@color/color_FFFFFF"
+            app:selected_background="@color/color_12403D"
+            app:selected_image="@drawable/graffiti"
+            app:selected_text="@string/ei_eraser"
+            app:selected_text_color="@color/color_C4E791"
+            app:text_size="10sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/id_banner_container_effect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

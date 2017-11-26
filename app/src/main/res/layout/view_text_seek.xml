@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="15dp">
+        <TextView
+            android:id="@+id/tv_text_tsv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="2dp"
+            android:textColor="@color/color_DDDDDD"
+            android:textSize="10sp"
+            android:maxLines="1"
+            android:text="TextView"/>
+        <TextView
+            android:id="@+id/tv_center_text_tsv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="2dp"
+            android:textColor="@color/color_83CBC4"
+            android:textSize="10sp"
+            android:maxLines="1"
+            android:text=":"/>
+        <TextView
+            android:id="@+id/tv_value_tsv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp"
+            android:textColor="@color/color_83CBC4"
+            android:textSize="10sp"
+            android:maxLines="1"
+            android:text="50"/>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/sb_seek_tsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="50"
+        android:paddingBottom="5dp"
+        android:maxHeight="2dp"
+        android:minHeight="2dp"/>
+</LinearLayout>

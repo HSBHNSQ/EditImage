@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">EditImage</string>
+
+    <string name="menu_open">Open Image</string>
+    <string name="menu_select">Select target</string>
+    <string name="menu_cut">Process Image</string>
+
+    <string name="cancel">取消</string>
+    <string name="sure">确定</string>
+    <string name="open_permission">当前应用没有此权限，是否前往设置权限</string>
+    <string name="ei_normal_edit">常规修图</string>
+    <string name="ei_effects_edit">特效精选</string>
+    <string name="ei_mosaic">马赛克</string>
+    <string name="ei_mosaic_size">马赛克大小</string>
+    <string name="ei_stickers">贴纸</string>
+    <string name="ei_graffiti">涂鸦</string>
+    <string name="ei_smart_select">智能选择</string>
+    <string name="ei_brush">画刷</string>
+    <string name="ei_eraser">橡皮擦</string>
+    <string name="ei_shape">形状</string>
+    <string name="ei_processing">正在处理。。。</string>
+</resources>

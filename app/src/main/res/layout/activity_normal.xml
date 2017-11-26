@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root_normal"
+    tools:context="com.liubowang.editimage.Normal.NormalActivity">
+
+    <ImageView
+        android:id="@+id/iv_status_normal"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/color_12403D" />
+
+    <com.liubowang.editimage.Normal.TopToolView
+        android:id="@+id/ttl_top_tool_normal"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/navi_bg"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_status_normal">
+
+    </com.liubowang.editimage.Normal.TopToolView>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_container_normal"
+        android:layout_width="204dp"
+        android:layout_height="383dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom_item_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_normal">
+
+        <ImageView
+            android:id="@+id/iv_origin_image_view_normal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/sv_stickers_container_view_normal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.liubowang.editimage.Mosaic.MosaicView
+            android:id="@+id/mv_mosaic_view_normal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.434"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.498" />
+
+        <com.liubowang.editimage.Draw.DrawView
+            android:id="@+id/dv_draw_view_normal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_origin_image_view_normal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_origin_image_view_normal"
+            app:draw_width="20"
+            app:draw_color="#FFFFFF"
+            app:draw_line_cap="round"
+            app:draw_antialias="true"
+            app:draw_dither="true"
+            app:draw_background_color="#00000000"/>
+
+        <com.liubowang.editimage.Normal.StickersContainerView
+            android:id="@+id/sv_stickers_container_view_normal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+        </com.liubowang.editimage.Normal.StickersContainerView>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        android:id="@+id/ll_bottom_item_container"
+        app:layout_constraintBottom_toTopOf="@+id/ll_banner_container_normal">
+
+        <com.liubowang.editimage.Normal.ImageTextButton
+            android:id="@+id/itb_mosaic_normal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="true"
+            app:normal_background="@color/color_3B5038"
+            app:normal_image="@drawable/mosaic"
+            app:normal_text="@string/ei_mosaic"
+            app:normal_text_color="@color/color_FFFFFF"
+            app:selected_background="@color/color_12403D"
+            app:selected_image="@drawable/mosaic"
+            app:selected_text="@string/ei_mosaic"
+            app:selected_text_color="@color/color_C4E791"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="320dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <com.liubowang.editimage.Normal.ImageTextButton
+            android:id="@+id/itb_stickers_normal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="false"
+            app:normal_background="@color/color_3B5038"
+            app:normal_image="@drawable/stickers"
+            app:normal_text="@string/ei_stickers"
+            app:normal_text_color="@color/color_FFFFFF"
+            app:selected_background="@color/color_12403D"
+            app:selected_image="@drawable/stickers"
+            app:selected_text="@string/ei_stickers"
+            app:selected_text_color="@color/color_C4E791"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="-28dp"
+            tools:layout_editor_absoluteY="33dp" />
+
+        <com.liubowang.editimage.Normal.ImageTextButton
+            android:id="@+id/itb_graffiti_normal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="false"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:normal_background="@color/color_3B5038"
+            app:normal_image="@drawable/graffiti"
+            app:normal_text="@string/ei_graffiti"
+            app:normal_text_color="@color/color_FFFFFF"
+            app:selected_background="@color/color_12403D"
+            app:selected_image="@drawable/graffiti"
+            app:selected_text="@string/ei_graffiti"
+            app:selected_text_color="@color/color_C4E791"
+            app:text_size="10sp" >
+
+        </com.liubowang.editimage.Normal.ImageTextButton>
+    </LinearLayout>
+
+    <com.liubowang.editimage.Normal.MosaicSizeSeek
+        android:id="@+id/mss_mosaic_size_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom_item_container"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <com.liubowang.editimage.Normal.GraffitiSeekView
+        android:id="@+id/gsv_graffiti_seek_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom_item_container"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.liubowang.editimage.Normal.StickersPickerView
+        android:id="@+id/spv_sticker_picker_normal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom_item_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+    </com.liubowang.editimage.Normal.StickersPickerView>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/ll_banner_container_normal">
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>
