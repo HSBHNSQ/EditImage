@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="sure">JA</string>
+    <string name="open_permission_">Keine Erlaubnis in der aktuellen App, möchten sie zu den Einstellungen gehen?</string>
+    <string name="ei_draw_size">Pinselgröße</string>
+    <string name="ei_stickers">Sticker</string>
+    <string name="ei_graffit">Graffiti</string>
+    <string name="ei_eraser">Radiergummi</string>
+    <string name="ei_processing">Verarbeite...</string>
+    <string name="ei_cutout">ausschnitt</string>
+    <string name="ei_preview">Vorschau</string>
+    <string name="ei_files">Meine Bilder</string>
+    <string name="ei_GRAY">Grau</string>
+    <string name="ei_PAINTING">Ölgemälde</string>
+    <string name="ei_NONE">Kein</string>
+    <string name="ei_save_failed">Speichern fehlgeschlagen</string>
+    <string name="ei_save_successful">Erfolgreich gespeichert</string>
+    <string name="ei_share">Teilen</string>
+    <string name="ei_delete">Löschen</string>
+    <string name="ei_delete_image">Sind Sie sicher, dass Sie es löschen möchten?</string>
+    <string name="ei_effect_">Spezialeffekte</string>
+    <string name="ei_normal">Gängige Foto-Retusche</string>
+    <string name="ei_effect">Spezialeffekte Auswahl</string>
+    <string name="ei_mosaic">Bild verwischen</string>
+    <string name="ei_smart_select">Intelligente Auswahl</string>
+    <string name="ei_brush">Pinsel</string>
+    <string name="ei_FOCUS">Fokus</string>
+    <string name="ei_CORSSHATCH">Kreuz</string>
+    <string name="setting_set">Einstellungen</string>
+    <string name="setting_comment">Bewerten Sie uns</string>
+    <string name="setting_suggections">Feedback</string>
+    <string name="setting_send_email">E-Mail senden</string>
+    <string name="setting_no_app_market">Sie haben den App-Markt nicht installiert</string>
+</resources>

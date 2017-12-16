@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="170dp"
+    android:layout_height="200dp"
+    android:gravity="center"
+    android:background="#EEEEEE">
+    <ImageView
+        android:id="@+id/iv_image_tiv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_242527"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tv_name_tiv"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_alignBottom="@+id/iv_image_tiv"
+        android:layout_alignParentRight="true"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:text="@string/ei_share"
+        android:textColor="@color/color_FFFFFF"
+        android:background="#66000000"
+        android:gravity="center"
+        android:padding="3dp"/>
+
+</RelativeLayout>

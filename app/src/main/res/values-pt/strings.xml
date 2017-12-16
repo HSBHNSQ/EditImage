@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor</string>
+    <string name="cancel">Cancelar</string>
+    <string name="sure">OK</string>
+    <string name="open_permission_">Sem permissão no aplicativo atual, quer ir para as configurações?</string>
+    <string name="ei_draw_size">Largura do Traço</string>
+    <string name="ei_stickers">Adesivos</string>
+    <string name="ei_graffit">Grafite</string>
+    <string name="ei_eraser">Eraser</string>
+    <string name="ei_processing">Processando...</string>
+    <string name="ei_cutout">Cortar</string>
+    <string name="ei_preview">Pré-visualizar</string>
+    <string name="ei_files">Minhas Imagens</string>
+    <string name="ei_GRAY">Cinza</string>
+    <string name="ei_PAINTING">Pintura a Óleo</string>
+    <string name="ei_NONE">Nenhua</string>
+    <string name="ei_save_failed">Falha ao guardar</string>
+    <string name="ei_save_successful">Salvo com sucesso</string>
+    <string name="ei_share">Compartilhar</string>
+    <string name="ei_delete">Apagar</string>
+    <string name="ei_delete_image">Tem certeza que deseja excluir?</string>
+    <string name="ei_effect_">Efeitos especiais</string>
+    <string name="ei_normal">Retoque fotográfico comum</string>
+    <string name="ei_effect">Seleções de efeitos especiais</string>
+    <string name="ei_mosaic">Foto borrada</string>
+    <string name="ei_smart_select">Seleção inteligente</string>
+    <string name="ei_brush">Escova</string>
+    <string name="ei_FOCUS">Foco</string>
+    <string name="ei_CORSSHATCH">Cruzar</string>
+    <string name="setting_set">Configurações</string>
+    <string name="setting_comment">Avalie-nos</string>
+    <string name="setting_suggections">Feedback</string>
+    <string name="setting_send_email">Enviar email</string>
+    <string name="setting_no_app_market">Você não instalou o mercado de aplicativos</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Common</string>
+    <string name="facebook_app_id">107293193246611</string>
+
+    <string name="toast">没有应用商店</string>
+    <string name="exit_app">再按一次退出</string>
+
+    <string name="hard_top_finish">现在去评分</string>
+    <string name="hard_top_cancel">稍后再说</string>
+    <string name="score_app">如果您觉得好用，可否为其评一个分数？评分过程只需花费很少的时间。感谢您的支持！</string>
+</resources>

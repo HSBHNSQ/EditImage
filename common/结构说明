@@ -1,0 +1,6 @@
+区分广告平台
+    BannerViewAdapter               横幅广告适配器
+    InterstitialAdapter             全屏广告适配器
+    NativeAdViewAdapter             原生广告适配器
+    SplashAd                        开屏广告适配器
+    RewardBasedVideoAdAdapter       视频广告适配器

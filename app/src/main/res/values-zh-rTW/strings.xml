@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">修圖-天天美圖P圖軟體輕鬆摳圖大師</string>
+    <string name="cancel">取消</string>
+    <string name="sure">確定</string>
+    <string name="open_permission_">目前應用無此權限，是否前往設定權限?</string>
+    <string name="ei_draw_size">筆刷大小</string>
+    <string name="ei_stickers">貼圖</string>
+    <string name="ei_graffit">塗鴉</string>
+    <string name="ei_eraser">橡皮擦</string>
+    <string name="ei_processing">正在處理...</string>
+    <string name="ei_cutout">摳圖</string>
+    <string name="ei_preview">預覽</string>
+    <string name="ei_files">我的圖片</string>
+    <string name="ei_GRAY">灰色</string>
+    <string name="ei_PAINTING">油畫</string>
+    <string name="ei_NONE">無</string>
+    <string name="ei_save_failed">儲存失敗</string>
+    <string name="ei_save_successful">成功保存</string>
+    <string name="ei_share">分享</string>
+    <string name="ei_delete">刪除</string>
+    <string name="ei_delete_image">確認刪除？</string>
+    <string name="ei_effect_">特效</string>
+    <string name="ei_normal">常規修圖</string>
+    <string name="ei_effect">特效精選</string>
+    <string name="ei_mosaic">馬賽克</string>
+    <string name="ei_smart_select">智能選擇</string>
+    <string name="ei_brush">畫刷</string>
+    <string name="ei_FOCUS">聚焦</string>
+    <string name="ei_CORSSHATCH">交叉</string>
+    <string name="setting_set">設定</string>
+    <string name="setting_comment">給我們評分</string>
+    <string name="setting_suggections">意見反饋</string>
+    <string name="setting_send_email">發郵件</string>
+    <string name="setting_no_app_market">您沒有安裝應用市場</string>
+</resources>

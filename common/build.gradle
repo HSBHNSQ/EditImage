@@ -1,0 +1,91 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+    publishNonDefault true //不再按默认只构建release版本
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng",UMENG_APPKEY: "YOUR_UMENG_APPKEY"]
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        normal { //无广告
+        }
+
+        xiaomi {
+        }
+
+        oppo {
+        }
+
+        admob {
+        }
+
+        facebook {
+        }
+
+        tencent {
+        }
+
+        productFlavors.all {
+
+        }
+    }
+}
+
+repositories {
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+dependencies {
+    //    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'org.springframework.android:spring-android-core:2.0.0.BUILD-SNAPSHOT'
+    compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.google.firebase:firebase-core:10.2.6'
+    compile 'com.google.firebase:firebase-crash:10.2.6'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
+    admobCompile 'com.google.firebase:firebase-ads:10.2.6'
+
+    xiaomiCompile files('src/xiaomi/libs/AdSdk.jar')
+
+    oppoCompile files('src/oppo/libs/mob_ad_sdk_v1.1.3_2017_03_30_release.jar')
+    oppoCompile files('src/oppo/libs/android-query-full.0.26.7.jar')
+//    oppoCompile 'com.github.androidquery:androidquery:0.26.9'
+//    oppoCompile 'oauth.signpost:signpost-core:1.2.1.2'
+//    oppoCompile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
+//    oppoCompile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+
+    facebookCompile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    tencentCompile files('src/tencent/libs/GDTUnionSDK.4.10.548.min.jar')
+}
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Common</string>
+    <string name="facebook_app_id">107293193246611</string>
+
+
+    <string name = "toast"> no application store </string>
+    <string name = "exit_app">Press again to exit</string>
+
+    <string name = "hard_top_finish"> Now go to score </string>
+    <string name = "hard_top_cancel"> Say later </string>
+    <string name = "score_app"> If you feel good, can you rate it? The scoring process takes only a small amount of time. thank you for your support! </string>
+</resources>

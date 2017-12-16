@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor</string>
+    <string name="cancel">Annuler</string>
+    <string name="sure">Oui</string>
+    <string name="open_permission_">Aucune permission pour l\'application actuelle, souhaitez-vous aller dans les paramètres ?</string>
+    <string name="ei_draw_size">Largeur du Trait</string>
+    <string name="ei_stickers">Stickers</string>
+    <string name="ei_graffit">Graffiti</string>
+    <string name="ei_eraser">Gomme</string>
+    <string name="ei_processing">En cours...</string>
+    <string name="ei_cutout">Coupé</string>
+    <string name="ei_preview">Aperçu</string>
+    <string name="ei_files">Mes Images</string>
+    <string name="ei_GRAY">Gris</string>
+    <string name="ei_PAINTING">Peinture à l\'huile</string>
+    <string name="ei_NONE">Aucune</string>
+    <string name="ei_save_failed">Sauvegarde échoué</string>
+    <string name="ei_save_successful">Sauvegardée avec succès</string>
+    <string name="ei_share">Partager</string>
+    <string name="ei_delete">Supprimer</string>
+    <string name="ei_delete_image">Êtes-vous sûr de vouloir supprimer ?</string>
+    <string name="ei_effect_">Effets spéciaux</string>
+    <string name="ei_normal">Retouche photo commune</string>
+    <string name="ei_effect">Sélections d\'effets spéciaux</string>
+    <string name="ei_mosaic">Flou photo</string>
+    <string name="ei_smart_select">Sélection intelligente</string>
+    <string name="ei_brush">Pinceau</string>
+    <string name="ei_FOCUS">Focus</string>
+    <string name="ei_CORSSHATCH">Cross</string>
+    <string name="setting_set">Réglages</string>
+    <string name="setting_comment">Évaluez nous</string>
+    <string name="setting_suggections">Feedback</string>
+    <string name="setting_send_email">Envoyer un email</string>
+    <string name="setting_no_app_market">Vous n\'avez pas installé le marché de l\'application</string>
+</resources>

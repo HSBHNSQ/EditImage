@@ -17,6 +17,7 @@
         <attr name="show_text_view" format="boolean"/>
         <attr name="is_selected" format="boolean"/>
         <attr name="text_size" format="dimension"/>
+        <attr name="image_padding" format="dimension"/>
         <attr name="selected_background" format="reference"/>
         <attr name="selected_image" format="reference"/>
         <attr name="selected_text" format="string"/>
@@ -31,7 +32,7 @@
     <declare-styleable name="BrushView">
         <attr name="brush_color" format="color"/>
         <attr name="brush_width" format="integer"/>
-        <attr name="brush_alpha" format="integer"/>
+        <attr name="brush_eraser_width" format="integer"/>
         <attr name="brush_antialias" format="boolean"/>
         <attr name="brush_dither" format="boolean"/>
         <attr name="brush_type" format="enum">

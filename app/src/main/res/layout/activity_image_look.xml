@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_2C2E30"
+    tools:context="com.liubowang.photoretouch.FileBrowse.ImageLookActivity">
+    <com.liubowang.photoretouch.Normal.PinchImageView
+        android:id="@+id/piv_pinch_image_view_look"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_banner_container_look"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/tb_look" />
+
+    <LinearLayout
+        android:id="@+id/ll_banner_container_look"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_top_image_look"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/navi_bg" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_look"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/navi_bg"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_top_image_look"
+        app:navigationIcon="@drawable/navi_icon"
+        app:titleTextColor="@color/color_FFFFFF"/>
+
+</android.support.constraint.ConstraintLayout>

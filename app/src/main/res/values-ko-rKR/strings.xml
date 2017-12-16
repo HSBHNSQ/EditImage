@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor</string>
+    <string name="cancel">취소</string>
+    <string name="sure">확인</string>
+    <string name="open_permission_">현재 앱에 접근 불가합니다. 설정으로 이동하시겠습니까?</string>
+    <string name="ei_draw_size">브러시 크기</string>
+    <string name="ei_stickers">스티커</string>
+    <string name="ei_graffit">낙서</string>
+    <string name="ei_eraser">지우개</string>
+    <string name="ei_processing">진행 중...</string>
+    <string name="ei_cutout">오려내기</string>
+    <string name="ei_preview">미리보기</string>
+    <string name="ei_files">나의 이미지</string>
+    <string name="ei_GRAY">회색</string>
+    <string name="ei_PAINTING">오일 페인팅</string>
+    <string name="ei_NONE">없음</string>
+    <string name="ei_save_failed">저장 실패</string>
+    <string name="ei_save_successful">성공적으로 저장되었습니다</string>
+    <string name="ei_share">공유하기</string>
+    <string name="ei_delete">삭제</string>
+    <string name="ei_delete_image">삭제 하시겠습니까?</string>
+    <string name="ei_effect_">특수 효과</string>
+    <string name="ei_normal">일반적인 사진 보정</string>
+    <string name="ei_effect">특수 효과 선택</string>
+    <string name="ei_mosaic">사진 흐리게하기</string>
+    <string name="ei_smart_select">스마트 셀렉트</string>
+    <string name="ei_brush">브러쉬</string>
+    <string name="ei_FOCUS">초점</string>
+    <string name="ei_CORSSHATCH">십자가</string>
+    <string name="setting_set">설정</string>
+    <string name="setting_comment">저희 앱을 평가해 주세요</string>
+    <string name="setting_suggections">피드백</string>
+    <string name="setting_send_email">이메일 보내기</string>
+    <string name="setting_no_app_market">앱 시장을 설치하지 않았습니다.</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="66dp"
+    android:layout_height="80dp"
+    android:padding="5dp"
+    android:gravity="center"
+    android:background="@color/color_2C2E30">
+    <ImageView
+        android:id="@+id/iv_thumb_image_fiv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_242527"
+        android:src="@drawable/wu"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tv_name_fiv"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:layout_alignBottom="@+id/iv_thumb_image_fiv"
+        android:layout_alignParentRight="true"
+        android:maxLines="1"
+        android:textSize="10sp"
+        android:textColor="@color/color_FFFFFF"
+        android:background="#66000000"
+        android:gravity="center"
+        android:padding="3dp"/>
+
+
+
+</RelativeLayout>

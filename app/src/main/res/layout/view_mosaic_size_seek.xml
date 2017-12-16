@@ -4,21 +4,21 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-    <com.liubowang.editimage.Normal.TextSeekView
+    <com.liubowang.photoretouch.Normal.TextSeekView
         android:id="@+id/tsv_size_seek_mss"
         android:layout_width="0dp"
         app:tsv_text_size="10sp"
-        app:tsv_text="@string/ei_mosaic_size"
-        app:tsv_text_color="@color/color_3B5038"
+        app:tsv_text="@string/ei_draw_size"
+        app:tsv_text_color="@color/color_565859"
         android:layout_height="wrap_content"
         android:background="@drawable/left_seek_bg"/>
     <ImageButton
         android:id="@+id/ib_open_mss"
         android:layout_width="32dp"
-        android:layout_height="24dp"
+        android:layout_height="18dp"
         android:background="@drawable/left_open_bg"
         android:padding="3dp"
-        android:scaleType="fitStart"
+        android:scaleType="fitCenter"
         android:src="@drawable/go_right"
         android:layout_gravity="bottom"/>
 </LinearLayout>

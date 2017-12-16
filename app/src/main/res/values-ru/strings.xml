@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor</string>
+    <string name="cancel">Отменить</string>
+    <string name="sure">ОК</string>
+    <string name="open_permission_">У данного приложения нет разрешений. Хотите перейти в настройки?</string>
+    <string name="ei_draw_size">Ширина штриха </string>
+    <string name="ei_stickers">Стикеры </string>
+    <string name="ei_graffit">Граффити</string>
+    <string name="ei_eraser">Ластик</string>
+    <string name="ei_processing">Обработка... </string>
+    <string name="ei_cutout">Вырез</string>
+    <string name="ei_preview">Предпросмотр</string>
+    <string name="ei_files">Мои изображения</string>
+    <string name="ei_GRAY">серый</string>
+    <string name="ei_PAINTING">Картина маслом</string>
+    <string name="ei_NONE">нет</string>
+    <string name="ei_save_failed">Не удалось сохранить</string>
+    <string name="ei_save_successful">Успешно сохранено </string>
+    <string name="ei_share">Поделиться</string>
+    <string name="ei_delete">Удалить</string>
+    <string name="ei_delete_image">Sei sicuro di voler cancellare?</string>
+    <string name="ei_effect_">Специальные эффекты</string>
+    <string name="ei_normal">Обычная ретушь фотографий</string>
+    <string name="ei_effect">Выбор спецэффектов</string>
+    <string name="ei_mosaic">Размытие фото</string>
+    <string name="ei_smart_select">Смарт выберите</string>
+    <string name="ei_brush">кисть</string>
+    <string name="ei_FOCUS">фокус</string>
+    <string name="ei_CORSSHATCH">Крест</string>
+    <string name="setting_set">Настройки</string>
+    <string name="setting_comment">Оцените нас</string>
+    <string name="setting_suggections">Обратная связь </string>
+    <string name="setting_send_email">Отправить email</string>
+    <string name="setting_no_app_market">Вы не установили рынок приложений</string>
+</resources>

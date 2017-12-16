@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="sure">ตกลง</string>
+    <string name="open_permission_">ไม่มีการอนุญาตในแอพปัจจุบัน ไปที่การตั้งค่าหรือไม่?</string>
+    <string name="ei_draw_size">ความกว้างของเส้นรอบวง</string>
+    <string name="ei_stickers">สติ๊กเกอร์</string>
+    <string name="ei_graffit">กราฟิตี้</string>
+    <string name="ei_eraser">ยางลบ</string>
+    <string name="ei_processing">กำลังดำเนินการ...</string>
+    <string name="ei_cutout">ตัดออกมา</string>
+    <string name="ei_preview">ตัวอย่าง</string>
+    <string name="ei_files">รูปภาพของฉัน</string>
+    <string name="ei_GRAY">เทา</string>
+    <string name="ei_PAINTING">ทาสีน้ำมัน</string>
+    <string name="ei_NONE">ไม่มี</string>
+    <string name="ei_save_failed">การบันทึกล้มเหลว</string>
+    <string name="ei_save_successful">บันทึกสำเร็จแล้ว</string>
+    <string name="ei_share">แบ่งปัน</string>
+    <string name="ei_delete">ลบ</string>
+    <string name="ei_delete_image">คุณแน่ใจหรือว่าจะลบ?</string>
+    <string name="ei_effect_">เทคนิคพิเศษ</string>
+    <string name="ei_normal">ตกแต่งภาพทั่วไป</string>
+    <string name="ei_effect">การเลือกเอฟเฟ็กต์พิเศษ</string>
+    <string name="ei_mosaic">เบลอภาพ</string>
+    <string name="ei_smart_select">เลือกสมาร์ท</string>
+    <string name="ei_brush">แปรง</string>
+    <string name="ei_FOCUS">โฟกัส</string>
+    <string name="ei_CORSSHATCH">ครอส</string>
+    <string name="setting_set">การตั้งค่า</string>
+    <string name="setting_comment">ให้คะแนนเรา</string>
+    <string name="setting_suggections">คำติชม</string>
+    <string name="setting_send_email">ส่งอีเมล</string>
+    <string name="setting_no_app_market">คุณยังไม่ได้ติดตั้งแอปพลิเคชัน</string>
+</resources>

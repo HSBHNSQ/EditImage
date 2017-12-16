@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Common</string>
+    <string name="facebook_app_id">107293193246611</string>
+
+    <string name = "toast"> ノーアプリケーションストア </string>
+    <string name = "exit_app">を押して終了</string>
+
+    <string name = "hard_top_finish">今行くスコア</string>
+    <string name = "hard_top_cancel">後で言う</string>
+    <string name = "score_app"> あなたはどうか分数のコメントのために、良い感じか？採点プロセスは少しだけ時間がかかります。ご支援いただきありがとうございます！</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">写真加工-画像編集と写真合成</string>
+    <string name="cancel">キャンセル</string>
+    <string name="sure">はい</string>
+    <string name="open_permission_">現在のアプリに権限ありません、設定に行きますか？</string>
+    <string name="ei_draw_size">ブラシサイズ</string>
+    <string name="ei_stickers">ステッカー</string>
+    <string name="ei_graffit">落書き</string>
+    <string name="ei_eraser">消しゴム</string>
+    <string name="ei_processing">処理中…</string>
+    <string name="ei_cutout">切り抜き</string>
+    <string name="ei_preview">プレビュー</string>
+    <string name="ei_files">マイ画像</string>
+    <string name="ei_GRAY">グレー</string>
+    <string name="ei_PAINTING">油絵</string>
+    <string name="ei_NONE">なし</string>
+    <string name="ei_save_failed">保存に失敗しました</string>
+    <string name="ei_save_successful">保存完了</string>
+    <string name="ei_share">シェア</string>
+    <string name="ei_delete">削除</string>
+    <string name="ei_delete_image">削除しますか？</string>
+    <string name="ei_effect_">特効</string>
+    <string name="ei_normal">一般的なレタッチ</string>
+    <string name="ei_effect">選り抜きの特効</string>
+    <string name="ei_mosaic">モザイク</string>
+    <string name="ei_smart_select">スマートに選択する</string>
+    <string name="ei_brush">ブラシ</string>
+    <string name="ei_FOCUS">フォーカス</string>
+    <string name="ei_CORSSHATCH">交差する</string>
+    <string name="setting_set">設定</string>
+    <string name="setting_comment">コメントを書く</string>
+    <string name="setting_suggections">フィードバック</string>
+    <string name="setting_send_email">メイルを送る</string>
+    <string name="setting_no_app_market">あなたはアプリマーケットをインストールしていません</string>
+</resources>

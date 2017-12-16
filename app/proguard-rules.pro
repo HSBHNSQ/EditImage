@@ -23,3 +23,28 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#XiaoMi SDK
+-keep class com.xiaomi.ad.**{*;}
+-keep class com.miui.analytics.**{*;}
+-keep class com.xiaomi.analytics.*{public protected *;}
+
+#gdt sdk
+-keep class com.qq.e.** {public protected *;}
+-keep class android.support.v4.app.NotificationCompat**{public *;}
+
+#bd sdk
+-keep class com.baidu.** {public protected *;}
+
+#oppo sdk
+-keep class com.oppo.** {public protected *;}
+
+#umeng sdk
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+
+-dontwarn org.springframework.**
+-dontwarn org.apache.httpcomponents.**
+-dontwarn com.androidquery.**
+-dontwarn com.oppo.**

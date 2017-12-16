@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor</string>
+    <string name="cancel">Hủy bỏ</string>
+    <string name="sure">OK</string>
+    <string name="open_permission_">Ứng dụng hiện tại không được phép, đi đến cài đặt chứ?</string>
+    <string name="ei_draw_size">Kích thước bàn chải</string>
+    <string name="ei_stickers">Sticker</string>
+    <string name="ei_graffit">Graffiti</string>
+    <string name="ei_eraser">Cục tẩy</string>
+    <string name="ei_processing">Đang thực hiện</string>
+    <string name="ei_cutout">Cắt bớt</string>
+    <string name="ei_preview">Xem trước</string>
+    <string name="ei_files">Hình ảnh của tôi</string>
+    <string name="ei_GRAY">Xám</string>
+    <string name="ei_PAINTING">Tranh sơn dầu</string>
+    <string name="ei_NONE">None</string>
+    <string name="ei_save_failed">Lưu ảnh thất bại</string>
+    <string name="ei_save_successful">Lưu thành công</string>
+    <string name="ei_share">Chia sẻ</string>
+    <string name="ei_delete">Xóa</string>
+    <string name="ei_delete_image">Bạn có chắc muốn xóa?</string>
+    <string name="ei_effect_">Hiệu ứng đặc biệt</string>
+    <string name="ei_normal">Chỉnh sửa hình ảnh thông thường</string>
+    <string name="ei_effect">Lựa chọn hiệu ứng đặc biệt</string>
+    <string name="ei_mosaic">Ảnh mờ</string>
+    <string name="ei_smart_select">Lựa chọn thông minh</string>
+    <string name="ei_brush">Chải</string>
+    <string name="ei_FOCUS">Tập trung</string>
+    <string name="ei_CORSSHATCH">Hội Chữ thập</string>
+    <string name="setting_set">Cài đặt</string>
+    <string name="setting_comment">Đánh giá chúng tôi</string>
+    <string name="setting_suggections">Ý kiến phản hồi</string>
+    <string name="setting_send_email">Gửi mail</string>
+    <string name="setting_no_app_market">Bạn chưa cài đặt thị trường ứng dụng</string>
+</resources>

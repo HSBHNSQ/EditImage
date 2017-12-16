@@ -1,0 +1,4 @@
+
+keystore password: lafonapps123
+android alias: key0
+key password: lafonapps123

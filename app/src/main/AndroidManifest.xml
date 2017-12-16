@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.liubowang.editimage">
+    package="com.liubowang.photoretouch">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.liubowang.editimage.fileprovider"
+            android:authorities="com.liubowang.photoretouch.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -23,20 +23,48 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity android:name=".Main.MainActivity">
+        <activity
+            android:name="com.lafonapps.common.ad.adapter.splashad.SplashAdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
+            <meta-data
+                android:name="targetActivity"
+                android:value="com.liubowang.photoretouch.Main.MainActivity" />
+            <meta-data
+                android:name="defaultImage"
+                android:resource="@drawable/beijing" />
 
-        </activity>
-        <activity android:name=".Normal.NormalActivity" />
-        <activity android:name=".Effect.EffectActivity" />
-        <activity android:name=".Main.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Effect.TmpActivity">
-        </activity>
+        <activity
+            android:name=".Main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Normal.NormalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Effect.EffectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FileBrowse.FilesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FileBrowse.ImageLookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Template.EffectTemplateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Main.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Main.GuidePlayActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

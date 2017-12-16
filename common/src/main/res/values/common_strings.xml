@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation" >
+    <string name="permission_rationale_phone_state">本应用需要访问手机状态来提供更好的体验。</string>
+    <string name="permission_returned_from_app_settings_to_activity">Returned from app settings to MainActivity</string>
+    <string name="skip">Skip</string>
+
+</resources>

@@ -1,34 +1,251 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/heshaobo/Desktop/ASProjects/EditImage/key/android.jks')
+            keyAlias 'key0'
+            keyPassword 'lafonapps123'
+            storePassword 'lafonapps123'
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
     defaultConfig {
-        applicationId "com.liubowang.editimage"
+        applicationId "com.liubowang.photoretouch"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 1
+        versionCode 2
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+        }
+    }
+
+    productFlavors {
+
+        googlePlay { //Google Play商店
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        xiaomi { //小米
+            buildConfigField "boolean", "showAdButton", "false" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        baidu { //百度助手
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        vivo { // vivo
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "false" //是否显示开屏广告
+        }
+
+        oppo { // OPPO
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        huawei { // 华为
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        tencent { //腾讯应用宝
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        qihu360 { // 奇虎360
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        meizu { // 魅族
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        samsung { // 三星
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "false" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        amazon { // 亚马逊
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        uptodown { // uptodown
+            buildConfigField "boolean", "showAdButton", "true" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "true" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "true" //是否显示开屏广告
+        }
+
+        noAd { // 无广告版
+            buildConfigField "boolean", "showAdButton", "false" //是否显示广告按钮
+            buildConfigField "boolean", "showBannerView", "false" //是否显示横幅广告
+            buildConfigField "boolean", "showSplashAd", "false" //是否显示开屏广告
+        }
+
+        productFlavors.all {
+            flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+configurations {
+
+    //小米平台编译
+    xiaomiDebugCompile //Debug模式
+    xiaomiReleaseCompile //Release模式
+
+    //百度助手平台编译
+    baiduDebugCompile //Debug模式
+    baiduReleaseCompile //Release模式
+
+    //vivo平台编译
+    vivoDebugCompile //Debug模式
+    vivoReleaseCompile //Release模式
+
+    //奇虎360平台编译
+    qihu360DebugCompile //Debug模式
+    qihu360ReleaseCompile //Release模式
+
+    //魅族平台编译
+    meizuDebugCompile //Debug模式
+    meizuReleaseCompile //Release模式
+
+    //三星平台编译
+    samsungDebugCompile //Debug模式
+    samsungReleaseCompile //Release模式
+
+    //Google Play平台编译
+    googlePlayDebugCompile //Debug模式
+    googlePlayReleaseCompile //Release模式
+
+    //华为平台编译
+    huaweiDebugCompile //Debug模式
+    huaweiReleaseCompile //Release模式
+
+    //亚马逊平台编译
+    amazonDebugCompile //Debug模式
+    amazonReleaseCompile //Release模式
+
+    //uptodown平台编译
+    uptodownDebugCompile //Debug模式
+    uptodownReleaseCompile //Release模式
+
+    //OPPO平台编译
+    oppoDebugCompile //Debug模式
+    oppoReleaseCompile //Release模式
+
+    //腾讯应用宝平台编译
+    tencentDebugCompile //Debug模式
+    tencentReleaseCompile //Release模式
+
+    //无广告平台编译
+    noAdDebugCompile //Debug模式
+    noAdReleaseCompile //Release模式
 }
 
 dependencies {
+    ///////////////////////////////// 使用小米广告 ///////////////////////////////////
+    //小米平台关联编译
+    xiaomiDebugCompile project(path: ':common', configuration: 'xiaomiDebug')
+    xiaomiReleaseCompile project(path: ':common', configuration: 'xiaomiRelease')
+    //百度助手平台编译
+    baiduDebugCompile project(path: ':common', configuration: 'xiaomiDebug')
+    baiduReleaseCompile project(path: ':common', configuration: 'xiaomiRelease')
+    //vivo平台编译
+    vivoDebugCompile project(path: ':common', configuration: 'xiaomiDebug')
+    vivoReleaseCompile project(path: ':common', configuration: 'xiaomiRelease')
+    //奇虎360平台编译
+    qihu360DebugCompile project(path: ':common', configuration: 'xiaomiDebug')
+    qihu360ReleaseCompile project(path: ':common', configuration: 'xiaomiRelease')
+    //魅族平台编译
+    meizuDebugCompile project(path: ':common', configuration: 'xiaomiDebug')
+    meizuReleaseCompile project(path: ':common', configuration: 'xiaomiRelease')
+    //三星平台编译
+    samsungDebugCompile project(path: ':common', configuration: 'xiaomiDebug')
+    samsungReleaseCompile project(path: ':common', configuration: 'xiaomiRelease')
+    ///////////////////////////////// 使用Admob广告 ///////////////////////////////////
+    //Google Play平台关联编译
+    googlePlayDebugCompile project(path: ':common', configuration: 'admobDebug')
+    googlePlayReleaseCompile project(path: ':common', configuration: 'admobRelease')
+    //华为平台编译
+    huaweiDebugCompile project(path: ':common', configuration: 'admobDebug')
+    huaweiReleaseCompile project(path: ':common', configuration: 'admobRelease')
+    //亚马逊平台关联编译
+    amazonDebugCompile project(path: ':common', configuration: 'admobDebug')
+    amazonReleaseCompile project(path: ':common', configuration: 'admobRelease')
+    //uptodown平台关联编译
+    uptodownDebugCompile project(path: ':common', configuration: 'admobDebug')
+    uptodownReleaseCompile project(path: ':common', configuration: 'admobRelease')
+    ///////////////////////////////// 使用OPPO广告 ///////////////////////////////////
+    //OPPO平台关联编译
+    oppoDebugCompile project(path: ':common', configuration: 'normalDebug')
+    oppoReleaseCompile project(path: ':common', configuration: 'normalRelease')
+    ///////////////////////////////// 使用腾讯广点通广告 ///////////////////////////////////
+    //腾讯应用宝平台编译
+    tencentDebugCompile project(path: ':common', configuration: 'tencentDebug')
+    tencentReleaseCompile project(path: ':common', configuration: 'tencentRelease')
+    ///////////////////////////////// 无广告 ///////////////////////////////////
+    //无广告平台关联编译
+    noAdDebugCompile project(path: ':common', configuration: 'normalDebug')
+    noAdReleaseCompile project(path: ':common', configuration: 'normalRelease')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':openCVLibrary320')
+    compile project(':omoshiroilib')
+    compile project(':common')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jaeger.statusbarutil:library:1.4.0'
     compile 'com.kaopiz:kprogresshud:1.1.0'
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services' //firebase插件支持

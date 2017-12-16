@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root_normal"
-    tools:context="com.liubowang.editimage.Normal.NormalActivity">
+    android:background="@color/color_2C2E30"
+    tools:context="com.liubowang.photoretouch.Normal.NormalActivity">
 
     <ImageView
         android:id="@+id/iv_status_normal"
@@ -14,9 +15,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/color_12403D" />
+        android:background="@color/color_2C2E30" />
 
-    <com.liubowang.editimage.Normal.TopToolView
+    <com.liubowang.photoretouch.Normal.TopToolView
         android:id="@+id/ttl_top_tool_normal"
         android:layout_width="0dp"
         android:layout_height="40dp"
@@ -26,7 +27,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_status_normal">
 
-    </com.liubowang.editimage.Normal.TopToolView>
+    </com.liubowang.photoretouch.Normal.TopToolView>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_container_normal"
@@ -46,7 +47,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.liubowang.editimage.Mosaic.MosaicView
+        <com.liubowang.photoretouch.Mosaic.MosaicView
             android:id="@+id/mv_mosaic_view_normal"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -57,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.498" />
 
-        <com.liubowang.editimage.Draw.DrawView
+        <com.liubowang.photoretouch.Draw.DrawView
             android:id="@+id/dv_draw_view_normal"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -65,14 +66,14 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_origin_image_view_normal"
-            app:draw_width="20"
+            app:draw_width="15"
             app:draw_color="#FFFFFF"
             app:draw_line_cap="round"
             app:draw_antialias="true"
             app:draw_dither="true"
             app:draw_background_color="#00000000"/>
 
-        <com.liubowang.editimage.Normal.StickersContainerView
+        <com.liubowang.photoretouch.Normal.StickersContainerView
             android:id="@+id/sv_stickers_container_view_normal"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -83,7 +84,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0">
 
-        </com.liubowang.editimage.Normal.StickersContainerView>
+        </com.liubowang.photoretouch.Normal.StickersContainerView>
 
     </android.support.constraint.ConstraintLayout>
 
@@ -97,47 +98,49 @@
         android:id="@+id/ll_bottom_item_container"
         app:layout_constraintBottom_toTopOf="@+id/ll_banner_container_normal">
 
-        <com.liubowang.editimage.Normal.ImageTextButton
+        <com.liubowang.photoretouch.Normal.ImageTextButton
             android:id="@+id/itb_mosaic_normal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:is_selected="true"
-            app:normal_background="@color/color_3B5038"
-            app:normal_image="@drawable/mosaic"
+            app:normal_background="@color/color_242527"
+            app:normal_image="@drawable/maisaike1"
             app:normal_text="@string/ei_mosaic"
-            app:normal_text_color="@color/color_FFFFFF"
-            app:selected_background="@color/color_12403D"
-            app:selected_image="@drawable/mosaic"
+            app:normal_text_color="@color/color_565859"
+            app:selected_background="@color/color_242527"
+            app:selected_image="@drawable/maisaike2"
             app:selected_text="@string/ei_mosaic"
-            app:selected_text_color="@color/color_C4E791"
+            app:selected_text_color="@color/color_FFFFFF"
             app:show_image_view="true"
             app:show_text_view="true"
             app:text_size="10sp"
+            app:image_padding="4dp"
             tools:layout_editor_absoluteX="320dp"
             tools:layout_editor_absoluteY="8dp" />
 
-        <com.liubowang.editimage.Normal.ImageTextButton
+        <com.liubowang.photoretouch.Normal.ImageTextButton
             android:id="@+id/itb_stickers_normal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             app:is_selected="false"
-            app:normal_background="@color/color_3B5038"
-            app:normal_image="@drawable/stickers"
+            app:normal_background="@color/color_242527"
+            app:normal_image="@drawable/tiezhi1"
             app:normal_text="@string/ei_stickers"
-            app:normal_text_color="@color/color_FFFFFF"
-            app:selected_background="@color/color_12403D"
-            app:selected_image="@drawable/stickers"
+            app:normal_text_color="@color/color_565859"
+            app:selected_background="@color/color_242527"
+            app:selected_image="@drawable/tiezhi2"
             app:selected_text="@string/ei_stickers"
-            app:selected_text_color="@color/color_C4E791"
+            app:selected_text_color="@color/color_FFFFFF"
             app:show_image_view="true"
             app:show_text_view="true"
             app:text_size="10sp"
+            app:image_padding="3dp"
             tools:layout_editor_absoluteX="-28dp"
             tools:layout_editor_absoluteY="33dp" />
 
-        <com.liubowang.editimage.Normal.ImageTextButton
+        <com.liubowang.photoretouch.Normal.ImageTextButton
             android:id="@+id/itb_graffiti_normal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -145,36 +148,37 @@
             app:is_selected="false"
             app:show_image_view="true"
             app:show_text_view="true"
-            app:normal_background="@color/color_3B5038"
-            app:normal_image="@drawable/graffiti"
-            app:normal_text="@string/ei_graffiti"
-            app:normal_text_color="@color/color_FFFFFF"
-            app:selected_background="@color/color_12403D"
-            app:selected_image="@drawable/graffiti"
-            app:selected_text="@string/ei_graffiti"
-            app:selected_text_color="@color/color_C4E791"
+            app:normal_background="@color/color_242527"
+            app:normal_image="@drawable/tuya1"
+            app:normal_text="@string/ei_graffit"
+            app:normal_text_color="@color/color_565859"
+            app:selected_background="@color/color_242527"
+            app:selected_image="@drawable/tuya2"
+            app:selected_text="@string/ei_graffit"
+            app:selected_text_color="@color/color_FFFFFF"
+            app:image_padding="3dp"
             app:text_size="10sp" >
 
-        </com.liubowang.editimage.Normal.ImageTextButton>
+        </com.liubowang.photoretouch.Normal.ImageTextButton>
     </LinearLayout>
 
-    <com.liubowang.editimage.Normal.MosaicSizeSeek
+    <com.liubowang.photoretouch.Normal.MosaicSizeSeek
         android:id="@+id/mss_mosaic_size_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/ll_bottom_item_container"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <com.liubowang.editimage.Normal.GraffitiSeekView
+    <com.liubowang.photoretouch.Normal.GraffitiSeekView
         android:id="@+id/gsv_graffiti_seek_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/ll_bottom_item_container"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <com.liubowang.editimage.Normal.StickersPickerView
+    <com.liubowang.photoretouch.Normal.StickersPickerView
         android:id="@+id/spv_sticker_picker_normal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -185,10 +189,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-    </com.liubowang.editimage.Normal.StickersPickerView>
+    </com.liubowang.photoretouch.Normal.StickersPickerView>
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -196,6 +200,18 @@
         android:id="@+id/ll_banner_container_normal">
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/pb_progress_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spv_sticker_picker_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_normal" />
 
 
 </android.support.constraint.ConstraintLayout>

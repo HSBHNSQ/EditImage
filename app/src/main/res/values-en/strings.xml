@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photo Editor-Touch Retouch Photos</string>
+    <string name="cancel">Cancel</string>
+    <string name="sure">OK</string>
+    <string name="open_permission_">No permission in current app,wether go to settings?</string>
+    <string name="ei_draw_size">Stroke Width</string>
+    <string name="ei_stickers">Stickers</string>
+    <string name="ei_graffit">Graffiti</string>
+    <string name="ei_eraser">Eraser</string>
+    <string name="ei_processing">Processing...</string>
+    <string name="ei_cutout">Cutout</string>
+    <string name="ei_preview">Preview</string>
+    <string name="ei_files">My Images</string>
+    <string name="ei_GRAY">Gray</string>
+    <string name="ei_PAINTING">Oil Painting</string>
+    <string name="ei_NONE">None</string>
+    <string name="ei_save_failed">Failed to save</string>
+    <string name="ei_save_successful">Saved Successfully</string>
+    <string name="ei_share">Share</string>
+    <string name="ei_delete">Delete</string>
+    <string name="ei_delete_image">Are you sure to delete?</string>
+    <string name="ei_effect_">Effects</string>
+    <string name="ei_normal">Common</string>
+    <string name="ei_effect">Effects</string>
+    <string name="ei_mosaic">Blur photo</string>
+    <string name="ei_smart_select">Smart select</string>
+    <string name="ei_brush">Brush</string>
+    <string name="ei_FOCUS">Focus</string>
+    <string name="ei_CORSSHATCH">Cross</string>
+    <string name="setting_set">Settings</string>
+    <string name="setting_comment">Rate Us</string>
+    <string name="setting_suggections">Feedback</string>
+    <string name="setting_send_email">Send email</string>
+    <string name="setting_no_app_market">You have not installed the app market</string>
+</resources>
