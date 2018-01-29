@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Jos nautit käyttää %1$s, käyttäisitkö hetken arvioidaksesi sen? Se ei vie kuin hetken. Kiitoksia avustasi!</string>
+    <string name="rate_cancel_button_title">Ei kiitos</string>
+    <string name="rate_rate_button_title">Arvioi nyt</string>
+    <string name="again_to_exit_app">Paina BACK-painiketta uudelleen poistuaksesi</string>
+</resources>

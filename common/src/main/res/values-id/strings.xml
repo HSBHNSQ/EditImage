@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Jika anda senang menggunakan %1$s, maukah anda memberikan nilai? Ini Hanya Sebentar. Terima kasih atas dukungan Anda!</string>
+    <string name="rate_cancel_button_title">Tidak, Terimakasih</string>
+    <string name="rate_rate_button_title">Berikan nilai sekarang!</string>
+    <string name="again_to_exit_app">Tekan tombol BACK lagi untuk keluar</string>
+</resources>

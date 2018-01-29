@@ -6,6 +6,8 @@ import android.content.Context;
 import com.lafonapps.common.Common;
 import com.lafonapps.common.preferences.CommonConfig;
 import com.liubowang.photoretouch.BuildConfig;
+import com.liubowang.photoretouch.Feedback.FeedbackOperation;
+import com.liubowang.photoretouch.Feedback.JumpContactOperation;
 
 /**
  * Created by heshaobo on 2017/11/14.
@@ -29,6 +31,15 @@ public class EIApplication extends Application {
         sharedApplication = this;
         mContext = getApplicationContext();
         configAD();
+        configFeedBack();
+    }
+
+    private void configFeedBack(){
+        FeedbackOperation.Configuration(this,
+                "irtPiFrfyaIKMDdCHrdQIYXS-gzGzoHsz",
+                "awtNPPsQqWO84vohtk5FWtVP");
+        JumpContactOperation.SetQQ("3334244889");
+        JumpContactOperation.SetEmail("3334244889@qq.com");
     }
 
     private void configAD(){
@@ -60,13 +71,13 @@ public class EIApplication extends Application {
 //        CommonConfig.sharedCommonConfig.interstitialAdUnitID4OPPO = "329";
 
         /* 腾讯广告配置 */
-//        CommonConfig.sharedCommonConfig.appID4Tencent = "1106352047";
-//        CommonConfig.sharedCommonConfig.bannerAdUnitID4Tencent = "6010220631465790";
+        CommonConfig.sharedCommonConfig.appID4Tencent = "1106553291";
+        CommonConfig.sharedCommonConfig.bannerAdUnitID4Tencent = "7020128838707094";
 //        CommonConfig.sharedCommonConfig.nativeAdUnitID4Tencent = "";
 //        CommonConfig.sharedCommonConfig.nativeAdUnitID132H4Tencent = "";
-//        CommonConfig.sharedCommonConfig.nativeAdUnitID250H4Tencent = "2000622681569778";
-//        CommonConfig.sharedCommonConfig.splashAdUnitID4Tencent = "4040728661764787";
-//        CommonConfig.sharedCommonConfig.interstitialAdUnitID4Tencent = "2020928611362726";
+//        CommonConfig.sharedCommonConfig.nativeAdUnitID250H4Tencent = "";
+        CommonConfig.sharedCommonConfig.splashAdUnitID4Tencent = "1080720868407015";
+//        CommonConfig.sharedCommonConfig.interstitialAdUnitID4Tencent = "4050321818509036";
 
 
 

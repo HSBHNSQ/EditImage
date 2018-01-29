@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">หากคุณเพลิดเพลินกับการใช้ %1$s คุณจะคิดสละเวลาให้คะแนนมันได้หรือไม่ มันจะไม่ใช้เวลานานกว่าหนึ่งนาที ขอบคุณสำหรับการสนับสนุนของคุณ</string>
+    <string name="rate_cancel_button_title">ไม่ขอบคุณ</string>
+    <string name="rate_rate_button_title">ให้คะแนนตอนนี้</string>
+    <string name="again_to_exit_app">กดปุ่ม BACK อีกครั้งเพื่อออก</string>
+</resources>

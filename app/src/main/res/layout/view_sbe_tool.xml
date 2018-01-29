@@ -12,7 +12,7 @@
         <com.liubowang.photoretouch.Normal.ImageTextButton
             android:id="@+id/itb_zheng_xuan_sbetv"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             app:is_selected="true"
@@ -21,9 +21,13 @@
             app:selected_background="@color/colorClean"
             app:selected_image="@drawable/zhengxuan_bai"
             app:show_image_view="true"
-            app:show_text_view="false"
+            app:show_text_view="true"
+            app:selected_text="@string/ei_smart_selected"
+            app:selected_text_color="@color/color_FFFFFF"
+            app:normal_text="@string/ei_smart_selected"
+            app:normal_text_color="@color/color_565859"
             app:image_padding="4dp"
-            app:text_size="10sp"/>
+            app:text_size="7sp"/>
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -31,7 +35,7 @@
         <com.liubowang.photoretouch.Normal.ImageTextButton
             android:id="@+id/itb_fan_xuan_sbetv"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
             app:is_selected="false"
@@ -40,8 +44,12 @@
             app:selected_background="@color/colorClean"
             app:selected_image="@drawable/fanxuan_bai"
             app:show_image_view="true"
-            app:show_text_view="false"
-            app:text_size="10sp" />
+            app:show_text_view="true"
+            app:selected_text="@string/ei_smart_selected"
+            app:selected_text_color="@color/color_FFFFFF"
+            app:normal_text="@string/ei_smart_selected"
+            app:normal_text_color="@color/color_565859"
+            app:text_size="7sp" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_brush_container_sbetv"

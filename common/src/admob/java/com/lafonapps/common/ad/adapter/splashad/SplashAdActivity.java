@@ -1,15 +1,10 @@
 package com.lafonapps.common.ad.adapter.splashad;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +14,8 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.lafonapps.common.R;
+import com.lafonapps.common.ad.adapter.AdAdapterLayout;
+import com.lafonapps.common.ad.adapter.BaseSplashAdActivity;
 import com.lafonapps.common.ad.adapter.SplashAd;
 import com.lafonapps.common.preferences.CommonConfig;
 import com.lafonapps.common.preferences.Preferences;
@@ -28,17 +25,13 @@ import com.lafonapps.common.utils.ViewUtil;
  * Created by chenjie on 2017/8/16.
  */
 
-public class SplashAdActivity extends Activity implements SplashAd {
+public class SplashAdActivity extends BaseSplashAdActivity implements SplashAd {
 
     private static final String TAG = SplashAdActivity.class.getCanonicalName();
 
-    private int requestTimeOut = 5;
-    private int displayDuration = 5;
-    private int defaultImageID = R.drawable.default_splash;
     private NativeExpressAdView splashAd;
     private Button skipButton;
-    private ViewGroup container;
-    private boolean dismissed;
+    private AdAdapterLayout container;
     private CountDownTimer displayTimer = new CountDownTimer(displayDuration * 1000, 1000) {
         @Override
         public void onTick(long l) {
@@ -72,10 +65,22 @@ public class SplashAdActivity extends Activity implements SplashAd {
         setContentView(R.layout.splash_ad);
 
         container = findViewById(R.id.splash_ad_container);
+
+        container.setTouchListener(new AdAdapterLayout.TouchListener() {
+            @Override
+            public boolean shouldComfirmBeforeDownloadApp() {
+                return CommonConfig.sharedCommonConfig.shouldComfirmBeforeDownloadAppOnSplashAdClick;
+            }
+
+            @Override
+            public Rect exceptRect() {
+                //开屏广告的"跳过按钮"位置
+                return new Rect();
+            }
+        });
+
         ImageView splashImageView = findViewById(R.id.splash_image_view);
-        //压缩图片防止崩溃发生
-        Bitmap bitmap = ViewUtil.scaleBitmap(ViewUtil.readBitMap(this, getDefaultImageIDFromMetaData()), 0.9F);
-        splashImageView.setImageBitmap(bitmap);
+        displaySplashImage(splashImageView);
 
         skipButton = findViewById(R.id.skip_button);
 
@@ -87,46 +92,34 @@ public class SplashAdActivity extends Activity implements SplashAd {
         });
     }
 
+    /**
+     * 展示广告会用到的所有权限列表，包括必须的非必须的
+     *
+     * @return
+     */
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        //TODO:
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            // 捕获back键，在展示广告期间按back键，不跳过广告
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
+    protected String[] allPermissions() {
+        return new String[0];
     }
 
+    /**
+     * 展示广告必须用到的权限列表
+     *
+     * @return
+     */
     @Override
-    public void setRequestTimeOut(int timeOut) {
-        this.requestTimeOut = timeOut;
-    }
-
-    @Override
-    public void setDisplayDuration(int duration) {
-        this.displayDuration = duration;
-    }
-
-    @Override
-    public void setDefaultImage(int drawableID) {
-        this.defaultImageID = drawableID;
+    protected String[] requiredPermissions() {
+        return new String[0];
     }
 
     @Override
     public void loadAndDisplay() {
         if (CommonConfig.sharedCommonConfig.shouldShowSplashAd) {
             splashAd = new NativeExpressAdView(this);
-//        splashAd.setBackgroundColor(Color.TRANSPARENT);
-//        int width = container.getWidth() > 1000 ? 1000 : container.getWidth();
-//        int height = container.getHeight() > 1000 ? 1000 : container.getHeight();
-//        splashAd.setAdSize(new com.google.android.gms.ads.AdSize(width, height));
-//        splashAd.setAdSize(new com.google.android.gms.ads.AdSize(AdSize.FULL_WIDTH, 400));
-//        splashAd.setAdSize(new com.google.android.gms.ads.AdSize(320, 250));
             int dpWidth = ViewUtil.px2dp(container.getWidth());
             int dpHeight = ViewUtil.px2dp(container.getHeight());
             splashAd.setAdSize(new com.google.android.gms.ads.AdSize(dpWidth, dpHeight));
-//        splashAd.setAdSize(AdSize.MEDIUM_RECTANGLE);
-            splashAd.setAdUnitId(Preferences.getSharedPreference().getSplashAdUnitID4Admob());
+            splashAd.setAdUnitId(CommonConfig.sharedCommonConfig.splashAdUnitID4Admob);
             splashAd.setAdListener(new AdListener() {
                 @Override
                 public void onAdClosed() {
@@ -138,6 +131,7 @@ public class SplashAdActivity extends Activity implements SplashAd {
                 @Override
                 public void onAdFailedToLoad(int i) {
                     Log.d(TAG, "onAdFailedToLoad:" + i);
+
                     dismissSplashAd();
                 }
 
@@ -182,67 +176,16 @@ public class SplashAdActivity extends Activity implements SplashAd {
         }
     }
 
-    private void dismissSplashAd() {
-        if (!dismissed) {
-            dismissed = true;
-            requestTimer.cancel();
-            displayTimer.cancel();
-            try {
-                String targetActivityClassName = getTargetActivityClassNameFromMetaData();
-                Class<Activity> targetActivityClass = (Class<Activity>) Class.forName(targetActivityClassName);
-                Intent intent = new Intent(this, targetActivityClass);
-//            if (Build.VERSION.SDK_INT >= 16) {
-//                ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeCustomAnimation(this, R.anim.fadeout, R.anim.fadein);
-//                startActivity(intent, activityOptions.toBundle());
-//            } else {
-//                startActivity(intent);
-//                overridePendingTransition(R.anim.fadeout, R.anim.fadein);
-//            }
-                startActivity(intent);
-                finish();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     public void skipButtonClicked(View view) {
         Log.d(TAG, "skipButtonClicked");
         dismissSplashAd();
     }
 
-    private String getTargetActivityClassNameFromMetaData() {
-        try {
-            ActivityInfo ai = getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-            String targetActivityClassName = ai.metaData.getString(META_DATA_TARGET_ACTIVITY);
-            if (targetActivityClassName == null || targetActivityClassName.length() == 0) {
-                throw new RuntimeException("meta-data named \"" + META_DATA_TARGET_ACTIVITY + "\" can not be empty!");
-            }
-            return targetActivityClassName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private int getDefaultImageIDFromMetaData() {
-        try {
-            ActivityInfo ai = getPackageManager().getActivityInfo(getComponentName(), PackageManager.GET_META_DATA);
-            int defaultImageID = ai.metaData.getInt(META_DATA_DEFAULT_IMAGE);
-            if (defaultImageID <= 0) {
-                throw new RuntimeException("meta-data named \"" + META_DATA_DEFAULT_IMAGE + "\" must be set!");
-            } else {
-                this.defaultImageID = defaultImageID;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return defaultImageID;
-    }
-
     @Override
     protected void onDestroy() {
-        splashAd.destroy();
+        if (splashAd != null) {
+            splashAd.destroy();
+        }
         super.onDestroy();
     }
 }

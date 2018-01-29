@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">आप %1$s उपयोग का आनंद ले, तो आप यह दर क्षण ले मन होगा? यह एक मिनट से अधिक नहीं ले जाएगा. आपके समर्थन के लिए धन्यवाद!</string>
+    <string name="rate_cancel_button_title">नहीं, धन्यवाद</string>
+    <string name="rate_rate_button_title">अब यह दर</string>
+    <string name="again_to_exit_app">बाहर निकलने के लिए वापस बटन दबाएं</string>
+</resources>

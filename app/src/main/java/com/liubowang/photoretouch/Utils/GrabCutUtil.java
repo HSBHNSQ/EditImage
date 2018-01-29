@@ -21,12 +21,21 @@ public class GrabCutUtil {
     private static OnGrabCutListener mGrabCutListener ;
     private static String mSrcImgPath;
     private static String mOutPath;
+
+    /**
+     * GrabCut 处理
+     * @param srcImgPath 原图片；路径
+     * @param maskImg mask 图片可根据自己需要设置 我这里使用红色代表可能的前景，白色代表确定的前景 黑色代表确定的背景，其他代表可能的背景
+     * @param outPath 输出路径
+     * @param listener  处理监听
+     */
     public static void doGrabCut(String srcImgPath,Bitmap maskImg,String outPath,OnGrabCutListener listener){
         mGrabCutListener = listener;
         mSrcImgPath = srcImgPath;
         mOutPath = outPath;
         new ProcessImageTask().execute(maskImg);
     }
+
     private static class ProcessImageTask extends AsyncTask<Bitmap, Integer, Integer> {
         @Override
         protected void onPreExecute() {
@@ -79,6 +88,12 @@ public class GrabCutUtil {
             }
         }
     }
+
+    /**
+     * 请结果 Mat mask 筛选 这里我只取了 前景和可能的前景 并将其用红色表示
+     * @param  mask 函数处理后未经帅选处理的
+     * @return 筛选后的 mask
+     */
     private static Mat resultForMask(Mat mask){
         int cols = mask.cols();
         int rows = mask.rows();
@@ -119,6 +134,11 @@ public class GrabCutUtil {
         return result;
     }
 
+    /**
+     * 将Bitmap maskImg 转为 Mat Mask
+     * @param maskImg
+     * @return Mat
+     */
     private static Mat getMaskMap(Bitmap maskImg) {
         int w = maskImg.getWidth();
         int h = maskImg.getHeight();
@@ -136,6 +156,9 @@ public class GrabCutUtil {
                 int G = convertByteToInt(byteArray[index * 4 + 1]);
                 int B = convertByteToInt(byteArray[index * 4 + 2]);
                 int A = convertByteToInt(byteArray[index * 4 + 3]);
+                //这里的白色 黑色 红色 等都可以根据自己的需要调整
+                // 在 Mat mask 中 只有 Imgproc.GC_FGD， Imgproc.GC_BGD，
+                // Imgproc.GC_PR_FGD，Imgproc.GC_PR_BGD 四种
                 if (R == 255 && G == 255 && B == 255 && A == 255){//白色前景色
                     maskBuff[index] = Imgproc.GC_FGD;
                 }
@@ -159,21 +182,20 @@ public class GrabCutUtil {
     }
 
 
-   public static void bianYuanQuJuChi(String bitmapPath,String outPath){
-
-       Mat vesselImage = Imgcodecs.imread(bitmapPath);
-       Imgproc.threshold(vesselImage,vesselImage,125,125,Imgproc.THRESH_BINARY);
-       Imgproc.pyrUp(vesselImage,vesselImage);
-       Imgproc.pyrDown(vesselImage,vesselImage);
-       Imgproc.threshold(vesselImage,vesselImage,200,255,Imgproc.THRESH_BINARY);
-       Imgcodecs.imwrite(outPath,vesselImage);
-   }
-
-   public static void bianYuanXuHua(String bitmapPath,String outPath){
-       Mat oriMat = Imgcodecs.imread(bitmapPath);
-       Imgproc.boxFilter(oriMat,oriMat,-1, new Size(5,5));
-       Imgcodecs.imwrite(outPath,oriMat);
-   }
+//   public static void bianYuanQuJuChi(String bitmapPath,String outPath){
+//       Mat vesselImage = Imgcodecs.imread(bitmapPath);
+//       Imgproc.threshold(vesselImage,vesselImage,125,125,Imgproc.THRESH_BINARY);
+//       Imgproc.pyrUp(vesselImage,vesselImage);
+//       Imgproc.pyrDown(vesselImage,vesselImage);
+//       Imgproc.threshold(vesselImage,vesselImage,200,255,Imgproc.THRESH_BINARY);
+//       Imgcodecs.imwrite(outPath,vesselImage);
+//   }
+//
+//   public static void bianYuanXuHua(String bitmapPath,String outPath){
+//       Mat oriMat = Imgcodecs.imread(bitmapPath);
+//       Imgproc.boxFilter(oriMat,oriMat,-1, new Size(5,5));
+//       Imgcodecs.imwrite(outPath,oriMat);
+//   }
 
     public interface OnGrabCutListener {
         void onStartGrabCut();

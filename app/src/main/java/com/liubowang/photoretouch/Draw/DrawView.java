@@ -379,7 +379,7 @@ public class DrawView extends FrameLayout {
                 return getDrawingCache(true);
             case BYTES:
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                getDrawingCache(true).compress(Bitmap.CompressFormat.PNG, 100, stream);
+                getDrawingCache(true).compress(Bitmap.CompressFormat.JPEG, 100, stream);
                 return stream.toByteArray();
         }
         return null;

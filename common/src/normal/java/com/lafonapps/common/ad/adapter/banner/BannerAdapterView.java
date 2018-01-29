@@ -4,12 +4,11 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.lafonapps.common.ad.AdSize;
+import com.lafonapps.common.ad.adapter.AdAdapterLayout;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.BannerViewAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +17,10 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class BannerAdapterView extends FrameLayout implements BannerViewAdapter, SupportMutableListenerAdapter<BannerViewAdapter.Listener> {
+public class BannerAdapterView extends AdAdapterLayout implements BannerViewAdapter {
 
     private static final String TAG = BannerAdapterView.class.getCanonicalName();
-
+    public static final boolean REUSEABLE = true;
     private View adView;
     private Context context;
     private String[] debugDevices;
@@ -52,14 +51,6 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
         this.addView(adView, new ViewGroup.LayoutParams(0, 0));
     }
 
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return true;
-    }
-
     @Override
     public void loadAd() {
 
@@ -68,16 +59,6 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
     @Override
     public View getAdapterAdView() {
         return adView;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
     }
 
     /* SupportMutableListenerAdapter */

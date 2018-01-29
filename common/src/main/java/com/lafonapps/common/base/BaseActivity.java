@@ -21,7 +21,7 @@ import com.lafonapps.common.ad.adapter.interstitial.InterstitialAdAdapter;
 import com.lafonapps.common.ad.adapter.nativead.NativeAdAdapterView;
 import com.lafonapps.common.preferences.CommonConfig;
 import com.lafonapps.common.preferences.Preferences;
-import com.umeng.analytics.MobclickAgent;
+import com.lafonapps.common.rate.AppRater;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -37,6 +37,7 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
     private static final String TAG = BaseActivity.class.getCanonicalName();
     private static int counter;
     protected String tag = getClass().getCanonicalName();
+
     private BannerAdapterView bannerView;
     private NativeAdAdapterView nativeAdView;
     private InterstitialAdAdapter interstitialAd;
@@ -78,7 +79,7 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
         Log.d(tag, "onResume");
 
         //友盟统计
-        MobclickAgent.onResume(this);
+//        MobclickAgent.onResume(this);
 
         if (shouldShowBannerView()) {
             ViewGroup bannerViewContainer = getBannerViewContainer();
@@ -96,7 +97,14 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
 //                incrementAdCounter();
 //            }
 //        }, 500); //延迟执行，避免获取到的当前Activity不是最终可以看见的Activity
-        incrementAdCounter();
+
+        //待当前Activity界面完成布局后再展示全屏广告，避免无法展示
+        findViewById(android.R.id.content).post(new Runnable() {
+            @Override
+            public void run() {
+                incrementAdCounter();
+            }
+        });
     }
 
     @Override
@@ -119,7 +127,7 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
     protected void onPause() {
         super.onPause();
         //友盟统计
-        MobclickAgent.onPause(this);
+//        MobclickAgent.onPause(this);
 
         Log.d(tag, "onPause");
     }
@@ -146,6 +154,39 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
 
         super.onDestroy();
     }
+
+    @Override
+    public void onBackPressed() {
+        //拦截返回键，加入以下逻辑：1.没有评论过的提示评论；2.防止连续点击返回键误退出应用，加入"再次点击返回键退出"提示
+        if (shouldPressBackButtonTwiceToExitAppAtLastActivity()) {
+            boolean handed = AppRater.defaultAppRater.handBackEventToPromtRate(this);
+            if (handed) {
+                return ;
+            }
+        }
+        super.onBackPressed();
+    }
+
+    /**
+     * 如果当前Activity是最后一个Activity，是否应该需要再点击一次返回键才能退出应用。子类可以重写此方法。为规避风险，默认返回false。为
+     * @return 是否应该需要再点击一次返回键才能退出应用。为规避风险，默认返回false
+     */
+    protected boolean shouldPressBackButtonTwiceToExitAppAtLastActivity() {
+        return false;
+    }
+
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//        //TODO:
+//        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+//            boolean handed = AppRater.defaultAppRater.handBackEventToPromtRate(this);
+//            if (handed) {
+//                return true;
+//            }
+//        }
+//        return super.dispatchKeyEvent(event);
+//    }
+
 /* 广告 */
 
     /**
@@ -201,7 +242,7 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
     protected void showInterstitialAd() {
         InterstitialAdAdapter interstitialAd = getInterstitialAd();
         if (interstitialAd.isReady()) {
-            interstitialAd.show();
+            interstitialAd.show(this);
             counter = 0;
         }
     }
@@ -212,10 +253,6 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
     protected void incrementAdCounter() {
         counter++;
 
-        autoPresentInterstitial();
-    }
-
-    protected void autoPresentInterstitial() {
         int numberOfTimesToPresentInterstitial = Preferences.getSharedPreference().getNumberOfTimesToPresentInterstitial();
         Log.d(TAG, "presentedTimes = " + counter + ", numberOfTimesToPresentInterstitial = " + numberOfTimesToPresentInterstitial);
         if (counter >= numberOfTimesToPresentInterstitial && shouldAutoPresentInterstitialAd()) {
@@ -228,7 +265,7 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
      *
      * @return
      */
-    protected BannerAdapterView getBannerView() {
+    public BannerAdapterView getBannerView() {
         if (bannerView == null) {
             bannerView = AdManager.getSharedAdManager().getBannerAdapterView(new AdSize(320, 50), this, this);
         }
@@ -240,7 +277,7 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
      *
      * @return
      */
-    protected NativeAdAdapterView getNativeAdView() {
+    public NativeAdAdapterView getNativeAdView() {
         if (nativeAdView == null) {
             nativeAdView = getSharedAdManager().getNativeAdAdapterViewFor80H(new AdSize(320, 80), this, this);
         }
@@ -253,9 +290,9 @@ public class BaseActivity extends AppCompatActivity implements BannerViewAdapter
      * @return
      */
     public InterstitialAdAdapter getInterstitialAd() {
-//        if (interstitialAd == null) {
-        interstitialAd = getSharedAdManager().getInterstitialAdAdapter(this, this);
-//        }
+        if (interstitialAd == null) {
+            interstitialAd = getSharedAdManager().getInterstitialAdAdapter(this, this);
+        }
         return interstitialAd;
     }
 

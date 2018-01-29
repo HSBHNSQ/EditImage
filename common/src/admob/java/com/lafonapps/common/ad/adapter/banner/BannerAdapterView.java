@@ -1,18 +1,19 @@
 package com.lafonapps.common.ad.adapter.banner;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.lafonapps.common.ad.AdSize;
+import com.lafonapps.common.ad.adapter.AdAdapterLayout;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.BannerViewAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
+import com.lafonapps.common.preferences.CommonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +22,10 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class BannerAdapterView extends FrameLayout implements BannerViewAdapter, SupportMutableListenerAdapter<BannerViewAdapter.Listener> {
+public class BannerAdapterView extends AdAdapterLayout implements BannerViewAdapter {
 
     private static final String TAG = BannerAdapterView.class.getCanonicalName();
-
+    public static final boolean REUSEABLE = true;
     private AdView adView;
     private Context context;
     private String[] debugDevices;
@@ -36,6 +37,23 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
         super(context);
         this.context = context;
         this.adView = new AdView(context);
+
+        this.setTouchListener(new TouchListener() {
+            @Override
+            public boolean shouldComfirmBeforeDownloadApp() {
+                return CommonConfig.sharedCommonConfig.shouldComfirmBeforeDownloadAppOnBannerViewClick;
+            }
+
+            @Override
+            public Rect exceptRect() {
+                return new Rect();
+            }
+        });
+    }
+
+    @Override
+    public void addView(View child, int width, int height) {
+        super.addView(child, width, height);
     }
 
     @Override
@@ -46,14 +64,6 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
     @Override
     public boolean isReady() {
         return this.ready;
-    }
-
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return true;
     }
 
     @Override
@@ -94,6 +104,9 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
             @Override
             public void onAdOpened() {
                 Log.d(TAG, "onAdOpened");
+
+                resetComfirmed();
+
                 Listener[] listeners = getAllListeners();
                 for (Listener listener : listeners) {
                     listener.onAdOpened(BannerAdapterView.this);
@@ -108,6 +121,8 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
                 for (Listener listener : listeners) {
                     listener.onAdLoaded(BannerAdapterView.this);
                 }
+
+//                new AnimationPerformer().performRandomAnimation(BannerAdapterView.this);
             }
         });
 
@@ -131,16 +146,6 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
     @Override
     public View getAdapterAdView() {
         return adView;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
     }
 
     /* SupportMutableListenerAdapter */

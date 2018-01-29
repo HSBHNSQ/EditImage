@@ -1,2 +1,2 @@
-include ':app', ':omoshiroilib', ':common'
+include ':app', ':common',":ucrop"
 include ':openCVLibrary320'

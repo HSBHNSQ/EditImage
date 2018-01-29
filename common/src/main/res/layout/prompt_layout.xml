@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/ll_background_prompt"
+        android:layout_gravity="center"
+        android:layout_width="312dp"
+        android:layout_height="216dp"
+        android:orientation="vertical"
+        android:background="@drawable/ic_comment_four">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_content_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/thanks_very_much"
+                android:textColor="#696A6B"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_cancel_prompt"
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_wrong"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

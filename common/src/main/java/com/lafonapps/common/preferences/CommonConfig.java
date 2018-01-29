@@ -1,5 +1,7 @@
 package com.lafonapps.common.preferences;
 
+import java.util.List;
+
 /**
  * Created by chenjie on 2017/8/18.
  */
@@ -8,7 +10,7 @@ public class CommonConfig {
 
     public static final CommonConfig sharedCommonConfig = new CommonConfig();
 
-    /** Admo告配置 */
+    /** Admob广告配置 */
     public String appID4Admob = "ca-app-pub-8698484584626435~1504595858";
     public String bannerAdUnitID4Admob = "ca-app-pub-8698484584626435/7634889932";
     public String nativeAdUnitID4Admob = "ca-app-pub-8698484584626435/1142645536";
@@ -52,11 +54,27 @@ public class CommonConfig {
 
     /** 是否展示广告按钮 */
     public boolean shouldShowAdButton = true;
+    /** 是否展示评论按钮 */
+    public boolean shouldShowRateButton = true;
     /** 是否显示横幅广告 */
     public boolean shouldShowBannerView = true;
+    /** 点击横幅广告下载应用或打开网址之前是否提示用户。true为先提醒用户，再次点击会下载应用或打开网址。false为不提示用户，直接下载应用或打开网址 */
+    public boolean shouldComfirmBeforeDownloadAppOnBannerViewClick = false;
+    /** 点击开屏广告下载应用或打开网址之前是否提示用户。true为先提醒用户，再次点击会下载应用或打开网址。false为不提示用户，直接下载应用或打开网址 */
+    public boolean shouldComfirmBeforeDownloadAppOnSplashAdClick = false;
     /** 是否展示开屏广告 */
     public boolean shouldShowSplashAd = true;
+    /** 是否显示插屏广告 */
+    public boolean shouldShowInterstitialAd = true;
 
     /** 友盟AppKey */
-    public String UmengAppKey = "";
+    public String umengAppKey = "";
+
+    /** 反馈邮箱 */
+    public String feedbackEmailAddress = "";
+
+    /** LeanCloud 用户反馈 */
+    public String leanCloudAppID = "";
+    public String leanCloudAppKey = "";
+    public List<String> leanCloudSuggestionItems ;
 }

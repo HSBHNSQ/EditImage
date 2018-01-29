@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Оцінити %1$s\"; \"iRateAppMessage\" = \"Якщо вам подобається користуватися %1$s, чи не будете ви заперечувати проти того, щоб приділити хвилинку та оцінити її? Спасибі вам за підтримку!</string>
+    <string name="rate_cancel_button_title">Ні, дякую</string>
+    <string name="rate_rate_button_title">Оцінити зараз</string>
+    <string name="again_to_exit_app">Натисніть кнопку BACK ще раз, щоб вийти</string>
+</resources>

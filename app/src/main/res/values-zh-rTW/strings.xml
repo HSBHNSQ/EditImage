@@ -9,7 +9,7 @@
     <string name="ei_graffit">塗鴉</string>
     <string name="ei_eraser">橡皮擦</string>
     <string name="ei_processing">正在處理...</string>
-    <string name="ei_cutout">摳圖</string>
+    <string name="ei_cutout">选区</string>
     <string name="ei_preview">預覽</string>
     <string name="ei_files">我的圖片</string>
     <string name="ei_GRAY">灰色</string>
@@ -33,4 +33,22 @@
     <string name="setting_suggections">意見反饋</string>
     <string name="setting_send_email">發郵件</string>
     <string name="setting_no_app_market">您沒有安裝應用市場</string>
+    <string name="ei_crop">裁剪</string>
+    <string name="ei_image_path">图片路径</string>
+    <string name="ei_text">文字</string>
+    <string name="ei_plz_input_text">请输入文字</string>
+    <string name="ei_small_adjust">局部调整</string>
+    <string name="ei_face_thin">瘦脸瘦身</string>
+    <string name="ei_big_eye">大眼</string>
+    <string name="ei_style">样式</string>
+    <string name="ei_color">颜色</string>
+    <string name="ei_big_eye_p">点击需要放大的区域进行放大</string>
+    <string name="ei_face_thin_p">拖动脸颊或其它部位进行瘦脸瘦身</string>
+    <string name="ei_change_color_p">再次点击可生成随机颜色</string>
+    <string name="ei_smart_selected">智能选取</string>
+    <string name="ei_smart_erase">智能擦除</string>
+    <string name="ei_change_color">换一批颜色</string>
+    <string name="ei_done">完成</string>
+    <string name="ei_edit">编辑</string>
+    <string name="ei_compare">对比</string>
 </resources>

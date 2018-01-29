@@ -1,6 +1,8 @@
 package com.lafonapps.common.ad.adapter.interstitial;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 
 import com.google.android.gms.ads.AdListener;
@@ -8,7 +10,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.InterstitialAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +18,16 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutableListenerAdapter<InterstitialAdapter.Listener> {
+public class InterstitialAdAdapter implements InterstitialAdapter {
 
     private static final String TAG = InterstitialAdAdapter.class.getCanonicalName();
-
+    public static final boolean REUSEABLE = true;
     private InterstitialAd interstitialAd;
     private Context context;
     private String[] debugDevices;
     private List<Listener> allListeners = new ArrayList<>();
+
+    private int retryDelayForFailed;
 
     public InterstitialAdAdapter(Context context) {
         this.context = context;
@@ -34,14 +37,6 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
     /* 是否已经请求到广告可供展示 */
     public boolean isReady() {
         return interstitialAd.isLoaded();
-    }
-
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return true;
     }
 
     /* 构建内容 */
@@ -67,6 +62,16 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
                 for (Listener listener : listeners) {
                     listener.onAdFailedToLoad(InterstitialAdAdapter.this, i);
                 }
+
+                retryDelayForFailed += 2000; //延迟时间增加2秒
+
+                //延迟一段时间后重新加载
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadAd();
+                    }
+                }, retryDelayForFailed);
             }
 
             @Override
@@ -91,6 +96,8 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
             public void onAdLoaded() {
                 Log.d(TAG, "onAdLoaded");
 
+                retryDelayForFailed = 0;
+
                 Listener[] listeners = getAllListeners();
                 for (Listener listener : listeners) {
                     listener.onAdLoaded(InterstitialAdAdapter.this);
@@ -113,7 +120,8 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
         this.interstitialAd.loadAd(adRequest);
     }
 
-    public void show() {
+    @Override
+    public void show(Activity activity) {
         if (interstitialAd.isLoaded()) {
             interstitialAd.show();
         } else {
@@ -128,16 +136,6 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
     @Override
     public void setDebugDevices(String[] debugDevices) {
         this.debugDevices = debugDevices;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
     }
 
     /* SupportMutableListenerAdapter */

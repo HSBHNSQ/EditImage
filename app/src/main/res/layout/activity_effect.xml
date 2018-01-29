@@ -9,7 +9,7 @@
     tools:context="com.liubowang.photoretouch.Effect.EffectActivity">
 
     <ImageView
-        android:id="@+id/iv_status_effect"
+        android:id="@+id/iv_status_adjust"
         android:layout_width="0dp"
         android:layout_height="25dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -21,8 +21,8 @@
         android:layout_height="45dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:id="@+id/ttl_top_tool_effecr"
-        app:layout_constraintTop_toBottomOf="@+id/iv_status_effect"
+        android:id="@+id/ttl_top_tool_effect"
+        app:layout_constraintTop_toBottomOf="@+id/iv_status_adjust"
         android:background="@drawable/navi_bg">
 
     </com.liubowang.photoretouch.Normal.TopToolView>
@@ -38,7 +38,7 @@
         app:layout_constraintBottom_toTopOf="@+id/ll_bottom_container_effect"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_effecr"
+        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_effect"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp">
 
@@ -52,14 +52,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <com.martin.ads.omoshiroilib.glessential.GLRootView
-            android:id="@+id/glrv_glroot_view_effect"
+        <jp.co.cyberagent.android.gpuimage.GPUImageView
+            android:id="@+id/gpu_image_view_effect"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/iv_result_image_effect"
@@ -120,7 +120,7 @@
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"
         app:layout_constraintRight_toLeftOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_effecr">
+        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_effect">
 
         <TextView
             android:id="@+id/tv_cutout_effect"
@@ -157,7 +157,7 @@
             android:layout_weight="1"
             android:ellipsize="middle"
             android:gravity="center"
-            android:maxLines="1"
+            android:singleLine="true"
             android:text="@string/ei_effect_"
             android:textColor="@drawable/eidt_type_text_selector" />
     </LinearLayout>
@@ -296,11 +296,12 @@
 
     <ImageView
         android:id="@+id/iv_guide_effect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/guide"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/sbetv_sbe_tool_effect" />
+        android:layout_marginStart="8dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/sbetv_sbe_tool_effect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/guide" />
 </android.support.constraint.ConstraintLayout>

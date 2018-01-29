@@ -6,10 +6,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
-import com.lafonapps.common.Common;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.InterstitialAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.adView.InterstitialAd;
 import com.xiaomi.ad.common.pojo.AdError;
@@ -23,10 +21,10 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutableListenerAdapter<InterstitialAdapter.Listener> {
+public class InterstitialAdAdapter implements InterstitialAdapter {
 
     private static final String TAG = InterstitialAdAdapter.class.getCanonicalName();
-
+    public static final boolean REUSEABLE = false;
     private InterstitialAd interstitialAd;
     private Context context;
     private AdModel adModel;
@@ -51,14 +49,6 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
         this.adModel = adModel;
     }
 
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return true;
-    }
-
     /* 加载广告 */
     @Override
     public void loadAd() {
@@ -73,7 +63,7 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
                     listener.onAdFailedToLoad(InterstitialAdAdapter.this, adError.value());
                 }
 
-                retryDelayForFailed += 2; //延迟时间增加2秒
+                retryDelayForFailed += 2000; //延迟时间增加2秒
 
                 //延迟一段时间后重新加载
                 new Handler().postDelayed(new Runnable() {
@@ -123,12 +113,13 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
             public void onAdLoaded() {
                 Log.d(TAG, "onAdLoaded");
 
+                retryDelayForFailed = 0;
+
                 Listener[] listeners = getAllListeners();
                 for (Listener listener : listeners) {
                     listener.onAdLoaded(InterstitialAdAdapter.this);
                 }
 
-                retryDelayForFailed = 0;
             }
 
             @Override
@@ -139,9 +130,9 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
     }
 
     @Override
-    public void show() {
+    public void show(Activity activity) {
         if (interstitialAd.isReady()) {
-            Activity currentActivity = Common.getCurrentActivity();
+            Activity currentActivity = activity;//Common.getCurrentActivity();
             if (currentActivity != null) {
                 try {
                     View anchorView = currentActivity.getWindow().getDecorView();
@@ -170,16 +161,6 @@ public class InterstitialAdAdapter implements InterstitialAdapter, SupportMutabl
     @Override
     public void setDebugDevices(String[] debugDevices) {
         this.debugDevices = debugDevices;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
     }
 
 //    private void setStatusBarVisible(boolean visible) {

@@ -6,7 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -34,11 +37,10 @@ import com.liubowang.photoretouch.Utils.FileUtil;
 import com.liubowang.photoretouch.Utils.GrabCutUtil;
 import com.liubowang.photoretouch.Utils.ProgressHUD;
 import com.liubowang.photoretouch.Utils.Size;
-import com.martin.ads.omoshiroilib.camera.IWorkerCallback;
-import com.martin.ads.omoshiroilib.filter.base.AbsFilter;
-import com.martin.ads.omoshiroilib.glessential.GLRootView;
-import com.martin.ads.omoshiroilib.imgeditor.gl.GLWrapper;
-import com.martin.ads.omoshiroilib.util.BitmapUtils;
+import com.yalantis.ucrop.callback.BitmapLoadCallback;
+import com.yalantis.ucrop.model.ExifInfo;
+import com.yalantis.ucrop.util.BitmapLoadUtils;
+
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -46,17 +48,23 @@ import org.opencv.android.OpenCVLoader;
 
 import java.io.File;
 
-import static android.R.attr.path;
+import jp.co.cyberagent.android.gpuimage.GPUImage;
+import jp.co.cyberagent.android.gpuimage.GPUImageBoxBlurFilter;
+import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.GPUImageGaussianBlurFilter;
+import jp.co.cyberagent.android.gpuimage.GPUImageView;
+
 
 public class EffectActivity extends EIBaseActiviry {
 
     enum EditStatus {
-        SMART_SELECT,BRUSH,ERASER
+        SMART_SELECT, BRUSH, ERASER
     }
 
     private static final String TAG = EffectActivity.class.getSimpleName();
     private static final int MAX_IMAGE_SIZE = 500;//提高处理速度
     private String mImagePath;
+    private String mOriginalImagePath;
     private String mMaskPath;
     private Bitmap mMaskImage;
     private ConstraintLayout mRootView;
@@ -72,11 +80,9 @@ public class EffectActivity extends EIBaseActiviry {
     private LinearLayout mBottomContainerView;
     private EditStatus mCurrentStatus = EditStatus.SMART_SELECT;
     private MagnifierView mMagnifierView;
-    private Size mOriginBmpSize = new Size(0,0);
+    private Size mOriginBmpSize = new Size(0, 0);
     private SBEToolView mSBEToolView;
     private BrushView.BrushType mCurrentBrushType;
-    private GLRootView mGLRootView;
-    private GLWrapper mGLWrapper;
     private FilterPickerView mFilterPickerView;
     private TextView mCutout;
     private TextView mPreview;
@@ -87,32 +93,57 @@ public class EffectActivity extends EIBaseActiviry {
     private UndoRedoManager mUndoRedoManager = new UndoRedoManager();
     private LinearLayout mEidtTypeContainer;
     private ImageView mGuide;
+    private GPUImageView mGPUImageView;
+    private FilterFactory.FilterAdjuster mFilterAdjuster;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_effect);
-        Intent intent = getIntent();
-        if (intent.hasExtra("IMAGE_PATH")){
-            mImagePath = intent.getStringExtra("IMAGE_PATH");
-            Log.d(TAG,"ImagePath:"+mImagePath);
-        }
-        if (intent.hasExtra("TEMPLATE_MODEL")){
-            templateModel = intent.getParcelableExtra("TEMPLATE_MODEL");
-            Log.d(TAG,templateModel.name);
-        }
+
         initUI();
+        Intent intent = getIntent();
+        if (intent.hasExtra("TEMPLATE_MODEL")) {
+            templateModel = intent.getParcelableExtra("TEMPLATE_MODEL");
+            Log.d(TAG, templateModel.name);
+        }
+        if (intent.hasExtra("IMAGE_PATH")) {
+            mImagePath = intent.getStringExtra("IMAGE_PATH");
+            mOriginalImagePath = new String(mImagePath);
+            setupImageView();
+        } else if (intent.hasExtra("IMAGE_URI")) {
+            Uri imageUri = intent.getParcelableExtra("IMAGE_URI");
+            BitmapLoadUtils.decodeBitmapInBackground(this, imageUri, imageUri, 1024, 1024,
+                    new BitmapLoadCallback() {
+
+                        @Override
+                        public void onBitmapLoaded(@NonNull Bitmap bitmap, @NonNull ExifInfo exifInfo, @NonNull String imageInputPath, @Nullable String imageOutputPath) {
+                            mImagePath = imageOutputPath;
+                            mOriginalImagePath = new String(mImagePath);
+                            setupImageView();
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Exception bitmapWorkerException) {
+
+                        }
+                    });
+        }
+    }
+
+
+    private void setupImageView() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = BitmpUtil.getSuitableBitmapFromAlbum(EffectActivity.this,mImagePath);
-                if (bitmap == null){
-                    bitmap = BitmapFactory.decodeFile(mImagePath);
-                }
-                bitmap = BitmpUtil.getProperResizedImage(bitmap,MAX_IMAGE_SIZE);
+                Bitmap bitmap = BitmapFactory.decodeFile(mImagePath);
+                bitmap = BitmpUtil.getProperResizedImage(bitmap, MAX_IMAGE_SIZE);
                 final Bitmap finalBitmap = bitmap;
                 mImagePath = FileUtil.getCurrentTimeMillisPath("png");
-                FileUtil.writeBitmap(new File(mImagePath),bitmap);
-                Log.d(TAG,"ImagePath:"+mImagePath);
+                FileUtil.writeBitmap(new File(mImagePath), bitmap);
+                Log.d(TAG, "ImagePath:" + mImagePath);
+                Bitmap smale = BitmpUtil.scaleBitmpToMaxSize(bitmap, 180);
+                mFilterPickerView.setSmaleSmpleBitmap(smale);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -121,17 +152,17 @@ public class EffectActivity extends EIBaseActiviry {
                             @Override
                             public void run() {
                                 setViewSize(finalBitmap);
+
                             }
                         });
                     }
                 });
             }
         }).start();
-
     }
+
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
             Log.d("OpenCV", "Internal OpenCV library not found. Using OpenCV Manager for initialization");
@@ -140,14 +171,15 @@ public class EffectActivity extends EIBaseActiviry {
             Log.d("OpenCV", "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
+        appleFilter();
     }
 
-    private void initUI(){
-        ImageView imageView = (ImageView) findViewById(R.id.iv_status_effect);
+    private void initUI() {
+        ImageView imageView = (ImageView) findViewById(R.id.iv_status_adjust);
         setStatusBar(imageView);
         mRootView = (ConstraintLayout) findViewById(R.id.root_effect);
-        mMagnifierView = new MagnifierView(this,mRootView);
-        mTopToolView = (TopToolView) findViewById(R.id.ttl_top_tool_effecr);
+        mMagnifierView = new MagnifierView(this, mRootView);
+        mTopToolView = (TopToolView) findViewById(R.id.ttl_top_tool_effect);
         mTopToolView.setActionListener(mTopActionListner);
         mContainerView = (ConstraintLayout) findViewById(R.id.cl_container_effect);
         mContainerView.setOnTouchListener(mContainerToucherListener);
@@ -168,13 +200,11 @@ public class EffectActivity extends EIBaseActiviry {
         mSmartSelect.setSelected(true);
         mSBEToolView = (SBEToolView) findViewById(R.id.sbetv_sbe_tool_effect);
         mSBEToolView.setSBEToolListener(mSBEToolListener);
-        mSBEToolView.setSeekRange(5,100);
-        mGLRootView= (GLRootView) findViewById(R.id.glrv_glroot_view_effect);
-        mGLRootView.setVisibility(View.INVISIBLE);
-        mGLWrapper= GLWrapper.newInstance()
-                .setGlImageView(mGLRootView)
-                .setContext(this)
-                .init();
+        mSBEToolView.setSeekRange(5, 100);
+
+        mGPUImageView = (GPUImageView) findViewById(R.id.gpu_image_view_effect);
+        mGPUImageView.setScaleType(GPUImage.ScaleType.CENTER_INSIDE);
+        mGPUImageView.setVisibility(View.INVISIBLE);
         mFilterPickerView = (FilterPickerView) findViewById(R.id.fpv_filter_picker_effect);
         mFilterPickerView.setFilterChangeListener(mFilterChangeListener);
         mCutout = (TextView) findViewById(R.id.tv_cutout_effect);
@@ -195,26 +225,25 @@ public class EffectActivity extends EIBaseActiviry {
         mGuide.setOnClickListener(mButtonListener);
     }
 
-    private void setUpGLRootViewImage() {
-        final Bitmap bitmap= BitmapUtils.loadBitmapFromFile(mImagePath);
-        mGLRootView.setAspectRatio(bitmap.getWidth(),bitmap.getHeight());
-        bitmap.recycle();
-        mGLWrapper.setFilePath(mImagePath);
+    private void setUpGPUImageImage() {
+        Bitmap bitmap = BitmapFactory.decodeFile(mImagePath);
+        mGPUImageView.setImage(bitmap);
 
-        if (templateModel != null && Template.toTemplate(templateModel.template) != Template.NONE){
+        if (templateModel != null && Template.toTemplate(templateModel.template) != Template.NONE) {
             currentFilterModel = FilterModel.create(templateModel);
-            mGLWrapper.switchFilter((AbsFilter) FilterFactory.creatFilter(currentFilterModel,
-                    EffectActivity.this));
-        }else {
-            templateModel = null;
+            GPUImageFilter filter = FilterFactory.creatFilter(currentFilterModel,
+                    EffectActivity.this);
+            mGPUImageView.setFilter(filter);
+            mFilterAdjuster = new FilterFactory.FilterAdjuster(filter);
+            mFilterPickerView.setSeekBarVisiable(mFilterAdjuster.canAdjust() ? View.VISIBLE : View.GONE);
         }
 
     }
 
-    private void setViewSize(Bitmap bitmap){
+    private void setViewSize(Bitmap bitmap) {
         float bmpW = bitmap.getWidth();
         float bmpH = bitmap.getHeight();
-        mOriginBmpSize = new Size(bmpW,bmpH);
+        mOriginBmpSize = new Size(bmpW, bmpH);
         float rootW = mRootView.getWidth() - MagnifierView.MAGNFIER_VIEW_SIZE / 2;
         float rootH = mRootView.getHeight() - mEidtTypeContainer.getBottom() * 2 - 5;
         //(mBottomContainerView.getTop() - mTopToolView.getBottom()) - mBottomContainerView.getHeight() *2;
@@ -222,26 +251,26 @@ public class EffectActivity extends EIBaseActiviry {
         float rootScale = rootW / rootH;
         int viewHeight;
         int viewWidth;
-        if (bmpScale < rootScale){//root的高度作为标准
+        if (bmpScale < rootScale) {//root的高度作为标准
             int dstH = 1500;
-            if (rootH < dstH){
+            if (rootH < dstH) {
                 viewHeight = (int) rootH;
                 viewWidth = (int) (rootH * bmpScale);
-            }else {
+            } else {
                 viewHeight = (int) dstH;
                 viewWidth = (int) (dstH * bmpScale);
             }
-        }else {
+        } else {
             int dstW = 1000;
-            if (rootW < dstW){
+            if (rootW < dstW) {
                 viewWidth = (int) rootW;
-                viewHeight = (int)(rootW / bmpScale);
-            }else {
+                viewHeight = (int) (rootW / bmpScale);
+            } else {
                 viewWidth = (int) dstW;
-                viewHeight = (int)(dstW / bmpScale);
+                viewHeight = (int) (dstW / bmpScale);
             }
         }
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams)mContainerView.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mContainerView.getLayoutParams();
         layoutParams.width = viewWidth;
         layoutParams.height = viewHeight;
         mContainerView.setLayoutParams(layoutParams);
@@ -253,7 +282,7 @@ public class EffectActivity extends EIBaseActiviry {
             }
         });
 
-        setUpGLRootViewImage();
+        setUpGPUImageImage();
     }
 
 //================================== all listener ==================================
@@ -261,14 +290,37 @@ public class EffectActivity extends EIBaseActiviry {
     private FilterAdapter.OnFilterChangeListener mFilterChangeListener = new FilterAdapter.OnFilterChangeListener() {
         @Override
         public void onFilterChanged(FilterModel filterModel) {
-            Log.d(TAG,filterModel.title);
-            if (filterModel.rendererType == FilterModel.RendererType.ABSFILTER){
-                currentFilterModel = filterModel;
-                mGLWrapper.switchFilter((AbsFilter) FilterFactory.creatFilter(filterModel,EffectActivity.this));
+            Log.d(TAG, filterModel.title);
+            currentFilterModel = filterModel;
+            appleFilter();
+        }
+
+        @Override
+        public void onSeekAdjustChanged(int progress) {
+            if (mFilterAdjuster != null) {
+                mFilterAdjuster.adjust(progress);
             }
+            mGPUImageView.requestRender();
         }
     };
 
+    private void appleFilter(){
+        if (currentFilterModel == null) return;
+        GPUImageFilter filter = FilterFactory.creatFilter(currentFilterModel,
+                EffectActivity.this);
+        mGPUImageView.setFilter(filter);
+        if (currentFilterModel.filterType == FilterModel.FilterType.NONE){
+            mFilterPickerView.setSeekBarVisiable(View.GONE);
+        }else {
+            mFilterAdjuster = new FilterFactory.FilterAdjuster(filter);
+            boolean canAdjust = mFilterAdjuster.canAdjust();
+            mFilterPickerView.setSeekBarVisiable(canAdjust ? View.VISIBLE : View.GONE);
+            if (canAdjust){
+                mFilterAdjuster.adjust(mFilterPickerView.getSeekProgress());
+                mGPUImageView.requestRender();
+            }
+        }
+    }
     private SBEToolView.OnSBEToolListener mSBEToolListener = new SBEToolView.OnSBEToolListener() {
         @Override
         public void onZhengXuan() {
@@ -313,52 +365,54 @@ public class EffectActivity extends EIBaseActiviry {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
+                case LoaderCallbackInterface.SUCCESS: {
                     Log.i(TAG, "OpenCV loaded successfully");
-                } break;
-                default:
-                {
+                }
+                break;
+                default: {
                     Log.i(TAG, "OpenCV loaded failled");
                     super.onManagerConnected(status);
-                } break;
+                }
+                break;
             }
         }
     };
     private BrushView.OnBrushViewListener mBrushViewListener = new BrushView.OnBrushViewListener() {
         @Override
         public void onStartDrawing(float x, float y) {
-            float newX = mContainerView.getX()*1.0f + x;
-            float newY = mContainerView.getY()*1.0f + y;
-            if (mCurrentStatus == EditStatus.BRUSH){
-                mMagnifierView.onBeginMoving(mRootView,(int)newX,(int)newY,mBrushView.getBrushWidth(),Color.parseColor("#00FF00"));
-            }else if (mCurrentStatus == EditStatus.ERASER){
-                mMagnifierView.onBeginMoving(mRootView,(int)newX,(int)newY,mBrushView.getEraserWidth(),Color.parseColor("#000000"));
+            float newX = mContainerView.getX() * 1.0f + x;
+            float newY = mContainerView.getY() * 1.0f + y;
+            if (mCurrentStatus == EditStatus.BRUSH) {
+                mMagnifierView.onBeginMoving(mRootView, (int) newX, (int) newY, mBrushView.getBrushWidth(), Color.parseColor("#00FF00"));
+            } else if (mCurrentStatus == EditStatus.ERASER) {
+                mMagnifierView.onBeginMoving(mRootView, (int) newX, (int) newY, mBrushView.getEraserWidth(), Color.parseColor("#000000"));
             }
         }
+
         @Override
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              public void onMoving(float x, float y) {
-            float newX = mContainerView.getX()*1.0f + x;
-            float newY = mContainerView.getY()*1.0f + y;
-            if (mCurrentStatus == EditStatus.BRUSH){
-                mMagnifierView.onMoving(mRootView,(int)newX,(int)newY,mBrushView.getBrushWidth(),Color.parseColor("#00FF00"));
-            }else if (mCurrentStatus == EditStatus.ERASER){
-                mMagnifierView.onMoving(mRootView,(int)newX,(int)newY,mBrushView.getEraserWidth(),Color.parseColor("#000000"));
+        public void onMoving(float x, float y) {
+            float newX = mContainerView.getX() * 1.0f + x;
+            float newY = mContainerView.getY() * 1.0f + y;
+            if (mCurrentStatus == EditStatus.BRUSH) {
+                mMagnifierView.onMoving(mRootView, (int) newX, (int) newY, mBrushView.getBrushWidth(), Color.parseColor("#00FF00"));
+            } else if (mCurrentStatus == EditStatus.ERASER) {
+                mMagnifierView.onMoving(mRootView, (int) newX, (int) newY, mBrushView.getEraserWidth(), Color.parseColor("#000000"));
             }
 
         }
+
         @Override
         public void onEndDrawing() {
             mMagnifierView.onEndMoving();
-            UndoRedoInfo info = new UndoRedoInfo(mMaskPath,false);
+            UndoRedoInfo info = new UndoRedoInfo(mMaskPath, false);
             mUndoRedoManager.addAction(info);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     String maskPathString = FileUtil.getCurrentTimeMillisPath("png");
                     Bitmap maskImage = mBrushView.getBitmp();
-                    boolean success = FileUtil.writeBitmap(new File(maskPathString),maskImage);
-                    if (success){
+                    boolean success = FileUtil.writeBitmap(new File(maskPathString), maskImage);
+                    if (success) {
                         mMaskPath = maskPathString;
                     }
                     mUndoRedoManager.getLastInfo().reDoMaskPath = mMaskPath;
@@ -370,28 +424,30 @@ public class EffectActivity extends EIBaseActiviry {
     private DrawView.OnDrawViewListener mDrawViewListener = new DrawView.OnDrawViewListener() {
         @Override
         public void onStartDrawing(float x, float y) {
-            float newX = mDrawView.getX()*1.0f + x;
-            float newY = mDrawView.getY()*1.0f + y;
-            mMagnifierView.onBeginMoving(mContainerView,(int)newX,(int)newY,0,Color.parseColor("#00000000"));
+            float newX = mDrawView.getX() * 1.0f + x;
+            float newY = mDrawView.getY() * 1.0f + y;
+            mMagnifierView.onBeginMoving(mContainerView, (int) newX, (int) newY, 0, Color.parseColor("#00000000"));
         }
+
         @Override
         public void onMoving(float x, float y) {
-            float newX = mDrawView.getX()*1.0f + x;
-            float newY = mDrawView.getY()*1.0f + y;
-            mMagnifierView.onMoving(mContainerView,(int)newX,(int)newY,0,Color.parseColor("#00000000"));
+            float newX = mDrawView.getX() * 1.0f + x;
+            float newY = mDrawView.getY() * 1.0f + y;
+            mMagnifierView.onMoving(mContainerView, (int) newX, (int) newY, 0, Color.parseColor("#00000000"));
         }
+
         @Override
         public void onEndDrawing() {
             mMagnifierView.onEndMoving();
-            UndoRedoInfo info = new UndoRedoInfo(mMaskPath,true);
+            UndoRedoInfo info = new UndoRedoInfo(mMaskPath, true);
             mUndoRedoManager.addAction(info);
-            ProgressHUD.show(EffectActivity.this,getString(R.string.ei_processing),null);
+            ProgressHUD.show(EffectActivity.this, getString(R.string.ei_processing), null);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     Bitmap maskImg = createFinalMaskImg();
                     String tmpPath = FileUtil.getCurrentTimeMillisPath("png");
-                    FileUtil.writeBitmap(new File(tmpPath),maskImg);
+                    FileUtil.writeBitmap(new File(tmpPath), maskImg);
                     mMaskPath = FileUtil.getCurrentTimeMillisPath("png");
                     mUndoRedoManager.getLastInfo().reDoMaskPath = mMaskPath;
                     GrabCutUtil.doGrabCut(mImagePath, maskImg, mMaskPath, new GrabCutUtil.OnGrabCutListener() {
@@ -403,17 +459,11 @@ public class EffectActivity extends EIBaseActiviry {
                         @Override
                         public void onFinishGrabCut() {
                             mMaskImage = BitmapFactory.decodeFile(mMaskPath);
-//                            String tmpPath = FileUtil.getCurrentTimeMillisPath("png");
-//                            GrabCutUtil.bianYuanQuJuChi(mMaskPath,tmpPath);
-//                            mMaskImage = BitmapFactory.decodeFile(tmpPath);
-//                            mMaskImage = GrabCutUtil.bianYuanXuHua(tmpPath);
-//                            tmpPath = FileUtil.getCurrentTimeMillisPath("png");
-//                            FileUtil.writeBitmap(new File(tmpPath),mMaskImage);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     ProgressHUD.dismiss();
-                                    if (mMaskImage != null){
+                                    if (mMaskImage != null) {
                                         mBrushView.initialOriginBrush(mMaskImage);
                                     }
                                 }
@@ -426,30 +476,30 @@ public class EffectActivity extends EIBaseActiviry {
     };
 
 
-    private Bitmap getResultBmp(Bitmap mask){
+    private Bitmap getResultBmp(Bitmap mask) {
 
         Bitmap oriImage = BitmapFactory.decodeFile(mImagePath);
-        if (mask.getHeight() != oriImage.getHeight() || mask.getWidth() != oriImage.getWidth()){
-            mask = Bitmap.createScaledBitmap(mask,oriImage.getWidth(),oriImage.getHeight(),true);
+        if (mask.getHeight() != oriImage.getHeight() || mask.getWidth() != oriImage.getWidth()) {
+            mask = Bitmap.createScaledBitmap(mask, oriImage.getWidth(), oriImage.getHeight(), true);
         }
-        Bitmap result = BitmpUtil.creatMaskBitmp(oriImage,mask);
+        Bitmap result = BitmpUtil.creatMaskBitmp(oriImage, mask);
         return result;
     }
 
-    private Bitmap  createFinalMaskImg(){
+    private Bitmap createFinalMaskImg() {
         Bitmap drawImg = mDrawView.getBitmp();
-        Bitmap mask = Bitmap.createBitmap((int) mOriginBmpSize.width,(int) mOriginBmpSize.height,Bitmap.Config.ARGB_8888);
+        Bitmap mask = Bitmap.createBitmap((int) mOriginBmpSize.width, (int) mOriginBmpSize.height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mask);
-        if (mMaskImage != null){
-            Rect srcRectMask = new Rect(0,0,mMaskImage.getWidth(),mMaskImage.getHeight());
-            Rect dstRect = new Rect(0,0,(int) mOriginBmpSize.width,(int) mOriginBmpSize.height);
-            canvas.drawBitmap(mMaskImage,srcRectMask,dstRect,null);
-            Rect srcRectDraw = new Rect(0,0,drawImg.getWidth(),drawImg.getHeight());
-            canvas.drawBitmap(drawImg,srcRectDraw,dstRect,null);
-        }else {
-            Rect srcRect = new Rect(0,0,drawImg.getWidth(),drawImg.getHeight());
-            Rect dstRect = new Rect(0,0,(int) mOriginBmpSize.width,(int) mOriginBmpSize.height);
-            canvas.drawBitmap(drawImg,srcRect,dstRect,null);
+        if (mMaskImage != null) {
+            Rect srcRectMask = new Rect(0, 0, mMaskImage.getWidth(), mMaskImage.getHeight());
+            Rect dstRect = new Rect(0, 0, (int) mOriginBmpSize.width, (int) mOriginBmpSize.height);
+            canvas.drawBitmap(mMaskImage, srcRectMask, dstRect, null);
+            Rect srcRectDraw = new Rect(0, 0, drawImg.getWidth(), drawImg.getHeight());
+            canvas.drawBitmap(drawImg, srcRectDraw, dstRect, null);
+        } else {
+            Rect srcRect = new Rect(0, 0, drawImg.getWidth(), drawImg.getHeight());
+            Rect dstRect = new Rect(0, 0, (int) mOriginBmpSize.width, (int) mOriginBmpSize.height);
+            canvas.drawBitmap(drawImg, srcRect, dstRect, null);
         }
         return mask;
     }
@@ -458,21 +508,21 @@ public class EffectActivity extends EIBaseActiviry {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (!mCutout.isSelected()) return false;
-            switch (mCurrentStatus){
+            switch (mCurrentStatus) {
                 case SMART_SELECT:
-                    if (mDrawView.getVisibility() == View.INVISIBLE){
+                    if (mDrawView.getVisibility() == View.INVISIBLE) {
                         mDrawView.setVisibility(View.VISIBLE);
                     }
                     mDrawView.onTouch(motionEvent);
                     break;
                 case BRUSH:
-                    if (mBrushView.getBrushType() != mCurrentBrushType){
+                    if (mBrushView.getBrushType() != mCurrentBrushType) {
                         mBrushView.setBrushType(mCurrentBrushType);
                     }
                     mBrushView.onTouch(motionEvent);
                     break;
                 case ERASER:
-                    if (mBrushView.getBrushType() != BrushView.BrushType.ERASER){
+                    if (mBrushView.getBrushType() != BrushView.BrushType.ERASER) {
                         mBrushView.setBrushType(BrushView.BrushType.ERASER);
                     }
                     mBrushView.onTouch(motionEvent);
@@ -486,7 +536,7 @@ public class EffectActivity extends EIBaseActiviry {
     private View.OnClickListener mButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.itb_smart_effect:
                     onSmartButtonClick();
                     break;
@@ -520,15 +570,15 @@ public class EffectActivity extends EIBaseActiviry {
 
         @Override
         public void onUndoClick() {
-            Log.d(TAG,"onUndoClick");
-            if (mUndoRedoManager.canUndo()){
+            Log.d(TAG, "onUndoClick");
+            if (mUndoRedoManager.canUndo()) {
                 UndoRedoInfo info = mUndoRedoManager.undo();
-                if (info != null){
-                    if (info.canEditDraw){
+                if (info != null) {
+                    if (info.canEditDraw) {
                         mDrawView.undo();
                     }
-                    Log.d(TAG,info.toString());
-                    mMaskImage  = BitmapFactory.decodeFile(info.unDoMaskPath);
+                    Log.d(TAG, info.toString());
+                    mMaskImage = BitmapFactory.decodeFile(info.unDoMaskPath);
                     mMaskPath = info.unDoMaskPath;
                     mBrushView.initialOriginBrush(mMaskImage);
                 }
@@ -537,15 +587,15 @@ public class EffectActivity extends EIBaseActiviry {
 
         @Override
         public void onRedoClick() {
-            Log.d(TAG,"onUndoClick");
-            if (mUndoRedoManager.canRedo()){
+            Log.d(TAG, "onUndoClick");
+            if (mUndoRedoManager.canRedo()) {
                 UndoRedoInfo info = mUndoRedoManager.redo();
-                if (info != null){
-                    if (info.canEditDraw){
+                if (info != null) {
+                    if (info.canEditDraw) {
                         mDrawView.redo();
                     }
-                    Log.d(TAG,info.toString());
-                    mMaskImage  = BitmapFactory.decodeFile(info.reDoMaskPath);
+                    Log.d(TAG, info.toString());
+                    mMaskImage = BitmapFactory.decodeFile(info.reDoMaskPath);
                     mMaskPath = info.reDoMaskPath;
                     mBrushView.initialOriginBrush(mMaskImage);
                 }
@@ -563,187 +613,192 @@ public class EffectActivity extends EIBaseActiviry {
         @Override
         public void onSaveClick() {
             mProgressBar.setVisibility(View.VISIBLE);
-            final Bitmap bitmap = BitmapFactory.decodeFile(mImagePath);
-            final String outPutFilterBmpPath = FileUtil.getCurrentTimeMillisPath("png");
-            new Thread(new Runnable() {
+            String fileName = System.currentTimeMillis() + ".jpg";
+
+            Bitmap bitmap = BitmapFactory.decodeFile(mOriginalImagePath);
+            Bitmap mask = mBrushView.getBitmp();
+            mask = Bitmap.createScaledBitmap(mask,bitmap.getWidth(),bitmap.getHeight(),true);
+            GPUImage mohuGpuImage = new GPUImage(EffectActivity.this);
+            mohuGpuImage.setImage(mask);
+            mohuGpuImage.setFilter(new GPUImageBoxBlurFilter());
+            mask = mohuGpuImage.getBitmapWithFilterApplied();
+            Bitmap kouTu = BitmpUtil.creatMaskBitmp(bitmap, mask);
+
+            if (mGPUImageView.getFilter() != null){
+                GPUImage gpuImage = new GPUImage(EffectActivity.this);
+                gpuImage.setImage(bitmap);
+                gpuImage.setFilter(mGPUImageView.getFilter());
+                bitmap = gpuImage.getBitmapWithFilterApplied();
+            }
+
+            final Bitmap result = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(result);
+            canvas.drawBitmap(bitmap, 0, 0, null);
+            Rect srcRect = new Rect(0, 0, kouTu.getWidth(), kouTu.getHeight());
+            Rect dstRect = new Rect(0, 0, result.getWidth(), result.getHeight());
+            canvas.drawBitmap(kouTu, srcRect, dstRect, null);
+
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    BitmapUtils.saveBitmapWithFilterApplied(EffectActivity.this,
-                            FilterFactory.getAbsFilterType(currentFilterModel), bitmap, outPutFilterBmpPath, new IWorkerCallback() {
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    final SaveBitmapDialog saveBitmapDialog = SaveBitmapDialog.newInstance();
+                    saveBitmapDialog.setPreviewBitmap(result);
+                    saveBitmapDialog.setAppName(getString(R.string.app_name));
+                    saveBitmapDialog.setOnSaveBitmapListener(new SaveBitmapDialog.OnSaveBitmapListener() {
+
+                        @Override
+                        public void onStartSave() {
+                            mProgressBar.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onSaveBitmapCompleted(final boolean success, final String bmpPath) {
+
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void onPostExecute(Exception exception) {
-                                    if (exception == null){
-                                        Bitmap filterBmp = BitmapFactory.decodeFile(outPutFilterBmpPath);
-                                        Bitmap cutoutBmp = getCutoutResult();
-                                        final Bitmap result = Bitmap.createBitmap(filterBmp.getWidth(),filterBmp.getHeight(), Bitmap.Config.ARGB_8888);
-                                        Canvas canvas = new Canvas(result);
-                                        canvas.drawBitmap(filterBmp,0,0,null);
-                                        Rect srcRect = new Rect(0,0,cutoutBmp.getWidth(),cutoutBmp.getHeight());
-                                        Rect dstRect = new Rect(0,0,result.getWidth(),result.getHeight());
-                                        canvas.drawBitmap(cutoutBmp,srcRect,dstRect,null);
-//                                        final String path = FileUtil.getPictureResultPathWithName(System.currentTimeMillis()+"","png");
-//                                        final boolean success = FileUtil.writeBitmap(new File(path),result);
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                mProgressBar.setVisibility(View.INVISIBLE);
-                                                SaveBitmapDialog saveBitmapDialog = SaveBitmapDialog.newInstance();
-                                                saveBitmapDialog.setPreviewBitmap(result);
-                                                saveBitmapDialog.setAppName(getString(R.string.app_name));
-                                                saveBitmapDialog.setOnSaveBitmapListener(new SaveBitmapDialog.OnSaveBitmapListener() {
+                                public void run() {
+                                    saveBitmapDialog.dismiss();
+                                    mProgressBar.setVisibility(View.INVISIBLE);
+                                    String message = getString(R.string.ei_save_failed);
+                                    if (success) {
+                                        message = getString(R.string.ei_save_successful);
+                                    }
+                                    if (success) {
+//                                        onPreviewButtonClick();
 
-                                                    @Override
-                                                    public void onSaveBitmapCompleted(boolean success,String bmpPath) {
-                                                        String message = getString(R.string.ei_save_failed);
-                                                        if (success){
-                                                            message = getString(R.string.ei_save_successful);
-                                                        }
-                                                        if (success){
-                                                            Toast.makeText(EffectActivity.this,message+":"+bmpPath, Toast.LENGTH_LONG).show();
-                                                            Intent intent = new Intent(EffectActivity.this, ImageLookActivity.class);
-                                                            intent.putExtra("IMAGE_PATH",bmpPath);
-                                                            if (intent.resolveActivity(getPackageManager()) != null){
-                                                                startActivity(intent);
-                                                            }
-                                                        }else {
-                                                            Toast.makeText(EffectActivity.this, message, Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    }
-                                                    @Override
-                                                    public void onSaveBitmapCanceled() {
-
-                                                    }
-                                                });
-                                                saveBitmapDialog.show(getSupportFragmentManager(), null);
-                                            }
-                                        });
-                                    }else {
-                                        Log.d(TAG,"保存失败");
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                mProgressBar.setVisibility(View.INVISIBLE);
-                                                String message = getString(R.string.ei_save_failed);
-                                                Toast.makeText(EffectActivity.this,message,Toast.LENGTH_SHORT).show();
-
-                                            }
-                                        });
+                                        //TODO::sioehfuiseghfuisegf
+                                        Toast.makeText(EffectActivity.this, message + ":" + bmpPath, Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(EffectActivity.this, ImageLookActivity.class);
+                                        intent.putExtra("IMAGE_PATH", bmpPath);
+                                        if (intent.resolveActivity(getPackageManager()) != null) {
+                                            startActivity(intent);
+                                        }
+                                    } else {
+                                        Toast.makeText(EffectActivity.this, message, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
+                        }
 
+                        @Override
+                        public void onSaveBitmapCanceled() {
+
+                        }
+                    });
+                    saveBitmapDialog.show(getSupportFragmentManager(), null);
                 }
-            }).start();
+            });
         }
     };
 //================================== all actions ==================================
 
-    private void onGuideButtonClick(){
+    private void onGuideButtonClick() {
         Intent guide = new Intent(EffectActivity.this, GuidePlayActivity.class);
-        if (guide.resolveActivity(getPackageManager()) != null){
+        if (guide.resolveActivity(getPackageManager()) != null) {
             startActivity(guide);
         }
     }
 
-    private void onCutoutButtonClick(){
-        if (mPreview.isSelected()){
+    private void onCutoutButtonClick() {
+        if (mPreview.isSelected()) {
             mPreview.setSelected(false);
             mPreview.setBackgroundColor(getResources().getColor(R.color.colorClean));
         }
-        if (mEffect.isSelected()){
+        if (mEffect.isSelected()) {
             mEffect.setSelected(false);
             mEffect.setBackgroundColor(getResources().getColor(R.color.colorClean));
         }
-        if (!mCutout.isSelected()){
+        if (!mCutout.isSelected()) {
             mCutout.setSelected(true);
             mCutout.setBackgroundResource(R.drawable.edit_type_left_bg);
-            if (mCurrentStatus == EditStatus.SMART_SELECT){
-                if (mDrawView.getVisibility() == View.INVISIBLE){
+            if (mCurrentStatus == EditStatus.SMART_SELECT) {
+                if (mDrawView.getVisibility() == View.INVISIBLE) {
                     mDrawView.setVisibility(View.VISIBLE);
                 }
             }
-            if (mBrushView.getVisibility() == View.INVISIBLE){
+            if (mBrushView.getVisibility() == View.INVISIBLE) {
                 mBrushView.setVisibility(View.VISIBLE);
             }
-            if (mGLRootView.getVisibility() == View.VISIBLE){
-                mGLRootView.setVisibility(View.INVISIBLE);
+            if (mGPUImageView.getVisibility() == View.VISIBLE) {
+                mGPUImageView.setVisibility(View.INVISIBLE);
             }
-            if (mFilterPickerView.isOpen()){
+            if (mFilterPickerView.isOpen()) {
                 mFilterPickerView.close();
             }
         }
     }
 
-    private void onPreviewButtonClick(){
-        if (mCutout.isSelected()){
+    private void onPreviewButtonClick() {
+        if (mCutout.isSelected()) {
             mCutout.setSelected(false);
             mCutout.setBackgroundColor(getResources().getColor(R.color.colorClean));
         }
-        if (mEffect.isSelected()){
+        if (mEffect.isSelected()) {
             mEffect.setSelected(false);
             mEffect.setBackgroundColor(getResources().getColor(R.color.colorClean));
         }
-        if (!mPreview.isSelected()){
+        if (!mPreview.isSelected()) {
             mPreview.setSelected(true);
             mPreview.setBackgroundResource(R.drawable.edit_type_center_bg);
             Bitmap result = getCutoutResult();
             mResultImageView.setImageBitmap(result);
-            if (mDrawView.getVisibility() == View.VISIBLE){
+            if (mDrawView.getVisibility() == View.VISIBLE) {
                 mDrawView.setVisibility(View.INVISIBLE);
             }
-            if (mBrushView.getVisibility() == View.VISIBLE){
+            if (mBrushView.getVisibility() == View.VISIBLE) {
                 mBrushView.setVisibility(View.INVISIBLE);
             }
-            if (mGLRootView.getVisibility() == View.INVISIBLE){
-                mGLRootView.setVisibility(View.VISIBLE);
+            if (mGPUImageView.getVisibility() == View.INVISIBLE) {
+                mGPUImageView.setVisibility(View.VISIBLE);
             }
-            if (mFilterPickerView.isOpen()){
+            if (mFilterPickerView.isOpen()) {
                 mFilterPickerView.close();
             }
         }
     }
 
-    private void onEffectButtonClick(){
+    private void onEffectButtonClick() {
 
-        if (mCutout.isSelected()){
+        if (mCutout.isSelected()) {
             mCutout.setSelected(false);
             mCutout.setBackgroundColor(getResources().getColor(R.color.colorClean));
         }
-        if (mPreview.isSelected()){
+        if (mPreview.isSelected()) {
             mPreview.setSelected(false);
             mPreview.setBackgroundColor(getResources().getColor(R.color.colorClean));
         }
-        if (!mEffect.isSelected()){
+        if (!mEffect.isSelected()) {
             mEffect.setSelected(true);
             mEffect.setBackgroundResource(R.drawable.edit_type_right_bg);
             Bitmap result = getCutoutResult();
             mResultImageView.setImageBitmap(result);
-            if (mGLRootView.getVisibility() == View.INVISIBLE){
-                mGLRootView.setVisibility(View.VISIBLE);
+            if (mGPUImageView.getVisibility() == View.INVISIBLE) {
+                mGPUImageView.setVisibility(View.VISIBLE);
             }
-            if (mDrawView.getVisibility() == View.VISIBLE){
+            if (mDrawView.getVisibility() == View.VISIBLE) {
                 mDrawView.setVisibility(View.INVISIBLE);
             }
-            if (mBrushView.getVisibility() == View.VISIBLE){
+            if (mBrushView.getVisibility() == View.VISIBLE) {
                 mBrushView.setVisibility(View.INVISIBLE);
             }
-            if (!mFilterPickerView.isOpen()){
+            if (!mFilterPickerView.isOpen()) {
                 mFilterPickerView.open();
             }
         }
     }
 
-    private void onSmartButtonClick(){
-        if (mBrush.isSelected()){
+    private void onSmartButtonClick() {
+        if (mBrush.isSelected()) {
             mBrush.setSelected(false);
         }
-        if (mEraser.isSelected()){
+        if (mEraser.isSelected()) {
             mEraser.setSelected(false);
         }
-        if (mCurrentStatus != EditStatus.SMART_SELECT){
-            if (mSmartSelect.isSelected()){
+        if (mCurrentStatus != EditStatus.SMART_SELECT) {
+            if (mSmartSelect.isSelected()) {
                 mSmartSelect.setSelected(false);
-            }else {
+            } else {
                 mSmartSelect.setSelected(true);
                 mDrawView.setVisibility(View.VISIBLE);
                 mSBEToolView.openSmart();
@@ -751,18 +806,19 @@ public class EffectActivity extends EIBaseActiviry {
             }
         }
     }
-    private void onBrushButtonClick(){
 
-        if (mEraser.isSelected()){
+    private void onBrushButtonClick() {
+
+        if (mEraser.isSelected()) {
             mEraser.setSelected(false);
         }
-        if (mSmartSelect.isSelected()){
+        if (mSmartSelect.isSelected()) {
             mSmartSelect.setSelected(false);
         }
-        if (mCurrentStatus != EditStatus.BRUSH){
-            if (mBrush.isSelected()){
+        if (mCurrentStatus != EditStatus.BRUSH) {
+            if (mBrush.isSelected()) {
                 mBrush.setSelected(false);
-            }else {
+            } else {
                 mBrush.setSelected(true);
                 mDrawView.setVisibility(View.INVISIBLE);
                 mSBEToolView.openBrush();
@@ -770,18 +826,19 @@ public class EffectActivity extends EIBaseActiviry {
             }
         }
     }
-    private void onEraserButtonClick(){
-        if (mBrush.isSelected()){
+
+    private void onEraserButtonClick() {
+        if (mBrush.isSelected()) {
             mBrush.setSelected(false);
         }
 
-        if (mSmartSelect.isSelected()){
+        if (mSmartSelect.isSelected()) {
             mSmartSelect.setSelected(false);
         }
-        if (mCurrentStatus != EditStatus.ERASER){
-            if (mEraser.isSelected()){
+        if (mCurrentStatus != EditStatus.ERASER) {
+            if (mEraser.isSelected()) {
                 mEraser.setSelected(false);
-            }else {
+            } else {
                 mEraser.setSelected(true);
                 mDrawView.setVisibility(View.INVISIBLE);
                 mSBEToolView.openEraser();
@@ -790,19 +847,20 @@ public class EffectActivity extends EIBaseActiviry {
         }
     }
 
-    private Bitmap getCutoutResult(){
+    private Bitmap getCutoutResult() {
         Bitmap mask = mBrushView.getBitmp();
         Bitmap result = getResultBmp(mask);
         return result;
     }
 
     private LinearLayout bannerViewContainer;
+
     @Override
     protected ViewGroup getBannerViewContainer() {
-        if (bannerViewContainer == null){
+        if (bannerViewContainer == null) {
             bannerViewContainer = (LinearLayout) findViewById(R.id.id_banner_container_effect);
         }
-       return bannerViewContainer;
+        return bannerViewContainer;
     }
 
     @Override
@@ -814,4 +872,5 @@ public class EffectActivity extends EIBaseActiviry {
     protected boolean shouldShowBannerView() {
         return true;
     }
+
 }

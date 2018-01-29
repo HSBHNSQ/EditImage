@@ -1,19 +1,17 @@
 package com.lafonapps.common.ad.adapter;
 
+import android.app.Activity;
+
 /**
  * Created by chenjie on 2017/7/5.
  */
 
-public interface InterstitialAdapter extends AdAdapter {
+public interface InterstitialAdapter extends AdAdapter<InterstitialAdapter.Listener> {
 
     /* 显示广告 */
-    public void show();
+    public void show(Activity activity);
 
     public Object getAdapterAd();
-
-    public Listener getListener();
-
-    public void setListener(Listener listener);
 
     public static interface Listener {
 

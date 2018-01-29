@@ -16,10 +16,12 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.liubowang.photoretouch.Base.EIBaseActiviry;
 import com.liubowang.photoretouch.Effect.EffectActivity;
 import com.liubowang.photoretouch.R;
+import com.liubowang.photoretouch.Text.TextActivity;
 import com.liubowang.photoretouch.Utils.DisplayUtil;
 import com.liubowang.photoretouch.Utils.FileUtil;
 import com.liubowang.photoretouch.Utils.ScreenUtil;
@@ -70,9 +72,9 @@ public class EffectTemplateActivity extends EIBaseActiviry {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-//            case android.R.id.home:
-//                finish();
-//                return true;
+            case android.R.id.home:
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -109,6 +111,8 @@ public class EffectTemplateActivity extends EIBaseActiviry {
                     if (intent.resolveActivity(getPackageManager()) != null){
                         startActivity(intent);
                     }
+                }else {
+                    Toast.makeText(EffectTemplateActivity.this, "失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -127,4 +131,5 @@ public class EffectTemplateActivity extends EIBaseActiviry {
     protected boolean shouldShowBannerView() {
         return false;
     }
+
 }

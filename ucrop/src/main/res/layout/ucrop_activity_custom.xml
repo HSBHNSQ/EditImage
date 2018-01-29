@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ucrop_photobox_custom"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242527">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_custom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#1A1B1C"
+        android:minHeight="?attr/actionBarSize">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_aspect_ratio_status"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/ucrop_color_normal_text_color"
+                android:drawableTop="@drawable/ucrop_aspect_ratio_tv_drawable_selecor"
+                android:paddingTop="8dp"
+                android:textSize="11sp"
+                android:text="@string/ucrop_aspect_ratio"
+                />
+            <TextView
+                android:id="@+id/tv_rotation_status"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/ucrop_color_normal_text_color"
+                android:drawableTop="@drawable/ucrop_roation_tv_drawable_selector"
+                android:paddingTop="8dp"
+                android:textSize="11sp"
+                android:text="@string/ucrop_rotation"/>
+            <TextView
+                android:id="@+id/tv_scale_status"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/ucrop_color_normal_text_color"
+                android:drawableTop="@drawable/ucrop_scale_tv_drawable_selector"
+                android:paddingTop="8dp"
+                android:textSize="11sp"
+                android:text="@string/ucrop_scale"/>
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/ucrop_frame_custom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_control"
+        android:background="#2C2E30">
+
+        <ImageView
+            android:id="@+id/image_view_logo_custom"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ucrop_vector_ic_crop"
+            tools:background="@drawable/ucrop_vector_ic_crop"
+            tools:ignore="MissingPrefix"/>
+
+        <com.yalantis.ucrop.view.UCropView
+            android:id="@+id/ucrop_custom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"/>
+
+    </FrameLayout>
+
+    <include layout="@layout/ucrop_custom_controls"
+        android:id="@+id/bottom_control"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@id/toolbar_custom">
+    </include>
+</RelativeLayout>

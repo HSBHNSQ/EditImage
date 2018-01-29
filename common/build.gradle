@@ -6,7 +6,7 @@ android {
     publishNonDefault true //不再按默认只构建release版本
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 18
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -34,7 +34,13 @@ android {
         xiaomi {
         }
 
-        oppo {
+        oppo_v1_1_3 { //oppo-v1.1.3版本
+        }
+
+        oppo_v2_2_1 { //oppo-v2.2.1版本
+        }
+
+        oppo { //oppo-最新版本
         }
 
         admob {
@@ -53,9 +59,9 @@ android {
 }
 
 repositories {
-    maven {
-        url 'https://repo.spring.io/libs-snapshot'
-    }
+    maven { url 'https://repo.spring.io/libs-snapshot' }
+    maven { url "https://maven.google.com" }
+
 }
 
 dependencies {
@@ -64,28 +70,43 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+//    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//    compile 'com.android.support:support-dynamic-animation:26.1.0'
     compile 'org.springframework.android:spring-android-core:2.0.0.BUILD-SNAPSHOT'
     compile 'org.jetbrains:annotations-java5:15.0'
     compile 'com.google.firebase:firebase-core:10.2.6'
     compile 'com.google.firebase:firebase-crash:10.2.6'
-    compile 'com.umeng.analytics:analytics:latest.integration'
+
+    compile 'com.google.code.gson:gson:2.8.2'
+
+//    compile 'com.umeng.analytics:analytics:latest.integration'
+
+    //动画
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
+
+    //检测内存泄露
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     admobCompile 'com.google.firebase:firebase-ads:10.2.6'
 
     xiaomiCompile files('src/xiaomi/libs/AdSdk.jar')
 
-    oppoCompile files('src/oppo/libs/mob_ad_sdk_v1.1.3_2017_03_30_release.jar')
-    oppoCompile files('src/oppo/libs/android-query-full.0.26.7.jar')
-//    oppoCompile 'com.github.androidquery:androidquery:0.26.9'
-//    oppoCompile 'oauth.signpost:signpost-core:1.2.1.2'
-//    oppoCompile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
-//    oppoCompile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    oppo_v1_1_3Compile files('src/oppo_v1_1_3/libs/mob_ad_sdk_v1.1.3_2017_03_30_release.jar')
+    oppo_v1_1_3Compile files('src/oppo_v1_1_3/libs/android-query-full.0.26.7.jar')
+    oppo_v2_2_1Compile files('src/oppo_v2_2_1/libs/oppo_mobad_api_v221_2017_09_27_release.jar')
+    oppoCompile files('src/oppo/libs/oppo_mobad_api_v243_2017_12_19_release.jar')
 
     facebookCompile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
-    tencentCompile files('src/tencent/libs/GDTUnionSDK.4.10.548.min.jar')
+    tencentCompile files('src/tencent/libs/android-query-full.0.26.7.jar')
+//    tencentCompile files('src/tencent/libs/GDTUnionSDK.4.11.552.min.jar') //原始jar
+    tencentCompile files('src/tencent/libs/GDTUnionSDK.NoInterstitial 4.11.552.min.jar') //删除插屏广告代码后重新打包的jar
+
+    compile ('cn.leancloud.android:avoscloud-sdk:v4.6.1')
+//    tencentCompile files('src/tencent/libs/android-support-v7-recyclerview.jar')
 }
 

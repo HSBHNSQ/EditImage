@@ -9,7 +9,7 @@
     <string name="ei_graffit">Graffiti</string>
     <string name="ei_eraser">Eraser</string>
     <string name="ei_processing">Processing...</string>
-    <string name="ei_cutout">Cutout</string>
+    <string name="ei_cutout">Select area</string>
     <string name="ei_preview">Preview</string>
     <string name="ei_files">My Images</string>
     <string name="ei_GRAY">Gray</string>
@@ -33,4 +33,22 @@
     <string name="setting_suggections">Feedback</string>
     <string name="setting_send_email">Send email</string>
     <string name="setting_no_app_market">You have not installed the app market</string>
+    <string name="ei_crop">Cut</string>
+    <string name="ei_image_path">Image storage path</string>
+    <string name="ei_text">Text</string>
+    <string name="ei_plz_input_text">Please enter the text</string>
+    <string name="ei_small_adjust"> Partial adjustment</string>
+    <string name="ei_face_thin">Thin face body</string>
+    <string name="ei_big_eye">Big eyes</string>
+    <string name="ei_style">Style</string>
+    <string name="ei_color">Color</string>
+    <string name="ei_big_eye_p">Click the area you want to enlarge to zoom in</string>
+    <string name="ei_face_thin_p">Drag cheek or other parts to thin face  body</string>
+    <string name="ei_change_color_p"> Click again to generate a random color</string>
+    <string name="ei_smart_selected">Smart Select</string>
+    <string name="ei_smart_erase">Smart Erase</string>
+    <string name="ei_change_color">Change colors</string>
+    <string name="ei_done">Complete</string>
+    <string name="ei_edit">Edit</string>
+    <string name="ei_compare">Contrast</string>
 </resources>

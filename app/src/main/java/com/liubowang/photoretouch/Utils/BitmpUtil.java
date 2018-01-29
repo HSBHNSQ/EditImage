@@ -67,19 +67,20 @@ public class BitmpUtil {
     }
     public static Bitmap scaleBitmpToMaxSize(Bitmap bitmap,int maxSize) {
         if (bitmap == null) return null;
-        Matrix matrix = new Matrix();
-        float scale = 1;
-        int height = bitmap.getHeight();
-        int width = bitmap.getWidth();
-        if (height > maxSize || width > maxSize) {
-            float heightRatio = (float) height / (float) maxSize;
-            float widthRatio = (float) width / (float) maxSize;
-            scale = heightRatio < widthRatio ? heightRatio : widthRatio;
+        float height = bitmap.getHeight();
+        float width = bitmap.getWidth();
+        float scale = width / height;
+        if (height > maxSize){
+            height = maxSize;
+            width =height * scale;
         }
-        int newHeight = (int) (height / scale);
-        int newWidth = (int) (width / scale);
-        return Bitmap.createScaledBitmap(bitmap,newWidth,newHeight,true);
+        if (width > maxSize){
+            width = maxSize;
+            height = width / scale;
+        }
+        return Bitmap.createScaledBitmap(bitmap,(int) width,(int) height,true);
     }
+
 
     public static Bitmap creatMaskBitmp(Bitmap original,Bitmap mask){
         Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Bitmap.Config.ARGB_8888);

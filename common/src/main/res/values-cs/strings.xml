@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Pokud se vám líbí %1$s, našli byste si chvilku na ohodnocení aplikace? Nebude to trvat víc než minutu.\\nDěkujeme za vaši podporu!</string>
+    <string name="rate_cancel_button_title">Ne, děkuji</string>
+    <string name="rate_rate_button_title">Ohodnotit nyní</string>
+    <string name="again_to_exit_app">Opětovným stisknutím tlačítka BACK opustíte</string>
+</resources>

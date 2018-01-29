@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">আপনি %1$s ব্যবহার করে ভোগ, আপনি এটি রেট একটি মুহূর্ত গ্রহণ কিছু মনে করবে? এটি একটি মিনিট চেয়ে বেশি গ্রহণ করা হবে না. আপনার সমর্থনের জন্য ধন্যবাদ!</string>
+    <string name="rate_cancel_button_title">না, ধন্যবাদ</string>
+    <string name="rate_rate_button_title">এখন এটি রেটিং করুন</string>
+    <string name="again_to_exit_app">প্রস্থান করার জন্য আবার আবার টিপুন</string>
+</resources>

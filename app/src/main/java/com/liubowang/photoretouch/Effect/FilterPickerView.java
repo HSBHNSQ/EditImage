@@ -2,6 +2,7 @@ package com.liubowang.photoretouch.Effect;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -9,8 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
 import com.liubowang.photoretouch.R;
 import com.liubowang.photoretouch.Utils.DisplayUtil;
@@ -23,6 +26,8 @@ public class FilterPickerView extends LinearLayout {
 
     private RecyclerView filterRecycleView;
     private FilterAdapter filterAdapter;
+    private SeekBar filterSeekBar;
+
     public FilterPickerView(Context context) {
         super(context);
         initSubView(context);
@@ -47,12 +52,25 @@ public class FilterPickerView extends LinearLayout {
     private void initSubView(Context context){
         LayoutInflater.from(context).inflate(R.layout.view_filter_picker,this,true);
         setupReycleView(context);
+        filterSeekBar = findViewById(R.id.sb_seek_filter_progress_fpv);
+        filterSeekBar.setMax(100);
+        filterSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
     }
 
+    public void setSmaleSmpleBitmap(Bitmap bitmap){
+        filterAdapter.setSmaleImage(bitmap);
+    }
+
+    public int getSeekProgress(){
+        return filterSeekBar.getProgress();
+    }
+
+    public void setSeekBarVisiable(int visiable){
+        filterSeekBar.setVisibility(visiable);
+    }
 
     private void setupReycleView(Context context){
-
-        VIEW_MAX_HEIGHT = DisplayUtil.dpTopx(context,80);
+        VIEW_MAX_HEIGHT = DisplayUtil.dpTopx(context,120);
         filterRecycleView = findViewById(R.id.cy_recycle_view_fpv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -60,6 +78,25 @@ public class FilterPickerView extends LinearLayout {
         filterAdapter = new FilterAdapter(context);
         filterRecycleView.setAdapter(filterAdapter);
     }
+
+    private SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (filterChangeListener != null){
+                filterChangeListener.onSeekAdjustChanged(progress);
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
 
     private FilterAdapter.OnFilterChangeListener filterChangeListener;
 
@@ -85,7 +122,7 @@ public class FilterPickerView extends LinearLayout {
     private boolean isOpen = false;
     private static int VIEW_MAX_HEIGHT = 0;
     private static final int ANIMATION_DURATION = 300;
-
+    private boolean isFirst = true;
     private void animationOpenAndClose(int startInt,int endInt){
         ValueAnimator animator = ValueAnimator.ofInt(startInt,endInt);
         animator.setDuration(ANIMATION_DURATION);
@@ -99,5 +136,9 @@ public class FilterPickerView extends LinearLayout {
             }
         });
         animator.start();
+        if (isFirst){
+            filterAdapter.notifyDataSetChanged();
+            isFirst = false;
+        }
     }
 }

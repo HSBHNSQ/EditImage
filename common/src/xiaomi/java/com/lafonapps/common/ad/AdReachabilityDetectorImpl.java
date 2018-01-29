@@ -47,15 +47,12 @@ public class AdReachabilityDetectorImpl implements AdReachabilityDetector {
 
     @Override
     public void start() {
-        //TODO: 待实现网络监听和权限监听
-        NotificationCenter.defaultCenter().addObserver(SplashAdActivity.ON_REQUEST_READ_PHONE_STATE_PERMISSION_RESULT_NOTIFICATION, permissionObserver);
-
+        NotificationCenter.defaultCenter().addObserver(SplashAdActivity.ON_REQUEST_AD_PERMISSION_RESULT_NOTIFICATION, permissionObserver);
     }
 
     @Override
     public void stop() {
-        //TODO: 待实现
-        NotificationCenter.defaultCenter().removeObserver(SplashAdActivity.ON_REQUEST_READ_PHONE_STATE_PERMISSION_RESULT_NOTIFICATION, permissionObserver);
+        NotificationCenter.defaultCenter().removeObserver(SplashAdActivity.ON_REQUEST_AD_PERMISSION_RESULT_NOTIFICATION, permissionObserver);
     }
 
 }

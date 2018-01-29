@@ -64,8 +64,6 @@ public class BrushView extends FrameLayout {
     private Bitmap mTmpMap;
     private Canvas mTmpCanvas;
 
-
-
     private float lastTouchX;
     private float lastTouchY;
 
@@ -86,12 +84,6 @@ public class BrushView extends FrameLayout {
         initAttributes(context,attrs);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public BrushView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-        initAttributes(context,attrs);
-    }
 
     public void setOnBrushViewListener(OnBrushViewListener listener){
         this.mBrushViewListener = listener;
@@ -396,7 +388,7 @@ public class BrushView extends FrameLayout {
                 return getDrawingCache(true);
             case BYTES:
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                getDrawingCache(true).compress(Bitmap.CompressFormat.PNG, 100, stream);
+                getDrawingCache(true).compress(Bitmap.CompressFormat.JPEG, 100, stream);
                 return stream.toByteArray();
         }
         return null;

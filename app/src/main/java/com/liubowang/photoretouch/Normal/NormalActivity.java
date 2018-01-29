@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +30,10 @@ import com.liubowang.photoretouch.R;
 import com.liubowang.photoretouch.Utils.BitmpUtil;
 import com.liubowang.photoretouch.Utils.FileUtil;
 import com.liubowang.photoretouch.Utils.ProgressHUD;
+import com.liubowang.photoretouch.Utils.ViewTransformUtil;
+import com.yalantis.ucrop.callback.BitmapLoadCallback;
+import com.yalantis.ucrop.model.ExifInfo;
+import com.yalantis.ucrop.util.BitmapLoadUtils;
 
 import java.io.File;
 
@@ -61,35 +68,41 @@ public class NormalActivity extends EIBaseActiviry implements TopToolView.OnTopA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal);
         Intent intent = getIntent();
-        if (intent.hasExtra("IMAGE_PATH")){
-            mImagePath = intent.getStringExtra("IMAGE_PATH");
-            Log.d(TAG,"ImagePath:"+mImagePath);
-        }
+
         initUI();
-        new Thread(new Runnable() {
+        if (intent != null && intent.hasExtra("IMAGE_PATH")){
+            mImagePath = intent.getStringExtra("IMAGE_PATH");
+            if (mImagePath != null){
+                setupImageView();
+            }
+        }
+        else if (intent != null && intent.hasExtra("IMAGE_URI")){
+            Uri imageUri = intent.getParcelableExtra("IMAGE_URI");
+            BitmapLoadUtils.decodeBitmapInBackground(this, imageUri, imageUri, 1024, 1024,
+                    new BitmapLoadCallback() {
+
+                        @Override
+                        public void onBitmapLoaded(@NonNull Bitmap bitmap, @NonNull ExifInfo exifInfo, @NonNull String imageInputPath, @Nullable String imageOutputPath) {
+                            mImagePath = imageOutputPath;
+                            setupImageView();
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Exception bitmapWorkerException) {
+
+                        }
+                    });
+        }
+
+    }
+
+    private void setupImageView(){
+        mRootView.post(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = BitmpUtil.getSuitableBitmapFromAlbum(NormalActivity.this,mImagePath);
-                if (bitmap == null){
-                    bitmap = BitmapFactory.decodeFile(mImagePath);
-                }
-                bitmap = BitmpUtil.getProperResizedImage(bitmap,1000);
-                final Bitmap finalBitmap = bitmap;
-                mImagePath = FileUtil.getCurrentTimeMillisPath("png");
-                FileUtil.writeBitmap(new File(mImagePath),bitmap);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRootView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                setViewSize();
-                            }
-                        });
-                    }
-                });
+                setViewSize();
             }
-        }).start();
+        });
     }
 
     private void initUI(){
@@ -467,33 +480,43 @@ public class NormalActivity extends EIBaseActiviry implements TopToolView.OnTopA
                 mContainerView.draw(canvas);
                 final Bitmap result = BitmpUtil.getProperResizedImage(viewBmp,1000);
                 viewBmp.recycle();
-//                final String path = FileUtil.getPictureResultPathWithName(System.currentTimeMillis()+"","png");
-//                final boolean success = FileUtil.writeBitmap(new File(path),result);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mStickerContainerView.setCurrentStickerViewSelected(true);
                         mProgressBar.setVisibility(View.INVISIBLE);
-                        SaveBitmapDialog saveBitmapDialog = SaveBitmapDialog.newInstance();
+                        final SaveBitmapDialog saveBitmapDialog = SaveBitmapDialog.newInstance();
                         saveBitmapDialog.setPreviewBitmap(result);
                         saveBitmapDialog.setAppName(getString(R.string.app_name));
                         saveBitmapDialog.setOnSaveBitmapListener(new SaveBitmapDialog.OnSaveBitmapListener() {
                             @Override
-                            public void onSaveBitmapCompleted(boolean success,String bmpPath) {
-                                String message = getString(R.string.ei_save_failed);
-                                if (success){
-                                    message = getString(R.string.ei_save_successful);
-                                }
-                                if (success){
-                                    Toast.makeText(NormalActivity.this,message+":"+bmpPath, Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(NormalActivity.this, ImageLookActivity.class);
-                                    intent.putExtra("IMAGE_PATH",bmpPath);
-                                    if (intent.resolveActivity(getPackageManager()) != null){
-                                        startActivity(intent);
+                            public void onStartSave() {
+                                mProgressBar.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onSaveBitmapCompleted(final boolean success, final String bmpPath) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        saveBitmapDialog.dismiss();
+                                        mProgressBar.setVisibility(View.INVISIBLE);
+                                        String message = getString(R.string.ei_save_failed);
+                                        if (success){
+                                            message = getString(R.string.ei_save_successful);
+                                        }
+                                        if (success){
+                                            Toast.makeText(NormalActivity.this,message+":"+bmpPath, Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(NormalActivity.this, ImageLookActivity.class);
+                                            intent.putExtra("IMAGE_PATH",bmpPath);
+                                            if (intent.resolveActivity(getPackageManager()) != null){
+                                                startActivity(intent);
+                                            }
+                                        }else {
+                                            Toast.makeText(NormalActivity.this,message, Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }else {
-                                    Toast.makeText(NormalActivity.this,message, Toast.LENGTH_SHORT).show();
-                                }
+                                });
                             }
 
                             @Override
@@ -523,5 +546,10 @@ public class NormalActivity extends EIBaseActiviry implements TopToolView.OnTopA
     @Override
     protected boolean shouldShowBannerView() {
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

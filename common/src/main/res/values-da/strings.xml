@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Hvis du kan lide at bruge %1$s, vil du så ikke bruge et øjeblik på at give en vurdering? Det tager ikke mere end et minut. Mange tak for hjælpen!</string>
+    <string name="rate_cancel_button_title">Nej tak</string>
+    <string name="rate_rate_button_title">Vurdér nu</string>
+    <string name="again_to_exit_app">Tryk på BACK-knappen igen for at afslutte</string>
+</resources>

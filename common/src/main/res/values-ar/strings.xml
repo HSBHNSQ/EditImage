@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">إذا أعجبك برنامج %1$s، هل تمانع من أخذ دقيقة لتقييمه؟ شكرا لدعمك!</string>
+    <string name="rate_cancel_button_title">لا، شكرا</string>
+    <string name="rate_rate_button_title">قيم البرنامج الآن</string>
+    <string name="again_to_exit_app">اضغط مرة أخرى للخروج من المفتاح</string>
+</resources>

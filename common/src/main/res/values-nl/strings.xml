@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Als het gebruik van %1$s je bevalt, wil je dan een moment nemen om het te beoordelen? Het duurt nog geen minuut. Bedankt voor je steun!</string>
+    <string name="rate_cancel_button_title">Nee, bedankt</string>
+    <string name="rate_rate_button_title">Beoordeel nu</string>
+    <string name="again_to_exit_app">Druk nogmaals op de knop BACK om uit te gaan</string>
+</resources>

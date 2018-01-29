@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">اگر شما از برنامه‌ی %1$s لذت بردین، عالی میشه اگه با این برنامه در اپ‌استور امتیاز دهید! این کار بیشتر از ۱ دقیقه طول نمی‌کشد. با تشکر از حمایت شما!</string>
+    <string name="rate_cancel_button_title">نه، با تشکر</string>
+    <string name="rate_rate_button_title">می‌خوام امتیاز بدم</string>
+    <string name="again_to_exit_app">برای خروج دوباره دکمه BACK را فشار دهید</string>
+</resources>

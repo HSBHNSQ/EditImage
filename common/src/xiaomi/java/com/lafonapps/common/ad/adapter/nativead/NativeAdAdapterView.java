@@ -9,7 +9,6 @@ import android.widget.FrameLayout;
 import com.lafonapps.common.ad.AdSize;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.NativeAdViewAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
 import com.lafonapps.common.utils.ViewUtil;
 import com.xiaomi.ad.AdListener;
 import com.xiaomi.ad.NativeAdInfoIndex;
@@ -25,9 +24,9 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdapter, SupportMutableListenerAdapter<NativeAdViewAdapter.Listener> {
+public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdapter {
     private static final String TAG = NativeAdAdapterView.class.getCanonicalName();
-
+    public static final boolean REUSEABLE = false;
     private StandardNewsFeedAd standardNewsFeedAd;
     private View adView;
     private Context context;
@@ -53,14 +52,6 @@ public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdap
         return this.ready;
     }
 
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return false;
-    }
-
     @Override
     public void build(AdModel adModel, AdSize adSize) {
         this.adModel = adModel;
@@ -70,95 +61,93 @@ public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdap
 
     @Override
     public void loadAd() {
-        standardNewsFeedAd.requestAd(adModel.getXiaomiAdID(), 1, new NativeAdListener() {
-            @Override
-            public void onNativeInfoFail(AdError adError) {
-                Log.d(TAG, "onNativeInfoFail:" + adError);
+        try {
+            standardNewsFeedAd.requestAd(adModel.getXiaomiAdID(), 1, new NativeAdListener() {
+                @Override
+                public void onNativeInfoFail(AdError adError) {
+                    Log.d(TAG, "onNativeInfoFail:" + adError);
 
-                Listener[] listeners = getAllListeners();
-                for (Listener listener : listeners) {
-                    listener.onAdFailedToLoad(NativeAdAdapterView.this, adError.value());
+                    Listener[] listeners = getAllListeners();
+                    for (Listener listener : listeners) {
+                        listener.onAdFailedToLoad(NativeAdAdapterView.this, adError.value());
+                    }
                 }
-            }
 
-            @Override
-            public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
-                NativeAdInfoIndex response = list.get(0);
-                int width = getWidth() > 0 ? getWidth() : ViewUtil.getDeviceWidthInPx();
-                standardNewsFeedAd.buildViewAsync(response, width, new AdListener() {
-                    @Override
-                    public void onAdError(AdError adError) {
-                        Log.d(TAG, "onAdError:" + adError);
+                @Override
+                public void onNativeInfoSuccess(List<NativeAdInfoIndex> list) {
+                    NativeAdInfoIndex response = list.get(0);
+                    int width = getWidth() > 0 ? getWidth() : ViewUtil.getDeviceWidthInPx();
+                    standardNewsFeedAd.buildViewAsync(response, width, new AdListener() {
+                        @Override
+                        public void onAdError(AdError adError) {
+                            Log.d(TAG, "onAdError:" + adError);
 
-                        Listener[] listeners = getAllListeners();
-                        for (Listener listener : listeners) {
-                            listener.onAdFailedToLoad(NativeAdAdapterView.this, adError.value());
+                            Listener[] listeners = getAllListeners();
+                            for (Listener listener : listeners) {
+                                listener.onAdFailedToLoad(NativeAdAdapterView.this, adError.value());
+                            }
+
+                            removeAllViews();
                         }
 
-                        removeAllViews();
-                    }
+                        @Override
+                        public void onAdEvent(AdEvent adEvent) {
+                            Log.d(TAG, "onAdEvent:" + adEvent.name());
 
-                    @Override
-                    public void onAdEvent(AdEvent adEvent) {
-                        Log.d(TAG, "onAdEvent:" + adEvent.name());
-
-                        Listener[] listeners = getAllListeners();
-                        if (adEvent.mType == AdEvent.TYPE_SKIP) {
-                            for (Listener listener : listeners) {
-                                listener.onAdClosed(NativeAdAdapterView.this);
-                            }
-                        } else if (adEvent.mType == AdEvent.TYPE_CLICK) {
-                            for (Listener listener : listeners) {
-                                listener.onAdOpened(NativeAdAdapterView.this);
-                            }
-                        } else if (adEvent.mType == AdEvent.TYPE_FINISH) {
-                            for (Listener listener : listeners) {
-                                listener.onAdClosed(NativeAdAdapterView.this);
-                            }
-                        } else if (adEvent.mType == AdEvent.TYPE_APP_LAUNCH_SUCCESS) {
-                            for (Listener listener : listeners) {
-                                listener.onAdLeftApplication(NativeAdAdapterView.this);
+                            Listener[] listeners = getAllListeners();
+                            if (adEvent.mType == AdEvent.TYPE_SKIP) {
+                                for (Listener listener : listeners) {
+                                    listener.onAdClosed(NativeAdAdapterView.this);
+                                }
+                            } else if (adEvent.mType == AdEvent.TYPE_CLICK) {
+                                for (Listener listener : listeners) {
+                                    listener.onAdOpened(NativeAdAdapterView.this);
+                                }
+                            } else if (adEvent.mType == AdEvent.TYPE_FINISH) {
+                                for (Listener listener : listeners) {
+                                    listener.onAdClosed(NativeAdAdapterView.this);
+                                }
+                            } else if (adEvent.mType == AdEvent.TYPE_APP_LAUNCH_SUCCESS) {
+                                for (Listener listener : listeners) {
+                                    listener.onAdLeftApplication(NativeAdAdapterView.this);
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onAdLoaded() {
-                        Log.d(TAG, "onAdLoaded");
-                        ready = true;
-                        Listener[] listeners = getAllListeners();
-                        for (Listener listener : listeners) {
-                            listener.onAdLoaded(NativeAdAdapterView.this);
+                        @Override
+                        public void onAdLoaded() {
+                            Log.d(TAG, "onAdLoaded");
+                            ready = true;
+                            Listener[] listeners = getAllListeners();
+                            for (Listener listener : listeners) {
+                                listener.onAdLoaded(NativeAdAdapterView.this);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onViewCreated(View view) {
-                        Log.e(TAG, "onViewCreated:" + view);
+                        @Override
+                        public void onViewCreated(View view) {
+                            Log.e(TAG, "onViewCreated:" + view);
 
-                        adView = view;
+                            adView = view;
 
-                        removeAllViews();
-                        addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    }
-                });
-            }
-        });
+                            removeAllViews();
+                            try {
+                                addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public View getAdapterAdView() {
         return adView;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
     }
 
     /* SupportMutableListenerAdapter */

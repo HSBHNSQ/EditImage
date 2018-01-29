@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="skip">跳过</string>
+
+    <!-- 提示评论 -->
+    <string name="no_market_install_message">您没有安装任何应用市场</string>
+    <string name="again_to_exit_app">再按一次返回键退出</string>
+    <string name="rate_message">如果您觉得"%1$s"很好用，可否为其评一个分数？评分过程只需花费很少的时间。感谢您的支持！</string>
+    <string name="rate_rate_button_title">现在去评分</string>
+    <string name="rate_cancel_button_title">不了，谢谢</string>
+    <string name="rate_good_app">好用，去评分</string>
+    <string name="rate_bad_app">我要吐槽</string>
+
+    <!-- 问题和建议 -->
+    <string name="issues_and_suggestions">问题和建议</string>
+    <string name="please_describe_your_issues_or_suggestions_here">请在此处描述您的问题或建议</string>
+    <string name="select_mail_client">选择邮件客户端</string>
+
+    <!-- 意见反馈 -->
+    <string name="think_this_app_feel">您觉得"%1$s"好用吗？</string>
+    <string name="easy_to_use">好用</string>
+    <string name="not_easy_to_use">不好用</string>
+    <string name="go_app_store_rate">去应用商店给个评价吧！</string>
+    <string name="can_ren_ju_jue">残忍拒绝</string>
+    <string name="liu_jian_yi_p">留下您的宝贵建议，帮助我们改进产品</string>
+    <string name="jian_yin_item_title">让您觉得不好用的原因是:</string>
+    <string name="other_suggestion">其他原因:</string>
+    <string name="suggestion_hint">请写下您的意见和建议...</string>
+    <string name="user_info_title">留下联系方式便于我们回复您(选填)</string>
+    <string name="uset_name">您的姓名</string>
+    <string name="uset_contact">Tel/Email/QQ</string>
+    <string name="ti_jiao">提交</string>
+    <string name="ti_jiao_again">重新提交</string>
+    <string name="ad_too_more">广告太多</string>
+    <string name="application_too_simple">应用功能太简单</string>
+    <string name="rough_interface_design">界面设计粗糙</string>
+    <string name="interaction_not_reasonable">功能交互不合理</string>
+    <string name="ti_jiao_faile">意见反馈，提交失败！</string>
+    <string name="ti_jiao_success">意见反馈，提交成功！</string>
+    <string name="thanks_very_much">非常感谢您的建议，我们会尽快改进！</string>
+    <string name="cancel">取消</string>
+</resources>

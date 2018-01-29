@@ -102,8 +102,6 @@ public class EIBaseActiviry extends BaseActivity {
 
     public void permissionRecordAllow(){}
     public void permissionSDCardAllow(){}
-
-
     public void requestSDCardPermission(){
 
         int hasWritePermission = ContextCompat.checkSelfPermission(this,

@@ -2,39 +2,34 @@
 
     package="com.lafonapps.common">
 
-    <!-- Include required permissions for OPPO Ads to run-->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!--SDK 必选权限配置开始-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 如果需要精确定位的话请加上此权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <!--SDK 必选权限配置结束-->
+
+    <!--SDK 可选权限配置开始；建议应用配置定位权限，可以提升应用的广告收益-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--如果应用需要精准定位的话加上该权限-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--SDK 可选权限配置结束-->
 
 
     <application>
-        <service
-            android:name="com.qq.e.comm.DownloadService"
-            android:exported="false" /> <!-- 请开发者注意字母的大小写，ADActivity，而不是 AdActivity -->
-        <activity
-            android:name="com.qq.e.ads.ADActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
-        <!-- 非信息广告必须添加 -->
-        <activity
-            android:name="com.baidu.mobads.AppActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- 信息流广告必须添加 -->
-        <activity
-            android:name="com.baidu.mobad.feeds.BaiduActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation" />
+        <!--<activity-->
+            <!--android:name="com.oppo.mobaddemo.activity.SplashActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />-->
+        <!--SDK 必选组件配置开始-->
+        <activity android:name="com.oppo.mobad.activity.AdActivity" />
 
-        <!-- 信息流广告必须添加 -->
-        <activity
-            android:name="com.lafonapps.common.ad.adapter.interstitial.InterstitialAdAdapter$InterstitialAdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation" />
-
+        <service android:name="com.oppo.mobad.service.AdService" />
+        <!--SDK 必选组件配置结束-->
     </application>
 
 </manifest>

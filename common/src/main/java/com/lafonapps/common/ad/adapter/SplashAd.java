@@ -18,7 +18,10 @@ public interface SplashAd {
     /* 指定默认图资源ID，在没有加载到广告之前会展示 */
     public void setDefaultImage(int drawableID);
 
-    /* 加载并展示广告 */
+    /** 加载并展示广告 */
     public void loadAndDisplay();
+
+    /** 隐藏广告  */
+    public void dismissSplashAd();
 
 }

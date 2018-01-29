@@ -1,9 +1,9 @@
 package com.lafonapps.common.ad;
 
-import android.content.Context;
+import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.lafonapps.common.Common;
 import com.lafonapps.common.ad.adapter.AdAdapter;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.BannerViewAdapter;
@@ -14,6 +14,7 @@ import com.lafonapps.common.ad.adapter.banner.BannerAdapterView;
 import com.lafonapps.common.ad.adapter.interstitial.InterstitialAdAdapter;
 import com.lafonapps.common.ad.adapter.nativead.NativeAdAdapterView;
 import com.lafonapps.common.ad.adapter.reward.AnimationRewardVideoAdAdapter;
+import com.lafonapps.common.preferences.CommonConfig;
 import com.lafonapps.common.preferences.Preferences;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class AdManager {
 
     private Map<String, BannerAdapterView> bannerAdapterViewPool = new HashMap<>();
     private Map<String, NativeAdAdapterView> nativeAdAdapterViewPool = new HashMap<>();
-    private InterstitialAdAdapter interstitialAdAdapter;
+    private Map<String, InterstitialAdAdapter> interstitialAdAdapterPool = new HashMap<>();
 
     private List<AdAdapter> waitingForReachedAdAdapters = new ArrayList<>(5);
     private AdReachabilityDetector detector = new AdReachabilityDetectorImpl();
@@ -66,106 +67,108 @@ public class AdManager {
         return sharedAdManager;
     }
 
-    public BannerAdapterView getBannerAdapterView(AdSize adSize, Context context, BannerViewAdapter.Listener listener) {
-        String key = adSize.toString();
-        if (context == null) {
-            context = Common.getSharedApplication();
+    public BannerAdapterView getBannerAdapterView(AdSize adSize, Activity activity, BannerViewAdapter.Listener listener) {
+        String key4Size = adSize.toString();
+        String key4SizeAndActivity = key4Size + "_" + activity.hashCode();
+        String key = key4SizeAndActivity;
+        if (BannerViewAdapter.REUSEABLE) {
+            key = key4Size;
         }
         BannerAdapterView adapterView = bannerAdapterViewPool.get(key);
         if (adapterView != null) {
-
+            adapterView.addListener(listener);
         } else {
             synchronized (bannerAdapterViewBuilderLock) {
                 AdModel adModel = new AdModel();
-                adModel.setAdmobAdID(Preferences.getSharedPreference().getBannerAdUnitID4Admob());
-                adModel.setFacebookAdID(Preferences.getSharedPreference().getBannerAdUnitID4Facebook());
-                adModel.setXiaomiAdID(Preferences.getSharedPreference().getBannerAdUnitID4XiaoMi());
-                adModel.setOppoAdID(Preferences.getSharedPreference().getBannerAdUnitID4OPPO());
-                adModel.setTencentAdID(Preferences.getSharedPreference().getBannerAdUnitID4Tencent());
+                adModel.setAdmobAdID(CommonConfig.sharedCommonConfig.bannerAdUnitID4Admob);
+                adModel.setXiaomiAdID(CommonConfig.sharedCommonConfig.bannerAdUnitID4XiaoMi);
+                adModel.setOppoAdID(CommonConfig.sharedCommonConfig.bannerAdUnitID4OPPO);
+                adModel.setTencentAdID(CommonConfig.sharedCommonConfig.bannerAdUnitID4Tencent);
 
-                adapterView = new BannerAdapterView(context);
+                adapterView = new BannerAdapterView(activity);
+                adapterView.addListener(listener);
                 adapterView.setDebugDevices(Preferences.getSharedPreference().getTestDevices());
                 adapterView.build(adModel, adSize);
 
-                if (adapterView.reuseable()) {
-                    bannerAdapterViewPool.put(key, adapterView);
-                }
+                bannerAdapterViewPool.put(key, adapterView);
             }
-            if (adReachedOnce) {
-                adapterView.loadAd();
-            } else {
-                if (!waitingForReachedAdAdapters.contains(adapterView)) {
-                    waitingForReachedAdAdapters.add(adapterView);
+            if (CommonConfig.sharedCommonConfig.shouldShowBannerView) {
+                if (adReachedOnce) {
+                    adapterView.loadAd();
+                } else {
+                    if (!waitingForReachedAdAdapters.contains(adapterView)) {
+                        waitingForReachedAdAdapters.add(adapterView);
+                    }
                 }
+            } else {
+                Log.d(TAG, "showBannerView == false, will not load Banner Ad");
             }
         }
 
-        adapterView.addListener(listener);
         return adapterView;
     }
 
     /* 小尺寸的原生广告, 高度80~1200 */
-    public NativeAdAdapterView getNativeAdAdapterView(AdSize adSize, Context context, NativeAdViewAdapter.Listener listener) {
-        return getNativeAdAdapterViewFor80H(adSize, context, listener);
+    public NativeAdAdapterView getNativeAdAdapterView(AdSize adSize, Activity activity, NativeAdViewAdapter.Listener listener) {
+        return getNativeAdAdapterViewFor80H(adSize, activity, listener);
     }
 
     /* 小尺寸的原生广告, 高度80~1200 */
-    public NativeAdAdapterView getNativeAdAdapterViewFor80H(AdSize adSize, Context context, NativeAdViewAdapter.Listener listener) {
+    public NativeAdAdapterView getNativeAdAdapterViewFor80H(AdSize adSize, Activity activity, NativeAdViewAdapter.Listener listener) {
         String flag = "80~1200";
         AdModel adModel = new AdModel();
-        adModel.setAdmobAdID(Preferences.getSharedPreference().getNativeAdUnitID4Admob());
-        adModel.setFacebookAdID(Preferences.getSharedPreference().getNativeAdUnitID4Facebook());
-        adModel.setXiaomiAdID(Preferences.getSharedPreference().getNativeAdUnitID4XiaoMi());
-        adModel.setOppoAdID(Preferences.getSharedPreference().getNativeAdUnitID4OPPO());
-        adModel.setTencentAdID(Preferences.getSharedPreference().getNativeAdUnitID4Tencent());
+        adModel.setAdmobAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID4Admob);
+        adModel.setXiaomiAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID4XiaoMi);
+        adModel.setOppoAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID4OPPO);
+        adModel.setTencentAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID4Tencent);
 
-        return getNativeAdAdapterViewForCustomerSize(adSize, flag, adModel, context, listener);
+        return getNativeAdAdapterViewForCustomerSize(adSize, flag, adModel, activity, listener);
     }
 
     /* 中等尺寸的原生广告, 高度132~1200 */
-    public NativeAdAdapterView getNativeAdAdapterViewFor132H(AdSize adSize, Context context, NativeAdViewAdapter.Listener listener) {
+    public NativeAdAdapterView getNativeAdAdapterViewFor132H(AdSize adSize, Activity activity, NativeAdViewAdapter.Listener listener) {
         String flag = "132~1200";
         AdModel adModel = new AdModel();
-        adModel.setAdmobAdID(Preferences.getSharedPreference().getNativeAdUnitID132H4Admob());
-        adModel.setFacebookAdID(Preferences.getSharedPreference().getNativeAdUnitID132H4Facebook());
-        adModel.setXiaomiAdID(Preferences.getSharedPreference().getNativeAdUnitID132H4XiaoMi());
-        adModel.setOppoAdID(Preferences.getSharedPreference().getNativeAdUnitID132H4OPPO());
-        adModel.setTencentAdID(Preferences.getSharedPreference().getNativeAdUnitID132H4Tencent());
+        adModel.setAdmobAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID132H4Admob);
+        adModel.setXiaomiAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID132H4XiaoMi);
+        adModel.setOppoAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID132H4OPPO);
+        adModel.setTencentAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID132H4Tencent);
 
-        return getNativeAdAdapterViewForCustomerSize(adSize, flag, adModel, context, listener);
+        return getNativeAdAdapterViewForCustomerSize(adSize, flag, adModel, activity, listener);
     }
 
     /* 大尺寸的原生广告, 高度250~1200 */
-    public NativeAdAdapterView getNativeAdAdapterViewFor250H(AdSize adSize, Context context, NativeAdViewAdapter.Listener listener) {
+    public NativeAdAdapterView getNativeAdAdapterViewFor250H(AdSize adSize, Activity activity, NativeAdViewAdapter.Listener listener) {
         String flag = "250~1200";
         AdModel adModel = new AdModel();
-        adModel.setAdmobAdID(Preferences.getSharedPreference().getNativeAdUnitID250H4Admob());
-        adModel.setFacebookAdID(Preferences.getSharedPreference().getNativeAdUnitID250H4Facebook());
-        adModel.setXiaomiAdID(Preferences.getSharedPreference().getNativeAdUnitID250H4XiaoMi());
-        adModel.setOppoAdID(Preferences.getSharedPreference().getNativeAdUnitID250H4OPPO());
-        adModel.setTencentAdID(Preferences.getSharedPreference().getNativeAdUnitID250H4Tencent());
+        adModel.setAdmobAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID250H4Admob);
+        adModel.setXiaomiAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID250H4XiaoMi);
+        adModel.setOppoAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID250H4OPPO);
+        adModel.setTencentAdID(CommonConfig.sharedCommonConfig.nativeAdUnitID250H4Tencent);
 
-        return getNativeAdAdapterViewForCustomerSize(adSize, flag, adModel, context, listener);
+        return getNativeAdAdapterViewForCustomerSize(adSize, flag, adModel, activity, listener);
     }
 
     /* 自定义尺寸的原生广告，可以指定广告单元ID, 当一个应用中用到几个同等规格的原生广告时会用到此方法 高度80~1200 */
-    public NativeAdAdapterView getNativeAdAdapterViewForCustomerSize(AdSize adSize, String flag, AdModel adModel, Context context, NativeAdViewAdapter.Listener listener) {
-        String key = adSize.toString();
-        if (context == null) {
-            context = Common.getSharedApplication();
+    public NativeAdAdapterView getNativeAdAdapterViewForCustomerSize(AdSize adSize, String flag, AdModel adModel, Activity activity, NativeAdViewAdapter.Listener listener) {
+        String key4Size = adSize.toString();
+        String key4SizeAndActivity = key4Size + "_" + activity.hashCode();
+        String key = key4SizeAndActivity;
+        if (NativeAdAdapterView.REUSEABLE) {
+            key = key4Size;
         }
         NativeAdAdapterView adapterView = nativeAdAdapterViewPool.get(key);
         if (adapterView != null) {
-
+            adapterView.addListener(listener);
         } else {
             synchronized (nativeAdAdapterViewBuilderLock) {
-                adapterView = new NativeAdAdapterView(context);
+                adapterView = new NativeAdAdapterView(activity);
+                adapterView.addListener(listener);
                 adapterView.setDebugDevices(Preferences.getSharedPreference().getTestDevices());
                 adapterView.build(adModel, adSize);
 
-                if (adapterView.reuseable()) {
-                    nativeAdAdapterViewPool.put(key, adapterView);
-                }
+                nativeAdAdapterViewPool.put(key, adapterView);
+
             }
             if (adReachedOnce) {
                 adapterView.loadAd();
@@ -175,44 +178,47 @@ public class AdManager {
                 }
             }
         }
-        adapterView.addListener(listener);
         return adapterView;
     }
 
     /* 全屏广告 */
-    public InterstitialAdAdapter getInterstitialAdAdapter(Context context, InterstitialAdapter.Listener listener) {
-        if (context == null) {
-            context = Common.getSharedApplication();
+    public InterstitialAdAdapter getInterstitialAdAdapter(@NonNull Activity activity, InterstitialAdapter.Listener listener) {
+        String key4Global = "Global";
+        String key4Activity = "" + activity.hashCode();
+        String key = key4Activity;
+        if (InterstitialAdAdapter.REUSEABLE) {
+            key = key4Global;
         }
-
-        InterstitialAdAdapter adAdapter = interstitialAdAdapter;
-        if (adAdapter == null) {
+        InterstitialAdAdapter adAdapter = interstitialAdAdapterPool.get(key);
+        if (adAdapter != null) {
+            adAdapter.addListener(listener);
+        } else {
             synchronized (interstitialAdapterBuilderLock) {
                 AdModel adModel = new AdModel();
-                adModel.setAdmobAdID(Preferences.getSharedPreference().getInterstitialAdUnitID4Admob());
-                adModel.setFacebookAdID(Preferences.getSharedPreference().getInterstitialAdUnitID4Facebook());
-                adModel.setXiaomiAdID(Preferences.getSharedPreference().getInterstitialAdUnitID4XiaoMi());
-                adModel.setOppoAdID(Preferences.getSharedPreference().getInterstitialAdUnitID4OPPO());
-                adModel.setTencentAdID(Preferences.getSharedPreference().getInterstitialAdUnitID4Tencent());
+                adModel.setAdmobAdID(CommonConfig.sharedCommonConfig.interstitialAdUnitID4Admob);
+                adModel.setXiaomiAdID(CommonConfig.sharedCommonConfig.interstitialAdUnitID4XiaoMi);
+                adModel.setOppoAdID(CommonConfig.sharedCommonConfig.interstitialAdUnitID4OPPO);
+                adModel.setTencentAdID(CommonConfig.sharedCommonConfig.interstitialAdUnitID4Tencent);
 
-                adAdapter = new InterstitialAdAdapter(context);
+                adAdapter = new InterstitialAdAdapter(activity);
+                adAdapter.addListener(listener);
                 adAdapter.setDebugDevices(Preferences.getSharedPreference().getTestDevices());
                 adAdapter.build(adModel);
 
-                if (adAdapter.reuseable()) {
-                    interstitialAdAdapter = adAdapter;
-                }
-
+                interstitialAdAdapterPool.put(key, adAdapter);
             }
-            if (adReachedOnce) {
-                adAdapter.loadAd();
-            } else {
-                if (!waitingForReachedAdAdapters.contains(adAdapter)) {
-                    waitingForReachedAdAdapters.add(adAdapter);
+            if (CommonConfig.sharedCommonConfig.shouldShowInterstitialAd) {
+                if (adReachedOnce) {
+                    adAdapter.loadAd();
+                } else {
+                    if (!waitingForReachedAdAdapters.contains(adAdapter)) {
+                        waitingForReachedAdAdapters.add(adAdapter);
+                    }
                 }
+            } else {
+                Log.d(TAG, "showInterstitialAd == false, will not load Interstitial Ad");
             }
         }
-        adAdapter.addListener(listener);
         return adAdapter;
     }
 

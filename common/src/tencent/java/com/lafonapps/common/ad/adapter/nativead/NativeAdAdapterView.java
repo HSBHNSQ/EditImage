@@ -2,18 +2,20 @@ package com.lafonapps.common.ad.adapter.nativead;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.lafonapps.common.Common;
 import com.lafonapps.common.ad.AdSize;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.NativeAdViewAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
 import com.lafonapps.common.preferences.CommonConfig;
-import com.qq.e.ads.nativ.NativeAD;
-import com.qq.e.ads.nativ.NativeADDataRef;
+import com.lafonapps.common.utils.ViewUtil;
+import com.qq.e.ads.nativ.ADSize;
+import com.qq.e.ads.nativ.NativeExpressAD;
+import com.qq.e.ads.nativ.NativeExpressADView;
+import com.qq.e.comm.util.AdError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +24,12 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdapter, SupportMutableListenerAdapter<NativeAdViewAdapter.Listener> {
+public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdapter {
     private static final String TAG = NativeAdAdapterView.class.getCanonicalName();
+    public static final boolean REUSEABLE = false;
+    private NativeExpressAD nativeExpressAD;
+    private NativeExpressADView adView;
 
-    private NativeAD adView;
     private Context context;
     private String[] debugDevices;
     private boolean ready;
@@ -39,7 +43,7 @@ public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdap
 
     @Override
     public void setDebugDevices(String[] debugDevices) {
-        this.debugDevices = debugDevices;
+        this.debugDevices = debugDevices.clone();
     }
 
     @Override
@@ -47,79 +51,122 @@ public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdap
         return this.ready;
     }
 
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return true;
-    }
-
     @Override
     public void build(AdModel adModel, AdSize adSize) {
-        NativeAD.NativeAdListener listener = new NativeAD.NativeAdListener() {
-            @Override
-            public void onADLoaded(List<NativeADDataRef> list) {
-                Log.d(TAG, "onADLoaded");
-                Listener[] listeners = getAllListeners();
-                for (Listener listener : listeners) {
-                    listener.onAdLoaded(NativeAdAdapterView.this);
-                }
-            }
+        nativeExpressAD = new NativeExpressAD(context, new ADSize(adSize.getWidth(), adSize.getHeight()), CommonConfig.sharedCommonConfig.appID4Tencent, adModel.getTencentAdID(), new NativeExpressAD.NativeExpressADListener() {
+                    @Override
+                    public void onNoAD(AdError error) {
+                        Log.w(TAG, "onNoAD:" + error.getErrorCode() + "msg:" + error.getErrorMsg());
 
-            @Override
-            public void onNoAD(int i) {
-                Log.d(TAG, "onNoAD:"+i);
-                Listener[] listeners = getAllListeners();
-                for (Listener listener : listeners) {
-                    listener.onAdFailedToLoad(NativeAdAdapterView.this,i);
-                }
-            }
+                        Listener[] listeners = getAllListeners();
+                        for (Listener listener : listeners) {
+                            listener.onAdFailedToLoad(NativeAdAdapterView.this, error.getErrorCode());
+                        }
+                    }
 
-            @Override
-            public void onADStatusChanged(NativeADDataRef nativeADDataRef) {
-                Log.d(TAG, "onADStatusChanged");
-                Listener[] listeners = getAllListeners();
-                for (Listener listener : listeners) {
-                    listener.onAdLeftApplication(NativeAdAdapterView.this);
-                }
-            }
+                    @Override
+                    public void onADLoaded(List<NativeExpressADView> list) {
+                        if (list.size() > 0) {
+                            Log.d(TAG, "onADLoaded");
 
-            @Override
-            public void onADError(NativeADDataRef nativeADDataRef, int i) {
-                Log.d(TAG, "onADError:"+i);
-                Listener[] listeners = getAllListeners();
-                for (Listener listener : listeners) {
-                    listener.onAdFailedToLoad(NativeAdAdapterView.this,i);
-                }
-            }
-        };
+                            // 释放前一个NativeExpressADView的资源
+                            if (adView != null) {
+                                adView.destroy();
+                            }
 
-        this.adView = new NativeAD(context,
-                CommonConfig.sharedCommonConfig.appID4Tencent,
-                CommonConfig.sharedCommonConfig.nativeAdUnitID250H4Tencent,
-                listener);
+                            adView = list.get(0);
+                            // 保证View被绘制的时候是可见的，否则将无法产生曝光和收益。
+                            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            layoutParams.gravity = Gravity.CENTER;
+                            ViewUtil.addView(NativeAdAdapterView.this, adView, layoutParams);
+
+                            adView.render();
+
+                            Listener[] listeners = getAllListeners();
+                            for (Listener listener : listeners) {
+                                listener.onAdLoaded(NativeAdAdapterView.this);
+                            }
+
+                        } else {
+                            Log.d(TAG, "onADLoaded, list.size == 0");
+
+                            Listener[] listeners = getAllListeners();
+                            for (Listener listener : listeners) {
+                                listener.onAdFailedToLoad(NativeAdAdapterView.this, -100);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onRenderFail(NativeExpressADView nativeExpressADView) {
+                        Log.w(TAG, "onRenderFail");
+
+                        Listener[] listeners = getAllListeners();
+                        for (Listener listener : listeners) {
+                            listener.onAdFailedToLoad(NativeAdAdapterView.this, -101);
+                        }
+                    }
+
+                    @Override
+                    public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
+                        Log.d(TAG, "onRenderSuccess");
+
+                        ready = true;
+                    }
+
+                    @Override
+                    public void onADExposure(NativeExpressADView nativeExpressADView) {
+                        Log.d(TAG, "onADExposure");
+
+                    }
+
+                    @Override
+                    public void onADClicked(NativeExpressADView nativeExpressADView) {
+                        Log.d(TAG, "onADClicked");
+
+                        Listener[] listeners = getAllListeners();
+                        for (Listener listener : listeners) {
+                            listener.onAdOpened(NativeAdAdapterView.this);
+                        }
+                    }
+
+                    @Override
+                    public void onADClosed(NativeExpressADView nativeExpressADView) {
+                        Log.d(TAG, "onADClosed");
+
+                        Listener[] listeners = getAllListeners();
+                        for (Listener listener : listeners) {
+                            listener.onAdClosed(NativeAdAdapterView.this);
+                        }
+                    }
+
+                    @Override
+                    public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
+                        Log.d(TAG, "onADLeftApplication");
+
+                        Listener[] listeners = getAllListeners();
+                        for (Listener listener : listeners) {
+                            listener.onAdLeftApplication(NativeAdAdapterView.this);
+                        }
+                    }
+
+                    @Override
+                    public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
+                        Log.d(TAG, "onADOpenOverlay");
+
+                    }
+                });
 
     }
 
     @Override
     public void loadAd() {
-        adView.loadAD(1);
+        nativeExpressAD.loadAD(1);
     }
 
     @Override
     public View getAdapterAdView() {
-        return null;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
+        return adView;
     }
 
     /* SupportMutableListenerAdapter */

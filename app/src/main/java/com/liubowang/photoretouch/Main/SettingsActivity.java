@@ -43,7 +43,7 @@ public class SettingsActivity extends EIBaseActiviry implements SettingsAdapter.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ImageView imageView = (ImageView) findViewById(R.id.iv_top_image_set);
         setStatusBar(imageView);
-
+        setTitle(null);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_settings);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
@@ -66,9 +66,9 @@ public class SettingsActivity extends EIBaseActiviry implements SettingsAdapter.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-//            case android.R.id.home:
-//                finish();
-//                return true;
+            case android.R.id.home:
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

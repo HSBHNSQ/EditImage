@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view_text"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_2C2E30"
+    tools:context="com.liubowang.photoretouch.Text.TextActivity">
+
+    <ImageView
+        android:id="@+id/iv_status_adjust"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:background="@color/color_2C2E30"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/cl_container_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ib_save_text">
+
+        <ImageView
+            android:id="@+id/iv_original_image_text"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_banner_container_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/ll_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
+            <SeekBar
+                android:id="@+id/sb_alpha_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_change_color_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/ei_change_color"
+                android:textColor="@color/color_565859"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_text_type_recycle_view_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_color_recycle_view_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_2"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/ll_banner_container_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.liubowang.photoretouch.Normal.ImageTextButton
+            android:id="@+id/itb_style_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="true"
+            app:normal_background="@color/color_242527"
+            app:normal_image="@drawable/stylegrey"
+            app:normal_text="@string/ei_style"
+            app:normal_text_color="@color/color_565859"
+            app:selected_background="@color/color_242527"
+            app:selected_image="@drawable/stylewhite"
+            app:selected_text="@string/ei_style"
+            app:selected_text_color="@color/color_FFFFFF"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="-28dp"
+            tools:layout_editor_absoluteY="33dp" />
+
+        <com.liubowang.photoretouch.Normal.ImageTextButton
+            android:id="@+id/itb_color_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="false"
+            app:normal_background="@color/color_242527"
+            app:normal_image="@drawable/colorgrey"
+            app:normal_text="@string/ei_color"
+            app:normal_text_color="@color/color_565859"
+            app:selected_background="@color/color_242527"
+            app:selected_image="@drawable/colorwhite"
+            app:selected_text="@string/ei_color"
+            app:selected_text_color="@color/color_FFFFFF"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="320dp"
+            tools:layout_editor_absoluteY="8dp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ib_save_text"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#00000000"
+
+        app:layout_constraintTop_toBottomOf="@+id/iv_status_adjust"
+        app:srcCompat="@drawable/baocun" />
+
+</android.support.constraint.ConstraintLayout>

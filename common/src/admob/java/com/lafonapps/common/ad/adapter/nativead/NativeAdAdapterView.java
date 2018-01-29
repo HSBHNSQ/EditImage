@@ -12,7 +12,6 @@ import com.google.android.gms.ads.NativeExpressAdView;
 import com.lafonapps.common.ad.AdSize;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.NativeAdViewAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +20,9 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdapter, SupportMutableListenerAdapter<NativeAdViewAdapter.Listener> {
+public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdapter {
     private static final String TAG = NativeAdAdapterView.class.getCanonicalName();
-
+    public static final boolean REUSEABLE = true;
     private NativeExpressAdView adView;
     private Context context;
     private String[] debugDevices;
@@ -45,14 +44,6 @@ public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdap
     @Override
     public boolean isReady() {
         return this.ready;
-    }
-
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return true;
     }
 
     @Override
@@ -131,16 +122,6 @@ public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdap
     @Override
     public View getAdapterAdView() {
         return adView;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
     }
 
     /* SupportMutableListenerAdapter */

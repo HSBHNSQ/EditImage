@@ -4,7 +4,11 @@ package com.lafonapps.common.ad.adapter;
  * Created by chenjie on 2017/8/21.
  */
 
-public interface AdAdapter {
+public interface AdAdapter<L> extends SupportMutableListenerAdapter<L> {
+    /**
+     * 广告是否可以在多个界面重用
+     */
+    public static final boolean REUSEABLE = false;
 
     /**
      * 调试用的设备ID数组
@@ -22,10 +26,5 @@ public interface AdAdapter {
      * 加载广告
      */
     public void loadAd();
-
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    public boolean reuseable();
 
 }

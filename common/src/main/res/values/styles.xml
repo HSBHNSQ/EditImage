@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="SplashTransformAnimationTheme" parent="@android:style/Theme.Holo.NoActionBar.Fullscreen">
+        <!-- Customize your theme here. -->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="Android:windowEnterTransition">@transition/fadein.xml</item>-->
+        <!--<item name="Android:windowExitTransition">@transition/fadeout.xml</item>-->
+    </style>
+
+</resources>

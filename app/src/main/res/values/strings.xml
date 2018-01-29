@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">修图-天天P美图软件轻松抠图大师</string>
     <string name="cancel">取消</string>
     <string name="sure">确定</string>
@@ -9,7 +9,7 @@
     <string name="ei_graffit">涂鸦</string>
     <string name="ei_eraser">橡皮擦</string>
     <string name="ei_processing">正在处理...</string>
-    <string name="ei_cutout">抠图</string>
+    <string name="ei_cutout">选区</string>
     <string name="ei_preview">预览</string>
     <string name="ei_files">我的图片</string>
     <string name="ei_GRAY">灰色</string>
@@ -23,6 +23,24 @@
     <string name="ei_effect_">特效</string>
     <string name="ei_normal">常规修图</string>
     <string name="ei_effect">特效精选</string>
+    <string name="ei_crop">裁剪</string>
+    <string name="ei_image_path">图片路径</string>
+    <string name="ei_text">文字</string>
+    <string name="ei_plz_input_text">请输入文字</string>
+    <string name="ei_small_adjust">局部调整</string>
+    <string name="ei_face_thin">瘦脸瘦身</string>
+    <string name="ei_big_eye">大眼</string>
+    <string name="ei_style">样式</string>
+    <string name="ei_color">颜色</string>
+    <string name="ei_big_eye_p">点击需要放大的区域进行放大</string>
+    <string name="ei_face_thin_p">拖动脸颊或其它部位进行瘦脸瘦身</string>
+    <string name="ei_change_color_p">再次点击可生成随机颜色</string>
+    <string name="ei_smart_selected">智能选取</string>
+    <string name="ei_smart_erase">智能擦除</string>
+    <string name="ei_change_color">换一批颜色</string>
+    <string name="ei_done">完成</string>
+    <string name="ei_edit">编辑</string>
+    <string name="ei_compare">对比</string>
     <string name="ei_mosaic">马赛克</string>
     <string name="ei_smart_select">智能选择</string>
     <string name="ei_brush">画刷</string>
@@ -33,4 +51,15 @@
     <string name="setting_suggections">意见反馈</string>
     <string name="setting_send_email">发邮件</string>
     <string name="setting_no_app_market">您没有安装应用市场</string>
+    <string name="ei_suggestion_p">请描述您在使用我们的产品过程中，所遇到的温蒂或者建议，我们会时刻关注并不断优化！</string>
+    <string name="ei_suggestion_hint">在这里填写您的意见和建议...</string>
+    <string name="ei_user_name_hint">您的姓名(非必填)</string>
+    <string name="ei_user_qq_email">Tel/Email/QQ(非必填)</string>
+    <string name="ei_bu_xie_lou">我们承诺联系方式仅作为产品沟通，绝不泄露！</string>
+    <string name="ei_ti_jiao">提交</string>
+    <string name="ei_qq_c">QQ联系</string>
+    <string name="ei_email_c">邮件联系</string>
+    <string name="ei_ti_jiao_faile">意见反馈，提交失败！</string>
+    <string name="ei_ti_jiao_success">意见反馈，提交成功！</string>
+    <string name="ei_no_QQ">您没有安装QQ客户端！</string>
 </resources>

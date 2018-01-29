@@ -6,20 +6,18 @@
     android:layout_height="match_parent"
     android:background="@color/color_2C2E30"
     tools:context="com.liubowang.photoretouch.FileBrowse.FilesActivity">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recycle_view_files"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/ll_banner_container_files"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintTop_toBottomOf="@+id/tb_files" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_file_path"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/ll_banner_container_files"
@@ -49,11 +47,23 @@
         android:layout_marginTop="0dp"
         android:background="@color/color_242527"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:theme="@style/ToolBarStyle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_top_image_files"
-        app:navigationIcon="@drawable/navi_icon"
         app:title="@string/ei_files"
+        app:navigationIcon="@drawable/fanhui"
         app:titleTextColor="@color/color_565859"/>
+
+    <TextView
+        android:id="@+id/tv_file_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/color_565859"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_files" />
 </android.support.constraint.ConstraintLayout>

@@ -13,6 +13,7 @@ public class FileInfo {
     public String fileSize;
     public String fileName;
     public File file;
+    public boolean isSelected;
 
     private FileInfo(){
         super();

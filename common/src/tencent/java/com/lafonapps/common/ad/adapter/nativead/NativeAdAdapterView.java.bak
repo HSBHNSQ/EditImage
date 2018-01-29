@@ -1,0 +1,226 @@
+package com.lafonapps.common.ad.adapter.nativead;
+
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+
+import com.androidquery.AQuery;
+import com.lafonapps.common.R;
+import com.lafonapps.common.ad.AdSize;
+import com.lafonapps.common.ad.adapter.AdModel;
+import com.lafonapps.common.ad.adapter.NativeAdViewAdapter;
+import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
+import com.lafonapps.common.preferences.Preferences;
+import com.qq.e.ads.nativ.NativeAD;
+import com.qq.e.ads.nativ.NativeADDataRef;
+import com.qq.e.comm.util.AdError;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by chenjie on 2017/7/5.
+ */
+
+public class NativeAdAdapterView extends FrameLayout implements NativeAdViewAdapter, SupportMutableListenerAdapter<NativeAdViewAdapter.Listener> {
+    private static final String TAG = NativeAdAdapterView.class.getCanonicalName();
+
+    private NativeADDataRef adItem;
+    private NativeAD nativeAD;
+    protected AQuery $;
+
+    private ViewGroup adView;
+    private Context context;
+    private String[] debugDevices;
+    private boolean ready;
+
+    private List<Listener> allListeners = new ArrayList<>();
+
+    public NativeAdAdapterView(Context context) {
+        super(context);
+        this.context = context;
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        adView = (ViewGroup) inflater.inflate(R.layout.native_ad, null);
+
+        addView(adView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    }
+
+    @Override
+    public void setDebugDevices(String[] debugDevices) {
+        this.debugDevices = debugDevices;
+    }
+
+    @Override
+    public boolean isReady() {
+        return this.ready;
+    }
+
+    /**
+     * 广告是否可以在多个界面重用
+     */
+    @Override
+    public boolean reuseable() {
+        return false;
+    }
+
+    @Override
+    public void build(AdModel adModel, AdSize adSize) {
+        $ = new AQuery(this);
+
+        nativeAD = new NativeAD(context, Preferences.getSharedPreference().getAppID4Tencent(), adModel.getTencentAdID(), new NativeAD.NativeAdListener() {
+            @Override
+            public void onADLoaded(List<NativeADDataRef> list) {
+
+                if (list.size() > 0) {
+                    Log.d(TAG, "onADLoaded");
+
+                    adItem = list.get(0);
+
+                    $.id(R.id.img_logo).image((String) adItem.getIconUrl(), false, true);
+                    $.id(R.id.img_poster).image(adItem.getImgUrl(), false, true);
+                    $.id(R.id.text_name).text((String) adItem.getTitle());
+                    $.id(R.id.text_desc).text((String) adItem.getDesc());
+                    $.id(R.id.btn_download).text(getADButtonText());
+                    adItem.onExposured(adView); // 需要先调用曝光接口
+
+                    View.OnClickListener clickListener = new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            adItem.onClicked(view); // 点击接口
+
+                            Listener[] listeners = getAllListeners();
+                            for (Listener listener : listeners) {
+                                listener.onAdOpened(NativeAdAdapterView.this);
+                            }
+                        }
+                    };
+
+                    $.id(R.id.btn_download).clicked(clickListener);
+                    adView.setOnClickListener(clickListener);
+
+                    Listener[] listeners = getAllListeners();
+                    for (Listener listener : listeners) {
+                        listener.onAdLoaded(NativeAdAdapterView.this);
+                    }
+                } else {
+                    Log.w(TAG, "onADLoaded:-100, list.size == 0");
+
+                    Listener[] listeners = getAllListeners();
+                    for (Listener listener : listeners) {
+                        listener.onAdFailedToLoad(NativeAdAdapterView.this, -100);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onNoAD(AdError error) {
+                Log.w(TAG, "onNoAD:" + error.getErrorCode());
+
+                Listener[] listeners = getAllListeners();
+                for (Listener listener : listeners) {
+                    listener.onAdFailedToLoad(NativeAdAdapterView.this, error.getErrorCode());
+                }
+            }
+
+            @Override
+            public void onADStatusChanged(NativeADDataRef nativeADDataRef) {
+                Log.d(TAG, "onADStatusChanged");
+
+                $.id(R.id.btn_download).text(getADButtonText());
+
+                Listener[] listeners = getAllListeners();
+                for (Listener listener : listeners) {
+                    listener.onAdLeftApplication(NativeAdAdapterView.this);
+                }
+            }
+
+            @Override
+            public void onADError(NativeADDataRef nativeADDataRef, AdError error) {
+                Log.w(TAG, "onADError:" + error.getErrorCode());
+
+                Listener[] listeners = getAllListeners();
+                for (Listener listener : listeners) {
+                    listener.onAdFailedToLoad(NativeAdAdapterView.this, error.getErrorCode());
+                }
+            }
+
+            /**
+             * App类广告安装、下载状态的更新（普链广告没有此状态，其值为-1） 返回的AppStatus含义如下： 0：未下载 1：已安装 2：已安装旧版本 4：下载中（可获取下载进度“0-100”）
+             * 8：下载完成 16：下载失败
+             */
+            private String getADButtonText() {
+                if (adItem == null) {
+                    return "……";
+                }
+                if (!adItem.isAPP()) {
+                    return "查看详情";
+                }
+                switch (adItem.getAPPStatus()) {
+                    case 0:
+                        return "点击下载";
+                    case 1:
+                        return "点击启动";
+                    case 2:
+                        return "点击更新";
+                    case 4:
+                        return adItem.getProgress() > 0 ? "下载中" + adItem.getProgress()+ "%" : "下载中"; // 特别注意：当进度小于0时，不要使用进度来渲染界面
+                    case 8:
+                        return "下载完成";
+                    case 16:
+                        return "下载失败,点击重试";
+                    default:
+                        return "查看详情";
+                }
+            }
+        });
+    }
+
+    @Override
+    public void loadAd() {
+        nativeAD.loadAD(1);
+    }
+
+    @Override
+    public View getAdapterAdView() {
+        return adView;
+    }
+
+    @Override
+    public Listener getListener() {
+        throw new RuntimeException("Please call getAllListeners() method instead!");
+    }
+
+    @Override
+    public void setListener(Listener listener) {
+        throw new RuntimeException("Please call addListener() method instead!");
+    }
+
+    /* SupportMutableListenerAdapter */
+
+    @Override
+    public synchronized void addListener(Listener listener) {
+        if (listener != null && !allListeners.contains(listener)) {
+            allListeners.add(listener);
+            Log.d(TAG, "addListener:" + listener);
+        }
+    }
+
+    @Override
+    public synchronized void removeListener(Listener listener) {
+        if (allListeners.contains(listener)) {
+            allListeners.remove(listener);
+            Log.d(TAG, "removeListener:" + listener);
+        }
+    }
+
+    @Override
+    public Listener[] getAllListeners() {
+        return allListeners.toArray(new Listener[allListeners.size()]);
+    }
+}

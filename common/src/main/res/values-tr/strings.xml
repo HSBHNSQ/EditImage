@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Eğer %1$s uygulamamız hoşunuza gittiyse, oy vermek ister misiniz? Bir dakikadan fazla sürmeyecektir. Desteğiniz için teşekkürler!</string>
+    <string name="rate_rate_button_title">Şimdi Oyla</string>
+    <string name="rate_cancel_button_title">Teşekkürler, Hayır</string>
+    <string name="again_to_exit_app">Çıkmak için tekrar GERİ düğmesine basın</string>
+</resources>

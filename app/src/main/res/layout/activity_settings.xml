@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_2C2E30"
     tools:context="com.liubowang.photoretouch.Main.SettingsActivity">
     <ImageView
         android:id="@+id/iv_top_image_set"
@@ -20,12 +21,12 @@
         android:layout_height="wrap_content"
         android:background="@drawable/navi_bg"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:theme="@style/ToolBarStyle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_top_image_set"
-        app:navigationIcon="@drawable/navi_icon"
-        app:titleTextColor="@color/color_FFFFFF"/>
+        app:navigationIcon="@drawable/fanhui"
+        app:titleTextColor="@color/color_565859"/>
 
     <LinearLayout
         android:id="@+id/adNavi_container_set"

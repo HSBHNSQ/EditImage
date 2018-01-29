@@ -8,16 +8,12 @@ import com.lafonapps.common.ad.AdSize;
  * Created by chenjie on 2017/7/5.
  */
 
-public interface BannerViewAdapter extends AdAdapter {
+public interface BannerViewAdapter extends AdAdapter<BannerViewAdapter.Listener> {
 
     /* 构建内容 */
     public void build(AdModel adModel, AdSize adSize);
 
     public View getAdapterAdView();
-
-    public Listener getListener();
-
-    public void setListener(Listener listener);
 
     public static interface Listener {
         public void onAdClosed(BannerViewAdapter adapter);

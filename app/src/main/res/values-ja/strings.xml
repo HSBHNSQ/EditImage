@@ -33,4 +33,22 @@
     <string name="setting_suggections">フィードバック</string>
     <string name="setting_send_email">メイルを送る</string>
     <string name="setting_no_app_market">あなたはアプリマーケットをインストールしていません</string>
+    <string name="ei_crop">カット</string>
+    <string name="ei_image_path">画像保存パス</string>
+    <string name="ei_text">テキスト</string>
+    <string name="ei_plz_input_text">テキストを入力してください</string>
+    <string name="ei_small_adjust">部分調整</string>
+    <string name="ei_face_thin">薄い顔と体</string>
+    <string name="ei_big_eye">大きな目</string>
+    <string name="ei_style">スタイル</string>
+    <string name="ei_color">色</string>
+    <string name="ei_big_eye_p">拡大したい領域をクリックして拡大します</string>
+    <string name="ei_face_thin_p">頬や顔の他の部分をドラッグして顔と体を薄くする</string>
+    <string name="ei_change_color_p">もう一度クリックしてランダムな色を生成する</string>
+    <string name="ei_smart_selected">スマート選択する</string>
+    <string name="ei_smart_erase">スマート消去する</string>
+    <string name="ei_change_color">色を変更する</string>
+    <string name="ei_done">完了</string>
+    <string name="ei_edit">編集</string>
+    <string name="ei_compare">コントラスト</string>
 </resources>

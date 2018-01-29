@@ -24,9 +24,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-#springframework
--libraryjars <java.home>/lib/rt.jar
-
 #XiaoMi SDK
 -keep class com.xiaomi.ad.**{*;}
 -keep class com.miui.analytics.**{*;}
@@ -40,10 +37,42 @@
 -keep class com.baidu.** {public protected *;}
 
 #oppo sdk
--keep class com.oppo.** {public protected *;}
+-keep class com.oppo.** {
+    public protected *;
+}
+-keep public class com.cdo.oaps.base.**{ *; }
+-keep class okio.**{ *; }
+-keep class com.squareup.wire.**{ *; }
+-keep public class * extends com.squareup.wire.**{ *; }
+# Keep methods with Wire annotations (e.g. @ProtoField)
+-keepclassmembers class ** {
+    @com.squareup.wire.ProtoField public *;
+    @com.squareup.wire.ProtoEnum public *;
+}
+
 
 #umeng sdk
 -keepclassmembers class * {
    public <init> (org.json.JSONObject);
 }
 
+-dontwarn org.springframework.**
+-dontwarn org.apache.httpcomponents.**
+-dontwarn com.androidquery.**
+-dontwarn com.oppo.**
+
+#oppo sdk
+-keep class com.oppo.** {
+    public protected *;
+}
+-keep class okio.**{ *; }
+-keep class com.squareup.wire.**{ *; }
+-keep public class * extends com.squareup.wire.**{ *; }
+# Keep methods with Wire annotations (e.g. @ProtoField)
+-keepclassmembers class ** {
+ @com.squareup.wire.ProtoField public *;
+ @com.squareup.wire.ProtoEnum public *;
+}
+-keep public class com.cdo.oaps.base.**{ *; }
+-keepattributes *Annotation*
+-keepattributes *JavascriptInterface*

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Si vous aimez utiliser %1$s, n\'oubliez pas de donner votre avis sur l\'App Store. Cela ne prend qu\'une minute. Merci d\'avance pour votre soutien !</string>
+    <string name="rate_cancel_button_title">Non, merci</string>
+    <string name="rate_rate_button_title">Noter maintenant</string>
+    <string name="again_to_exit_app">Appuyez de nouveau sur le bouton BACK pour quitter</string>
+</resources>

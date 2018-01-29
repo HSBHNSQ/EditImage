@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="skip">跳過</string>
+
+    <!-- 提示评论 -->
+    <string name="no_market_install_message">您没有安装任何应用市场</string>
+    <string name="again_to_exit_app">再按一次返回鍵退出</string>
+    <string name="rate_message">如果您喜歡用 %1$s，是否願意花一些時間打個分數？其過程將不超過一分鐘。 謝謝您的支持！</string>
+    <string name="rate_rate_button_title">現在評分</string>
+    <string name="rate_cancel_button_title">不，謝謝</string>
+    <string name="rate_good_app">好用，去評分</string>
+    <string name="rate_bad_app">不好用</string>
+
+    <!-- 问题和建议 -->
+    <string name="issues_and_suggestions">問題和建議</string>
+    <string name="please_describe_your_issues_or_suggestions_here">請在此處描述您的問題或建議</string>
+    <string name="select_mail_client">選擇郵件客戶端</string>
+</resources>

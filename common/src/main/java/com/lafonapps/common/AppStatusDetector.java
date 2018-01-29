@@ -23,7 +23,7 @@ public class AppStatusDetector implements Application.ActivityLifecycleCallbacks
     public static final String APPLICATION_WILL_TERMINATE_LAUNCHING_NOTIFICATION = "ApplicationWillTerminateNotification";
 
     private static final String TAG = AppStatusDetector.class.getCanonicalName();
-    private static boolean appDidFinishLaunching;
+    private boolean appDidFinishLaunching;
     /**
      * 维护Activity 的list
      */
@@ -35,8 +35,12 @@ public class AppStatusDetector implements Application.ActivityLifecycleCallbacks
      * get current Activity 获取当前Activity（栈中最后一个压入的）
      */
     public Activity currentActivity() {
-        Activity activity = activitys.get(activitys.size() - 1);
-        return activity;
+        if (activitys.size() > 0) {
+            Activity activity = activitys.get(activitys.size() - 1);
+            return activity;
+        } else {
+            return null;
+        }
     }
 
     public boolean appInForeground() {
@@ -129,5 +133,13 @@ public class AppStatusDetector implements Application.ActivityLifecycleCallbacks
     public void popActivity(Activity activity) {
         activitys.remove(activity);
         Log.d(TAG, "activityList:size:" + activitys.size());
+    }
+
+    /**
+     * 返回所有的活动
+     * @return
+     */
+    public Activity[] getActivities() {
+        return activitys.toArray(new Activity[activitys.size()]);
     }
 }

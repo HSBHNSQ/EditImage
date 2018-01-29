@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">اگر آپ نے %1$s کو مفید پایا ہے تو کیا آپ اپنے قیمتی وقت میں سے چند لمحے نکال کر اس کو ریٹ کریں گے؟ اس میں ایک منٹ سے زیادہ نہیں لگے گا، آپ کے تعاون کا شکریہ!</string>
+    <string name="rate_cancel_button_title">نہیں، شکریہ</string>
+    <string name="rate_rate_button_title">ابھی ریٹ کیجیے</string>
+    <string name="again_to_exit_app">باہر نکلنے کیلئے دوبارہ بٹن دبائیں</string>
+</resources>

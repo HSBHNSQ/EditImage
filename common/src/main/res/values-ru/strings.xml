@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Если вам нравится пользоваться %1$s, не будете ли вы возражать против того, чтобы уделить минуту и оценить его? Спасибо вам за поддержку!</string>
+    <string name="rate_cancel_button_title">Нет, спасибо</string>
+    <string name="rate_rate_button_title">Оценить сейчас</string>
+    <string name="again_to_exit_app">Нажмите кнопку BACK еще раз, чтобы выйти</string>
+</resources>

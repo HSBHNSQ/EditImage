@@ -65,6 +65,12 @@
         <activity
             android:name=".Main.GuidePlayActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".FileBrowse.ResultActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Adjust.SmallAdjustActivity" />
+        <activity android:name=".Text.TextActivity" />
+        <activity android:name=".Feedback.FeedBackActicity"></activity>
     </application>
 
 </manifest>

@@ -1,20 +1,21 @@
 package com.lafonapps.common.ad.adapter.banner;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.lafonapps.common.Common;
 import com.lafonapps.common.ad.AdSize;
+import com.lafonapps.common.ad.adapter.AdAdapterLayout;
 import com.lafonapps.common.ad.adapter.AdModel;
 import com.lafonapps.common.ad.adapter.BannerViewAdapter;
-import com.lafonapps.common.ad.adapter.SupportMutableListenerAdapter;
-import com.lafonapps.common.preferences.Preferences;
+import com.lafonapps.common.preferences.CommonConfig;
 import com.qq.e.ads.banner.ADSize;
 import com.qq.e.ads.banner.BannerADListener;
 import com.qq.e.ads.banner.BannerView;
+import com.qq.e.comm.util.AdError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,10 @@ import java.util.List;
  * Created by chenjie on 2017/7/5.
  */
 
-public class BannerAdapterView extends FrameLayout implements BannerViewAdapter, SupportMutableListenerAdapter<BannerViewAdapter.Listener> {
+public class BannerAdapterView extends AdAdapterLayout implements BannerViewAdapter {
 
     private static final String TAG = BannerAdapterView.class.getCanonicalName();
-
+    public static final boolean REUSEABLE = false;
     //    private AdView adView;
     private BannerView adView;
 
@@ -39,11 +40,24 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
     public BannerAdapterView(Context context) {
         super(context);
         this.context = context;
+
+        this.setTouchListener(new TouchListener() {
+            @Override
+            public boolean shouldComfirmBeforeDownloadApp() {
+                return CommonConfig.sharedCommonConfig.shouldComfirmBeforeDownloadAppOnBannerViewClick;
+            }
+
+            @Override
+            public Rect exceptRect() {
+                return new Rect(0, 0, 18, 18);
+            }
+        });
+
     }
 
     @Override
     public void setDebugDevices(String[] debugDevices) {
-        this.debugDevices = debugDevices;
+        this.debugDevices = debugDevices.clone();
     }
 
     @Override
@@ -51,37 +65,30 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
         return this.ready;
     }
 
-    /**
-     * 广告是否可以在多个界面重用
-     */
-    @Override
-    public boolean reuseable() {
-        return false;
-    }
-
     @Override
     public void build(AdModel adModel, AdSize adSize) {
 
         this.adView = new BannerView(Common.getCurrentActivity(),
                 ADSize.BANNER,
-                Preferences.getSharedPreference().getAppID4Tencent(),
+                CommonConfig.sharedCommonConfig.appID4Tencent,
                 adModel.getTencentAdID());
 
-        adView.setRefresh(30);
+        adView.setRefresh(120);
         adView.setShowClose(true);
         adView.setADListener(new BannerADListener() {
             @Override
-            public void onNoAD(int i) {
-                Log.d(TAG, "onNoAD:" + i);
+            public void onNoAD(AdError error) {
+                Log.d(TAG, "onNoAD:" + error.getErrorCode());
                 Listener[] listeners = getAllListeners();
                 for (Listener listener : listeners) {
-                    listener.onAdFailedToLoad(BannerAdapterView.this, i);
+                    listener.onAdFailedToLoad(BannerAdapterView.this, error.getErrorCode());
                 }
             }
 
             @Override
             public void onADReceiv() {
                 Log.d(TAG, "onADReceiv");
+
                 Listener[] listeners = getAllListeners();
                 for (Listener listener : listeners) {
                     listener.onAdLoaded(BannerAdapterView.this);
@@ -109,6 +116,8 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
             @Override
             public void onADClicked() {
                 Log.d(TAG, "onADClicked");
+
+                resetComfirmed();
             }
 
             @Override
@@ -142,16 +151,6 @@ public class BannerAdapterView extends FrameLayout implements BannerViewAdapter,
     @Override
     public View getAdapterAdView() {
         return adView;
-    }
-
-    @Override
-    public Listener getListener() {
-        throw new RuntimeException("Please call getAllListeners() method instead!");
-    }
-
-    @Override
-    public void setListener(Listener listener) {
-        throw new RuntimeException("Please call addListener() method instead!");
     }
 
     /* SupportMutableListenerAdapter */

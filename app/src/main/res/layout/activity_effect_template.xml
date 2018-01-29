@@ -49,12 +49,12 @@
         android:layout_marginTop="0dp"
         android:background="@color/color_242527"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:theme="@style/ToolBarStyle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_top_image_template"
-        app:navigationIcon="@drawable/navi_icon"
         app:title="@string/ei_effect"
+        app:navigationIcon="@drawable/fanhui"
         app:titleTextColor="@color/color_565859"/>
 
 </android.support.constraint.ConstraintLayout>

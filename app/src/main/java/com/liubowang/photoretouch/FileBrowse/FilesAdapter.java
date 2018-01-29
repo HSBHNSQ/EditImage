@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.liubowang.photoretouch.R;
+import com.liubowang.photoretouch.Text.TextTypeModel;
 import com.liubowang.photoretouch.Utils.BitmpUtil;
 import com.liubowang.photoretouch.Utils.FileUtil;
 
@@ -29,13 +31,16 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesHolder>
 
     private static final String TAG = FilesAdapter.class.getSimpleName();
     private static int INDEX = 0;
-    public OnFileItemListener onVideoItemListener;
+    private boolean isEdit = false;
+    private Context context;
+    public OnFileItemListener onFileItemListener;
     public List<FileInfo> fileList = new ArrayList<>();
+    public List<FileInfo> selectedList = new ArrayList<>();
     private FilesAdapter(){ super();}
 
     public FilesAdapter(OnFileItemListener listener){
         super();
-        this.onVideoItemListener = listener;
+        this.onFileItemListener = listener;
         initData();
     }
     /*
@@ -66,6 +71,27 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesHolder>
         }
     }
 
+    public void setEdit(boolean edit) {
+        isEdit = edit;
+        for (FileInfo info:
+             selectedList) {
+            info.isSelected = false;
+        }
+        selectedList.clear();
+        notifyDataSetChanged();
+    }
+
+    public void toDelete(){
+        for (FileInfo info: selectedList) {
+            if (info.file.exists()) {
+                if (info.file.delete()) {
+                    fileList.remove(info);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     public boolean removeItem(FileInfo info){
         int index = fileList.indexOf(info);
 //        FileInfo info = fileList.get(index);
@@ -73,7 +99,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesHolder>
             if (info.file.delete()) {
                 fileList.remove(info);
                 notifyItemRemoved(index);
-//                notifyDataSetChanged();
                 return true;
             }else {
                 return false;
@@ -87,8 +112,11 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesHolder>
 
     @Override
     public FilesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.view_file_item,parent,false);
+        Context ctx = parent.getContext();
+        if (this.context == null){
+            this.context = ctx;
+        }
+        View view = LayoutInflater.from(ctx).inflate(R.layout.view_file_item,parent,false);
         FilesHolder holder = new FilesHolder(view);
         return holder;
     }
@@ -107,18 +135,36 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesHolder>
 
     class FilesHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
-        private ImageButton moreButton;
+        private ImageButton deleteButton;
+        private ImageButton selectedButton;
+        private TextView textView;
         private FileInfo fileInfo;
         public FilesHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_file_image_files);
-            moreButton = itemView.findViewById(R.id.ib_more_button_files);
+            deleteButton = itemView.findViewById(R.id.ib_delete_button_files);
+            selectedButton = itemView.findViewById(R.id.ib_selected_button_files);
+            textView = itemView.findViewById(R.id.tv_file_title_files);
             itemView.setOnClickListener(clickListener);
-            moreButton.setOnClickListener(clickListener);
+            deleteButton.setOnClickListener(clickListener);
+            selectedButton.setOnClickListener(clickListener);
         }
 
         public void bind(FileInfo fileInfo){
             this.fileInfo = fileInfo;
+            if (isEdit){
+                deleteButton.setVisibility(View.INVISIBLE);
+                selectedButton.setVisibility(View.VISIBLE);
+                if (fileInfo.isSelected){
+                    selectedButton.setImageResource(R.drawable.selected);
+                }else {
+                    selectedButton.setImageResource(R.drawable.not_selected);
+                }
+            }else {
+                deleteButton.setVisibility(View.VISIBLE);
+                selectedButton.setVisibility(View.INVISIBLE);
+            }
+            textView.setText(fileInfo.fileName);
             if (fileInfo.thumUrl != null){
                 Bitmap bitmap = BitmapFactory.decodeFile(fileInfo.thumUrl);
                 imageView.setImageBitmap(bitmap);
@@ -131,17 +177,38 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesHolder>
         private View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (view.getId() == R.id.ib_more_button_files){
-                    if (onVideoItemListener != null){
-                        onVideoItemListener.onItemMoreButtonClick(fileInfo);
+                if (view.getId() == R.id.ib_delete_button_files){
+                    if (onFileItemListener != null){
+                        onFileItemListener.onItemDeleteButtonClick(fileInfo);
                     }
+                }else if (view.getId() == R.id.ib_selected_button_files){
+                    toAddSelectedListFile();
                 }else {
-                    if (onVideoItemListener != null){
-                        onVideoItemListener.onItemDidClick(fileInfo);
+                    if (isEdit){
+                        toAddSelectedListFile();
+                    }else {
+                        if (onFileItemListener != null){
+                            onFileItemListener.onItemDidClick(fileInfo);
+                        }
                     }
                 }
             }
         };
+
+        private void toAddSelectedListFile(){
+            if (selectedList.contains(fileInfo)){
+                fileInfo.isSelected = false;
+                selectedButton.setImageResource(R.drawable.not_selected);
+                selectedList.remove(fileInfo);
+            }else {
+                fileInfo.isSelected = true;
+                selectedButton.setImageResource(R.drawable.selected);
+                selectedList.add(fileInfo);
+            }
+            if (onFileItemListener != null){
+                onFileItemListener.onItemHasSelectedClick(fileInfo);
+            }
+        }
         private class FileThumbTask extends AsyncTask<Void,Void,Bitmap>{
 
             @Override
@@ -181,7 +248,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesHolder>
 
     interface OnFileItemListener{
         void onItemDidClick(FileInfo fileInfo);
-        void onItemMoreButtonClick(FileInfo fileInfo);
+        void onItemDeleteButtonClick(FileInfo fileInfo);
+        void onItemHasSelectedClick(FileInfo fileInfo);
     }
 
 

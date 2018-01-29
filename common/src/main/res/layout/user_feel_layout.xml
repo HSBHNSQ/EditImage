@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_background_feel"
+        android:layout_gravity="center"
+        android:layout_width="312dp"
+        android:layout_height="216dp"
+        android:orientation="vertical"
+        android:background="@drawable/ic_comment_one">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/tv_content_feel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/think_this_app_feel"
+                android:textColor="#696A6B"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_negative_feel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:textColor="#FFA800"
+                android:gravity="center|right"
+                android:paddingRight="24dp"
+                android:paddingBottom="30dp"
+                android:text="@string/not_easy_to_use"/>
+            <TextView
+                android:id="@+id/tv_positive_feel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:textColor="#FF3000"
+                android:gravity="center|left"
+                android:paddingLeft="24dp"
+                android:paddingBottom="30dp"
+                android:text="@string/easy_to_use"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    
+    
+</LinearLayout>

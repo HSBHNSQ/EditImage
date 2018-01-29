@@ -4,6 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_2C2E30">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
+        <SeekBar
+            android:id="@+id/sb_seek_filter_progress_fpv"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:progress="50"
+            android:maxHeight="2dp"
+            android:minHeight="2dp"
+            android:thumb="@drawable/bursh_seek_bar_thunb"
+            android:progressDrawable="@drawable/brush_seek_bar_layer" />
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cy_recycle_view_fpv"

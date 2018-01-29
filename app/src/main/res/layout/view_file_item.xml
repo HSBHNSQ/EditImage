@@ -12,7 +12,30 @@
         android:scaleType="centerCrop"/>
 
     <ImageButton
-        android:id="@+id/ib_more_button_files"
+        android:id="@+id/ib_selected_button_files"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitCenter"
+        android:padding="10dp"
+        android:background="@color/colorClean"
+        android:src="@drawable/not_selected"/>
+    <TextView
+        android:id="@+id/tv_file_title_files"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="40dp"
+        android:textColor="@color/color_FFFFFF"
+        android:background="@color/color_88000000"
+        android:gravity="center_vertical"
+        android:singleLine="true"/>
+    <ImageButton
+        android:id="@+id/ib_delete_button_files"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
@@ -21,5 +44,4 @@
         android:padding="10dp"
         android:background="@color/colorClean"
         android:src="@drawable/delete_video"/>
-
 </RelativeLayout>

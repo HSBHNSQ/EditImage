@@ -11,27 +11,22 @@ import com.liubowang.photoretouch.Template.TemplateModel;
 public class FilterModel {
 
     public enum FilterType{
-        NONE,
-        MONEY,
-        BLUR,
-        PAINTING,
-        ASCII,
-        LICHTENSTEIN,
-        CROSSHATCH,
-        CONTRAST,
-        CT,
-        MOSAIC,
-        EDGE,
-        INVERT,
-        GRAY,
-        LOMO,
-        OLDPHOTO,
-        BLACKWHITE,
-        SKETCH,
-        CRAYON,
-        COOL,
-        INKWELL,
-        MORE
+        NONE,CONTRAST, GRAYSCALE, SHARPEN,
+        SEPIA, SOBEL_EDGE_DETECTION,
+        EMBOSS, POSTERIZE,
+        GAMMA, BRIGHTNESS, INVERT, HUE,
+        PIXELATION,SATURATION, EXPOSURE,
+        HIGHLIGHT_SHADOW, MONOCHROME, OPACITY,
+        RGB, WHITE_BALANCE, VIGNETTE,
+        TONE_CURVE, LOOKUP_AMATORKA,
+        GAUSSIAN_BLUR, CROSSHATCH, BOX_BLUR, CGA_COLORSPACE,
+        DILATION, KUWAHARA, RGB_DILATION, SKETCH,
+        TOON, SMOOTH_TOON, BULGE_DISTORTION,
+        GLASS_SPHERE, HAZE, LAPLACIAN,
+        NON_MAXIMUM_SUPPRESSION,
+        SPHERE_REFRACTION, SWIRL, WEAK_PIXEL_INCLUSION,
+        FALSE_COLOR, COLOR_BALANCE, LEVELS_FILTER_MIN,
+        BILATERAL_BLUR
     }
 
     public enum RendererType{
@@ -53,15 +48,15 @@ public class FilterModel {
         if (Template.toTemplate(templateModel.template) == Template.CORSSHATCH){
             return new FilterModel(null,FilterType.CROSSHATCH,null);
         }
-        else if (Template.toTemplate(templateModel.template) == Template.GRAY){
-            return new FilterModel(null,FilterType.GRAY,null);
-        }
-        else if (Template.toTemplate(templateModel.template) == Template.FOCUS){
-            return new FilterModel(null,FilterType.BLUR,null);
-        }
-        else if (Template.toTemplate(templateModel.template) == Template.PAINTING){
-            return new FilterModel(null,FilterType.PAINTING,null);
-        }
+//        else if (Template.toTemplate(templateModel.template) == Template.GRAY){
+//            return new FilterModel(null,FilterType.GRAY,null);
+//        }
+//        else if (Template.toTemplate(templateModel.template) == Template.FOCUS){
+//            return new FilterModel(null,FilterType.BLUR,null);
+//        }
+//        else if (Template.toTemplate(templateModel.template) == Template.PAINTING){
+//            return new FilterModel(null,FilterType.PAINTING,null);
+//        }
         return null;
     }
 

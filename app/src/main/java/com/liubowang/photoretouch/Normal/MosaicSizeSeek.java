@@ -70,8 +70,6 @@ public class MosaicSizeSeek extends LinearLayout {
         }
     };
 
-
-
     public void setSeekValueChangedListener(TextSeekView.OnTextSeekValueChangedListener seekValueChangedListener) {
         this.seekValueChangedListener = seekValueChangedListener;
         textSeekView.setOnTextSeekValueChangedListener(seekValueChangedListener);

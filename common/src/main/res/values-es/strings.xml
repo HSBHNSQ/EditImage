@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rate_message">Si te gusta %1$s, ¿podrías escribirnos una reseña? No te tomará más de un minuto. ¡Gracias por tu apoyo!</string>
+    <string name="rate_cancel_button_title">No, gracias</string>
+    <string name="rate_rate_button_title">Escribir reseña ahora</string>
+    <string name="again_to_exit_app">Presione el botón BACK otra vez para salir</string>
+</resources>

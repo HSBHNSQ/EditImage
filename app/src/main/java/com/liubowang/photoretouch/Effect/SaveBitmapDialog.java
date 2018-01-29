@@ -49,6 +49,7 @@ public class SaveBitmapDialog extends DialogFragment {
     }
 
     public interface OnSaveBitmapListener{
+        void onStartSave();
         void onSaveBitmapCompleted(boolean success,String bmpPath);
         void onSaveBitmapCanceled();
     }
@@ -63,8 +64,6 @@ public class SaveBitmapDialog extends DialogFragment {
         final TextInputEditText textInputEditText = view.findViewById(R.id.et_file_name);
 
         final String[] fileName = {System.currentTimeMillis() + ""};
-
-
         if (mPreviewBitmap != null)
             imageView.setImageBitmap(mPreviewBitmap);
         else
@@ -87,12 +86,23 @@ public class SaveBitmapDialog extends DialogFragment {
                 .setPositiveButton(getString(R.string.sure), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        if (onSaveBitmapListener != null){
+                            onSaveBitmapListener.onStartSave();
+                        }
                         textInputEditText.setText(fileName[0]);
-                        String path = FileUtil.getPictureResultPathWithName(fileName[0],"png");
-                        boolean success = FileUtil.writeBitmap(new File(path),mPreviewBitmap);
-                        if (onSaveBitmapListener != null)
-                                onSaveBitmapListener.onSaveBitmapCompleted(success,path);
-                        dismiss();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                FileUtil.removeTmpFiles();
+                                final String path = FileUtil.getPictureResultPathWithName(fileName[0],"jpg");
+                                FileUtil.removeTmpFiles();
+                                final boolean success = FileUtil.writeBitmap(new File(path),mPreviewBitmap,80);
+                                if (onSaveBitmapListener != null){
+                                    onSaveBitmapListener.onSaveBitmapCompleted(success,path);
+                                }
+                            }
+                        }).start();
+
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {

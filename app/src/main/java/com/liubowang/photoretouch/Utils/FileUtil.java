@@ -58,6 +58,13 @@ public class FileUtil {
         deleteDir(tmp);
     }
 
+    public static void deleteFile(String filePath){
+        File file = new File(filePath);
+        if (file.exists()){
+            file.delete();
+        }
+    }
+
     //删除文件夹和文件夹里面的文件
     private static void deleteDir(final String pPath) {
         File dir = new File(pPath);
@@ -141,14 +148,18 @@ public class FileUtil {
         return bitmap;
     }
     public static boolean writeBitmap(File file,Bitmap bitmap){
+        return writeBitmap(file,bitmap,Bitmap.CompressFormat.PNG,0);
+    }
+
+
+    public static boolean writeBitmap(File file,Bitmap bitmap,Bitmap.CompressFormat format,int quality){
         try {
             if (file.exists()){
                 file.delete();
             }
             file.createNewFile();
-
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+            bitmap.compress(format, quality ,bos);
             byte[] bitmapdata = bos.toByteArray();
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(bitmapdata);
@@ -159,6 +170,11 @@ public class FileUtil {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+    public static boolean writeBitmap(File file,Bitmap bitmap,int quality){
+        return writeBitmap(file,bitmap,Bitmap.CompressFormat.JPEG,quality);
     }
     public static  String getImagePath(Context context, Uri imageUri){
         String[] filePathColumn = { MediaStore.Images.Media.DATA };

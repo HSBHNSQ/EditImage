@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Common</string>
-    <string name="facebook_app_id">107293193246611</string>
-
-    <string name = "toast"> ノーアプリケーションストア </string>
-    <string name = "exit_app">を押して終了</string>
-
-    <string name = "hard_top_finish">今行くスコア</string>
-    <string name = "hard_top_cancel">後で言う</string>
-    <string name = "score_app"> あなたはどうか分数のコメントのために、良い感じか？採点プロセスは少しだけ時間がかかります。ご支援いただきありがとうございます！</string>
+    <string name="rate_message">%1$sをお使いいただき大変ありがとうございます。もしよろしければ1分程で済みますので、このアプリの評価をお願いします。ご協力感謝いたします！</string>
+    <string name="rate_cancel_button_title">いえ、結構です</string>
+    <string name="rate_rate_button_title">今すぐ評価する</string>
+    <string name="again_to_exit_app">戻るボタンをもう一度押して終了します。</string>
 </resources>

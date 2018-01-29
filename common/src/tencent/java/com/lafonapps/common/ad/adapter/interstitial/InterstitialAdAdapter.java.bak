@@ -1,0 +1,177 @@
+package com.lafonapps.common.ad.adapter.interstitial;
+
+import android.app.Activity;
+import android.os.Handler;
+import android.util.Log;
+
+import com.lafonapps.common.Common;
+import com.lafonapps.common.ad.adapter.AdModel;
+import com.lafonapps.common.ad.adapter.InterstitialAdapter;
+import com.lafonapps.common.preferences.CommonConfig;
+import com.qq.e.ads.interstitial.InterstitialAD;
+import com.qq.e.ads.interstitial.InterstitialADListener;
+import com.qq.e.comm.util.AdError;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by chenjie on 2017/7/5.
+ */
+
+public class InterstitialAdAdapter implements InterstitialAdapter {
+
+    private static final String TAG = InterstitialAdAdapter.class.getCanonicalName();
+    public static final boolean REUSEABLE = false;
+    private InterstitialAD interstitialAd;
+    private Activity activity;
+    private AdModel adModel;
+    private InterstitialADListener adListener;
+    private String[] debugDevices;
+    private List<Listener> allListeners = new ArrayList<>();
+    private boolean ready = false;
+    private int retryDelayForFailed;
+
+    public InterstitialAdAdapter(Activity activity) {
+        this.activity = activity;
+    }
+
+    /* 是否已经请求到广告可供展示 */
+    @Override
+    public boolean isReady() {
+        return ready;
+    }
+
+    /* 构建内容 */
+    public void build(AdModel adModel) {
+        this.adModel = adModel;
+    }
+
+    /* 加载广告 */
+    public void loadAd() {
+        adListener = new InterstitialADListener() {
+
+            @Override
+            public void onADReceive() {
+                Log.d(TAG, "onADReceive");
+                InterstitialAdAdapter.Listener[] listeners = getAllListeners();
+                for (InterstitialAdAdapter.Listener listener : listeners) {
+                    listener.onAdLoaded(InterstitialAdAdapter.this);
+                }
+                ready = true;
+
+                retryDelayForFailed = 0;
+            }
+
+            @Override
+            public void onNoAD(AdError error) {
+                Log.d(TAG, "onNoAD:" + error.getErrorCode());
+                InterstitialAdAdapter.Listener[] listeners = getAllListeners();
+                for (InterstitialAdAdapter.Listener listener : listeners) {
+                    listener.onAdFailedToLoad(InterstitialAdAdapter.this, error.getErrorCode());
+                }
+
+                retryDelayForFailed += 2000; //延迟时间增加2秒
+
+                //延迟一段时间后重新加载
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadAd();
+                    }
+                }, retryDelayForFailed);
+            }
+
+            @Override
+            public void onADOpened() {
+                Log.d(TAG, "onADOpened");
+                InterstitialAdAdapter.Listener[] listeners = getAllListeners();
+                for (InterstitialAdAdapter.Listener listener : listeners) {
+                    listener.onAdOpened(InterstitialAdAdapter.this);
+                }
+            }
+
+            @Override
+            public void onADExposure() {
+                Log.d(TAG, "onADExposure");
+                InterstitialAdAdapter.Listener[] listeners = getAllListeners();
+                for (InterstitialAdAdapter.Listener listener : listeners) {
+                    listener.onAdOpened(InterstitialAdAdapter.this);
+                }
+            }
+
+            @Override
+            public void onADClicked() {
+                Log.d(TAG, "onADClicked");
+            }
+
+            @Override
+            public void onADLeftApplication() {
+                Log.d(TAG, "onADLeftApplication");
+                InterstitialAdAdapter.Listener[] listeners = getAllListeners();
+                for (InterstitialAdAdapter.Listener listener : listeners) {
+                    listener.onAdLeftApplication(InterstitialAdAdapter.this);
+                }
+            }
+
+            @Override
+            public void onADClosed() {
+                Log.d(TAG, "onADClosed");
+                InterstitialAdAdapter.Listener[] listeners = getAllListeners();
+                for (InterstitialAdAdapter.Listener listener : listeners) {
+                    listener.onAdClosed(InterstitialAdAdapter.this);
+                }
+
+                loadAd();
+            }
+        };
+
+        interstitialAd = new InterstitialAD(Common.getCurrentActivity(),
+                CommonConfig.sharedCommonConfig.appID4Tencent,
+                adModel.getTencentAdID());
+        interstitialAd.setADListener(adListener);
+        interstitialAd.loadAD();
+    }
+
+    @Override
+    public void show(Activity activity) {
+        if (ready) {
+            interstitialAd.show(activity);
+            ready = false;
+        } else {
+            Log.d(TAG, "Ad is not ready");
+        }
+    }
+
+    public Object getAdapterAd() {
+        return this.interstitialAd;
+    }
+
+    @Override
+    public void setDebugDevices(String[] debugDevices) {
+        this.debugDevices = debugDevices.clone();
+    }
+
+    /* SupportMutableListenerAdapter */
+
+    @Override
+    public synchronized void addListener(Listener listener) {
+        if (listener != null && !allListeners.contains(listener)) {
+            allListeners.add(listener);
+            Log.d(TAG, "addListener:" + listener);
+        }
+    }
+
+    @Override
+    public synchronized void removeListener(Listener listener) {
+        if (allListeners.contains(listener)) {
+            allListeners.remove(listener);
+            Log.d(TAG, "removeListener:" + listener);
+        }
+    }
+
+    @Override
+    public Listener[] getAllListeners() {
+        return allListeners.toArray(new Listener[allListeners.size()]);
+    }
+}

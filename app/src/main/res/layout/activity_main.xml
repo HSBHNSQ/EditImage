@@ -1,87 +1,135 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main.MainActivity"
-    android:background="@drawable/beijing">
+    android:background="@drawable/beijing"
+    tools:context=".Main.MainActivity">
 
 
     <LinearLayout
         android:id="@+id/ll_banner_container_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0">
+        app:layout_constraintRight_toRightOf="parent">
 
     </LinearLayout>
 
     <android.support.constraint.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="84dp" />
+        app:layout_constraintGuide_end="76dp" />
 
     <com.liubowang.photoretouch.Normal.ImageTextButton
-        android:id="@+id/itv_normal_mian"
-        android:layout_width="0dp"
+        android:id="@+id/itv_crop_main"
+        android:layout_width="55dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        app:is_selected="false"
-        app:layout_constraintBottom_toTopOf="@+id/itv_effect_main"
-        app:layout_constraintDimensionRatio="w,1:0.9"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline"
-        app:layout_constraintRight_toRightOf="@+id/itv_effect_main"
-        app:normal_image="@drawable/changguikoutu"
-        app:normal_text="@string/ei_normal"
-        app:text_size="11sp"
+        android:layout_marginBottom="30dp"
         app:image_padding="5dp"
-        app:normal_text_color="@color/color_FFFFFF"
-        app:layout_constraintHorizontal_bias="1.0" />
+        app:is_selected="false"
+        app:layout_constraintBottom_toTopOf="@+id/itv_small_adjust_main"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="@+id/itv_text_main"
+        app:normal_image="@drawable/btn4"
+        app:normal_text="@string/ei_crop"
+        app:normal_text_color="@color/color_565859"
+        app:text_size="9sp" />
+
+    <com.liubowang.photoretouch.Normal.ImageTextButton
+        android:id="@+id/itv_text_main"
+        android:layout_width="55dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="65dp"
+        android:layout_marginEnd="25dp"
+        app:image_padding="5dp"
+        app:is_selected="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/itv_my_photots_main"
+        app:normal_image="@drawable/btn6"
+        app:normal_text="@string/ei_text"
+        app:normal_text_color="@color/color_565859"
+        app:text_size="9sp" />
+
+    <com.liubowang.photoretouch.Normal.ImageTextButton
+        android:id="@+id/itv_common_main"
+        android:layout_width="55dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="65dp"
+        app:image_padding="6dp"
+        app:is_selected="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="@+id/itv_my_photots_main"
+        app:normal_image="@drawable/common"
+        app:normal_text="@string/setting_suggections"
+        app:normal_text_color="@color/color_565859"
+        app:text_size="9sp" />
+
+    <com.liubowang.photoretouch.Normal.ImageTextButton
+        android:id="@+id/itv_small_adjust_main"
+        android:layout_width="55dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="30dp"
+        app:image_padding="5dp"
+        app:is_selected="false"
+        app:layout_constraintBottom_toTopOf="@+id/itv_text_main"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="@+id/itv_text_main"
+        app:normal_image="@drawable/icon5"
+        app:normal_text="@string/ei_small_adjust"
+        app:normal_text_color="@color/color_565859"
+        app:text_size="9sp" />
 
     <com.liubowang.photoretouch.Normal.ImageTextButton
         android:id="@+id/itv_effect_main"
-        android:layout_width="0dp"
+        android:layout_width="55dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        app:normal_image="@drawable/texiaokoutu"
-        app:normal_text_color="@color/color_FFFFFF"
-        app:normal_text="@string/ei_effect"
-        app:text_size="11sp"
+        android:layout_marginBottom="30dp"
         app:image_padding="5dp"
         app:is_selected="false"
         app:layout_constraintBottom_toTopOf="@+id/itv_my_photots_main"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline"
-        app:layout_constraintRight_toRightOf="@+id/itv_my_photots_main"
-        app:layout_constraintDimensionRatio="w,1:0.9" />
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:normal_image="@drawable/btn2"
+        app:normal_text="@string/ei_effect"
+        app:normal_text_color="@color/color_565859"
+        app:text_size="9sp" />
+
+    <com.liubowang.photoretouch.Normal.ImageTextButton
+        android:id="@+id/itv_normal_mian"
+        android:layout_width="55dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="30dp"
+        app:image_padding="5dp"
+        app:is_selected="false"
+        app:layout_constraintBottom_toTopOf="@+id/itv_effect_main"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:normal_image="@drawable/btn1"
+        app:normal_text="@string/ei_normal"
+        app:normal_text_color="@color/color_565859"
+        app:text_size="9sp" />
 
     <com.liubowang.photoretouch.Normal.ImageTextButton
         android:id="@+id/itv_my_photots_main"
-        android:layout_width="0dp"
+        android:layout_width="55dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="39dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="24dp"
-        app:is_selected="false"
-        app:layout_constraintBottom_toTopOf="@+id/ll_banner_container_main"
-        app:layout_constraintDimensionRatio="w,1:0.9"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        app:normal_image="@drawable/wodewenjian"
-        app:normal_text="@string/ei_files"
-        app:text_size="11sp"
         app:image_padding="5dp"
-        app:normal_text_color="@color/color_FFFFFF" />
+        app:is_selected="false"
+        app:layout_constraintBottom_toBottomOf="@+id/itv_small_adjust_main"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:normal_image="@drawable/btn3"
+        app:normal_text="@string/ei_files"
+        app:normal_text_color="@color/color_565859"
+        app:text_size="9sp" />
 
 </android.support.constraint.ConstraintLayout>

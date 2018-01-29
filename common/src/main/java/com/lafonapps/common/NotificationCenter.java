@@ -54,7 +54,7 @@ public class NotificationCenter {
         }
     }
 
-    private class CustomObservable extends Observable {
+    private static class CustomObservable extends Observable {
         @Override
         protected void setChanged() {
             super.setChanged();

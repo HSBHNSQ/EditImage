@@ -275,4 +275,32 @@ public class ViewUtil {
         return bitmap;
     }
 
+    /**
+     * 计算两个点之间的距离。单位：像素（px）
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+    public static float distanceInPx(float x1, float y1, float x2, float y2) {
+        float dx = x1 - x2;
+        float dy = y1 - y2;
+        float distanceInPx = (float) Math.sqrt(dx * dx + dy * dy);
+        return distanceInPx;
+    }
+
+    /**
+     * 计算两个点之间的距离。单位：点（dp）
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+    public static float distanceInDp(float x1, float y1, float x2, float y2) {
+        float distanceInPx = distanceInPx(x1, y1, x2, y2);
+        return ViewUtil.px2dp(distanceInPx);
+    }
+
 }

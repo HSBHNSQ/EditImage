@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_2C2E30"
+    android:id="@+id/root_adjust"
+    tools:context="com.liubowang.photoretouch.Adjust.SmallAdjustActivity">
+    <ImageView
+        android:id="@+id/iv_status_adjust"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/color_2C2E30"/>
+
+    <com.liubowang.photoretouch.Normal.TopToolView
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/ttl_top_tool_adjust"
+        app:layout_constraintTop_toBottomOf="@+id/iv_status_adjust"
+        android:background="@drawable/navi_bg"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_container_adjust"
+        android:layout_width="368dp"
+        android:layout_height="385dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/sb_circle_adjust"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_adjust">
+
+        <ImageView
+            android:id="@+id/iv_ori_image_view_adjust"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.liubowang.photoretouch.Adjust.AdjustView
+            android:id="@+id/av_adjust_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/ll_banner_container_adjust"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.liubowang.photoretouch.Normal.ImageTextButton
+            android:id="@+id/itb_big_eye_adjust"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="true"
+            app:normal_background="@color/color_242527"
+            app:normal_image="@drawable/bigeyegrey"
+            app:normal_text="@string/ei_big_eye"
+            app:normal_text_color="@color/color_565859"
+            app:selected_background="@color/color_242527"
+            app:selected_image="@drawable/bigeyewhite"
+            app:selected_text="@string/ei_big_eye"
+            app:selected_text_color="@color/color_FFFFFF"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="-28dp"
+            tools:layout_editor_absoluteY="33dp" />
+        <com.liubowang.photoretouch.Normal.ImageTextButton
+            android:id="@+id/itb_face_thin_adjust"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:is_selected="false"
+            app:normal_background="@color/color_242527"
+            app:normal_image="@drawable/thingrey"
+            app:normal_text="@string/ei_face_thin"
+            app:normal_text_color="@color/color_565859"
+            app:selected_background="@color/color_242527"
+            app:selected_image="@drawable/thinwhite"
+            app:selected_text="@string/ei_face_thin"
+            app:selected_text_color="@color/color_FFFFFF"
+            app:show_image_view="true"
+            app:show_text_view="true"
+            app:text_size="10sp"
+            tools:layout_editor_absoluteX="320dp"
+            tools:layout_editor_absoluteY="8dp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_progress_adjust"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/ll_banner_container_adjust"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/sb_circle_adjust"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.liubowang.photoretouch.Adjust.ToastCircleView
+        android:id="@+id/tcv_circle_adjust"
+        android:layout_width="250px"
+        android:layout_height="250px"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.liubowang.photoretouch.Adjust.ActionTextView
+        android:id="@+id/atv_comparable_adjust"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/compare_bg"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:text="@string/ei_compare"
+        android:textColor="@color/color_565859"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ttl_top_tool_adjust" />
+
+</android.support.constraint.ConstraintLayout>

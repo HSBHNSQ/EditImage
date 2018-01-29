@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    >
+
+    <CheckBox
+        android:id="@+id/cb_suggestion_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:button="@drawable/suggestion_check_bg"
+        />
+    <TextView
+        android:id="@+id/tv_suggestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:textColor="#FF9C00"
+        android:layout_marginLeft="5dp"
+        android:paddingLeft="8dp"
+        android:text="@string/think_this_app_feel"
+        android:textSize="15sp"/>
+    
+</LinearLayout>
